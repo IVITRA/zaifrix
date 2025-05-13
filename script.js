@@ -1,7 +1,6 @@
 // كشف مانع الإعلانات التقليدي
 function detectAdBlocker() {
     return new Promise((resolve) => {
-        // إنشاء عنصر إعلان وهمي
         const ad = document.createElement('div');
         ad.innerHTML = '&nbsp;';
         ad.className = 'ad-class';
@@ -12,7 +11,6 @@ function detectAdBlocker() {
         
         document.body.appendChild(ad);
         
-        // التحقق بعد وقت قصير
         setTimeout(() => {
             const isBlocked = ad.offsetHeight === 0 || 
                              ad.style.display === 'none' || 
@@ -24,33 +22,50 @@ function detectAdBlocker() {
     });
 }
 
-// كشف DNS الذي يحجب الإعلانات عن طريق طلب ملف من نطاقات معروفة لحجب الإعلانات
+// كشف DNS الذي يحجب الإعلانات باستخدام monetag.com
 async function detectDNSAdBlocking() {
     try {
-        const testUrls = [
-            'https://monetag.com/'
+        const response = await fetch('https://monetag.com/?monetag=test', {
+            method: 'GET',
+            mode: 'no-cors',
+            cache: 'no-store'
+        });
+        
+        // إذا وصلنا هنا، لم يتم حجب الطلب
+        return false;
+    } catch (error) {
+        // إذا فشل الطلب، قد يكون بسبب مانع DNS
+        return true;
+    }
+}
+
+// كشف VPN عن طريق IP والعنوان
+async function detectVPN() {
+    try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        const userIP = data.ip;
+        
+        // يمكنك إضافة المزيد من الفحوصات هنا مثل:
+        // - مقارنة مع قائمة IPs معروفة لـ VPN
+        // - التحقق من مزود خدمة الإنترنت
+        // - التحقق من الموقع الجغرافي
+        
+        // مثال بسيط للتحقق من بعض مزودي VPN المشهورين
+        const vpnProviders = [
+            'vpn', 'proxy', 'tor', 'expressvpn', 'nordvpn', 
+            'surfshark', 'ipvanish', 'hotspotshield', 'privateinternetaccess'
         ];
         
-        let blockedCount = 0;
+        const ipResponse = await fetch(`https://ipapi.co/${userIP}/json/`);
+        const ipData = await ipResponse.json();
         
-        for (const url of testUrls) {
-            try {
-                const response = await fetch(url, {
-                    method: 'HEAD',
-                    mode: 'no-cors',
-                    cache: 'no-store'
-                });
-                // إذا وصلنا هنا، لم يتم حجب الطلب
-            } catch (error) {
-                // إذا فشل الطلب، قد يكون بسبب مانع DNS
-                blockedCount++;
-            }
-        }
+        const org = (ipData.org || '').toLowerCase();
+        const isVPN = vpnProviders.some(provider => org.includes(provider));
         
-        // إذا تم حجب أكثر من نصف الطلبات، نفترض وجود مانع DNS
-        return blockedCount >= testUrls.length / 2;
+        return isVPN;
     } catch (error) {
-        console.error('Error detecting DNS ad blocking:', error);
+        console.error('Error detecting VPN:', error);
         return false;
     }
 }
@@ -61,26 +76,51 @@ async function checkAdBlocker() {
     const dnsBlocker = await detectDNSAdBlocking();
     
     if (traditionalBlocker || dnsBlocker) {
-        // عرض رسالة التحذير وإخفاء المحتوى الرئيسي
         document.getElementById('blockerWarning').style.display = 'block';
         document.getElementById('mainContent').style.display = 'none';
+        document.getElementById('vpnWarning').style.display = 'none';
         
-        // إضافة رسالة إلى console للمطورين
-        console.warn('تم اكتشاف مانع إعلانات أو DNS يحجب الإعلانات. يرجى تعطيله لاستخدام الموقع.');
-        
+        console.warn('تم اكتشاف مانع إعلانات أو DNS يحجب الإعلانات');
         return true;
     } else {
-        // إخفاء رسالة التحذير وإظهار المحتوى الرئيسي
         document.getElementById('blockerWarning').style.display = 'none';
-        document.getElementById('mainContent').style.display = 'block';
         return false;
     }
 }
 
-// فحص مانع الإعلانات عند تحميل الصفحة
-window.addEventListener('DOMContentLoaded', () => {
-    checkAdBlocker();
+// فحص VPN
+async function checkVPN() {
+    const isVPN = await detectVPN();
     
-    // يمكنك إضافة فحص دوري إذا أردت
-    setInterval(checkAdBlocker, 10000);
+    if (isVPN) {
+        document.getElementById('vpnWarning').style.display = 'block';
+        document.getElementById('mainContent').style.display = 'none';
+        document.getElementById('blockerWarning').style.display = 'none';
+        
+        console.warn('تم اكتشاف اتصال VPN');
+        return true;
+    } else {
+        document.getElementById('vpnWarning').style.display = 'none';
+        return false;
+    }
+}
+
+// فحص شامل عند تحميل الصفحة
+window.addEventListener('DOMContentLoaded', async () => {
+    const hasBlocker = await checkAdBlocker();
+    
+    if (!hasBlocker) {
+        await checkVPN();
+    }
+    
+    // فحص دوري كل 10 ثواني
+    setInterval(async () => {
+        if (!document.getElementById('blockerWarning').style.display === 'block') {
+            await checkAdBlocker();
+        }
+        
+        if (!document.getElementById('vpnWarning').style.display === 'block') {
+            await checkVPN();
+        }
+    }, 10000);
 });
