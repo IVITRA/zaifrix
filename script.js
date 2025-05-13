@@ -1,164 +1,86 @@
-// كشف مانع الإعلانات التقليدي (محسّن)
+// كشف مانع الإعلانات التقليدي
 function detectAdBlocker() {
     return new Promise((resolve) => {
-        let detected = false;
+        // إنشاء عنصر إعلان وهمي
+        const ad = document.createElement('div');
+        ad.innerHTML = '&nbsp;';
+        ad.className = 'ad-class';
+        ad.style.height = '1px';
+        ad.style.position = 'absolute';
+        ad.style.left = '-9999px';
+        ad.style.top = '-9999px';
         
-        // الطريقة 1: محاولة تحميل ملف إعلاني معروف
-        const adScript = document.createElement('script');
-        adScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
-        adScript.onload = () => { detected = false; };
-        adScript.onerror = () => { detected = true; };
-        document.head.appendChild(adScript);
+        document.body.appendChild(ad);
         
-        // الطريقة 2: التحقق من عنصر إعلان مخفي
+        // التحقق بعد وقت قصير
         setTimeout(() => {
-            const testAd = document.createElement('div');
-            testAd.innerHTML = '&nbsp;';
-            testAd.className = 'adsbox';
-            testAd.style.position = 'absolute';
-            testAd.style.left = '-9999px';
-            testAd.style.height = '1px';
-            document.body.appendChild(testAd);
+            const isBlocked = ad.offsetHeight === 0 || 
+                             ad.style.display === 'none' || 
+                             ad.style.visibility === 'hidden';
             
-            setTimeout(() => {
-                if (testAd.offsetHeight === 0 || 
-                    window.getComputedStyle(testAd).display === 'none' || 
-                    window.getComputedStyle(testAd).visibility === 'hidden') {
-                    detected = true;
-                }
-                document.body.removeChild(testAd);
-                resolve(detected);
-            }, 100);
+            document.body.removeChild(ad);
+            resolve(isBlocked);
         }, 100);
     });
 }
 
-// كشف DNS-based ad blocking (مُحسّن)
+// كشف DNS الذي يحجب الإعلانات عن طريق طلب ملف من نطاقات معروفة لحجب الإعلانات
 async function detectDNSAdBlocking() {
     try {
-        // قائمة بعناوين CDN وإعلانات مع احتمال الحجب
         const testUrls = [
-            'https://www.googletagservices.com/tag/js/gpt.js',
-            'https://securepubads.g.doubleclick.net/tag/js/gpt.js',
-            'https://www.google-analytics.com/analytics.js',
-            'https://connect.facebook.net/en_US/fbevents.js',
-            'https://static.ads-twitter.com/uwt.js',
-            'https://bat.bing.com/bat.js'
+            'https://monetag.com/'
         ];
-
-        const results = await Promise.allSettled(
-            testUrls.map(url => fetch(url, { 
-                method: 'HEAD',
-                mode: 'no-cors',
-                cache: 'no-store',
-                redirect: 'error'
-            }).catch(() => Promise.reject()))
-        );
-
-        const blockedCount = results.filter(
-            result => result.status === 'rejected'
-        ).length;
-
-        // إذا تم حجب أكثر من نصف الطلبات
-        return blockedCount > testUrls.length / 2;
-    } catch (error) {
-        console.error('Error in DNS detection:', error);
-        return false;
-    }
-}
-
-// كشف إضافي لـ DNS poisoning
-async function detectDNSPoisoning() {
-    try {
-        // إنشاء iframe لتحميل صفحة معروفة تحتوي على إعلانات
-        const iframe = document.createElement('iframe');
-        iframe.src = 'https://www.example-with-ads.com/test.html';
-        iframe.style.display = 'none';
-        document.body.appendChild(iframe);
         
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                try {
-                    // التحقق من محتوى الـ iframe
-                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-                    const isBlocked = iframeDoc.body.innerHTML.includes('blocked') || 
-                                     iframeDoc.body.innerHTML.includes('adblock') ||
-                                     iframeDoc.body.textContent === '';
-                    
-                    document.body.removeChild(iframe);
-                    resolve(isBlocked);
-                } catch (e) {
-                    // إذا حدث خطأ في الوصول إلى الـ iframe، قد يكون بسبب سياسة الأمان
-                    document.body.removeChild(iframe);
-                    resolve(false);
-                }
-            }, 2000);
-        });
-    } catch (error) {
-        console.error('Error in DNS poisoning detection:', error);
-        return false;
-    }
-}
-
-// الفحص الشامل (مُحسّن)
-async function checkAdBlocker() {
-    try {
-        const [traditionalBlocker, dnsBlocker, dnsPoisoning] = await Promise.all([
-            detectAdBlocker(),
-            detectDNSAdBlocking(),
-            detectDNSPoisoning()
-        ]);
-
-        const isBlocked = traditionalBlocker || dnsBlocker || dnsPoisoning;
+        let blockedCount = 0;
         
-        if (isBlocked) {
-            document.getElementById('blockerWarning').style.display = 'block';
-            document.getElementById('mainContent').style.display = 'none';
-            
-            // إضافة معلومات إضافية للتصحيح
-            console.warn('تم اكتشاف حجب إعلانات:', {
-                traditionalBlocker,
-                dnsBlocker,
-                dnsPoisoning
-            });
-            
-            // إرسال بيانات إلى الخادم لتسجيل الحادث (اختياري)
+        for (const url of testUrls) {
             try {
-                await fetch('/log-blocker', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        type: 'ad_blocker',
-                        traditional: traditionalBlocker,
-                        dns: dnsBlocker,
-                        poisoning: dnsPoisoning,
-                        timestamp: new Date().toISOString()
-                    })
+                const response = await fetch(url, {
+                    method: 'HEAD',
+                    mode: 'no-cors',
+                    cache: 'no-store'
                 });
-            } catch (e) {
-                console.error('Failed to log blocker:', e);
+                // إذا وصلنا هنا، لم يتم حجب الطلب
+            } catch (error) {
+                // إذا فشل الطلب، قد يكون بسبب مانع DNS
+                blockedCount++;
             }
-        } else {
-            document.getElementById('blockerWarning').style.display = 'none';
-            document.getElementById('mainContent').style.display = 'block';
         }
         
-        return isBlocked;
+        // إذا تم حجب أكثر من نصف الطلبات، نفترض وجود مانع DNS
+        return blockedCount >= testUrls.length / 2;
     } catch (error) {
-        console.error('Error in ad blocker check:', error);
+        console.error('Error detecting DNS ad blocking:', error);
         return false;
     }
 }
 
-// التهيئة والفحص الدوري
+// فحص شامل لمانع الإعلانات
+async function checkAdBlocker() {
+    const traditionalBlocker = await detectAdBlocker();
+    const dnsBlocker = await detectDNSAdBlocking();
+    
+    if (traditionalBlocker || dnsBlocker) {
+        // عرض رسالة التحذير وإخفاء المحتوى الرئيسي
+        document.getElementById('blockerWarning').style.display = 'block';
+        document.getElementById('mainContent').style.display = 'none';
+        
+        // إضافة رسالة إلى console للمطورين
+        console.warn('تم اكتشاف مانع إعلانات أو DNS يحجب الإعلانات. يرجى تعطيله لاستخدام الموقع.');
+        
+        return true;
+    } else {
+        // إخفاء رسالة التحذير وإظهار المحتوى الرئيسي
+        document.getElementById('blockerWarning').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+        return false;
+    }
+}
+
+// فحص مانع الإعلانات عند تحميل الصفحة
 window.addEventListener('DOMContentLoaded', () => {
     checkAdBlocker();
-    setInterval(checkAdBlocker, 30000); // فحص كل 30 ثانية
-});
-
-// يمكنك إضافة هذا للصفحات التي تستخدم iframes
-window.addEventListener('load', () => {
-    if (window.self === window.top) {
-        checkAdBlocker();
-    }
+    
+    // يمكنك إضافة فحص دوري إذا أردت
+    setInterval(checkAdBlocker, 10000);
 });
