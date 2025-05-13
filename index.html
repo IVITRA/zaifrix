@@ -3,296 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NexForia - بوابة الكون الإبداعي</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <title>موقع محمي ضد مانع الإعلانات</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .ad-container {
+            width: 100%;
+            height: 100px;
+            background: #f0f0f0;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px dashed #ccc;
+        }
+        .blocker-warning {
+            display: none;
+            color: #dc3545;
+            padding: 20px;
+            background: #f8d7da;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <!-- Preloader -->
-    <div id="preloader">
-        <div class="preloader-logo-container">
-            <div class="preloader-logo">
-                <span>N</span><span>e</span><span>x</span><span>F</span><span>o</span><span>r</span><span>i</span><span>a</span><span class="logo-dot">.</span>
-            </div>
+    <div class="container">
+        <h1>مرحباً بكم في موقعنا</h1>
+        <p>هذا موقع صغير مع حماية ضد مانع الإعلانات</p>
+        
+        <!-- حاوية إعلان وهمية للكشف -->
+        <div class="ad-container" id="adContainer">
+            <p>هذه مساحة إعلانية</p>
         </div>
-        <div class="preloader-orbits">
-            <div class="orbit orbit-1"></div>
-            <div class="orbit orbit-2"></div>
-            <div class="orbit orbit-3"></div>
+        
+        <!-- رسالة تحذيرية تظهر عند اكتشاف مانع إعلانات -->
+        <div class="blocker-warning" id="blockerWarning">
+            <h2>تم اكتشاف مانع إعلانات!</h2>
+            <p>لا يمكنك استخدام هذا الموقع أثناء تشغيل مانع الإعلانات أو DNS الذي يحجب الإعلانات.</p>
+            <p>يرجى تعطيل مانع الإعلانات وتحديث الصفحة للمتابعة.</p>
+            <button onclick="checkAdBlocker()">لقد قمت بتعطيله، تحقق مرة أخرى</button>
         </div>
-        <p class="preloader-text">استكشاف آفاق جديدة...</p>
-    </div>
-
-    <!-- Welcome Message Overlay -->
-    <div id="welcome-message-overlay">
-        <div class="welcome-message-content">
-            <div class="welcome-logo">NexForia<span class="logo-dot">.</span></div>
-            <h2>أهلاً بك في مجرتنا الإبداعية!</h2>
-            <p>نستعد للانطلاق...</p>
-        </div>
-    </div>
-
-
-    <!-- تأثير الجزيئات في الخلفية -->
-    <div id="particles-js"></div>
-
-    <!-- تأثير المؤشر المتوهج -->
-    <div id="cursor-glow"></div>
-
-    <!-- حاوية تأثير النقر -->
-    <div id="click-effect-container"></div>
-
-    <header id="main-header">
-        <div class="header-container">
-            <a href="#hero" class="logo">NexForia<span class="logo-dot">.</span></a>
-            <nav class="desktop-nav">
-                <ul>
-                    <li><a href="#hero" class="nav-link active"><i class="fas fa-house nav-icon"></i>الرئيسية</a></li>
-                    <li><a href="#projects" class="nav-link"><i class="fas fa-rocket nav-icon"></i>المشاريع</a></li>
-                    <li><a href="#skills-galaxy" class="nav-link"><i class="fas fa-meteor nav-icon"></i>المهارات</a></li>
-                    <li><a href="#contact" class="nav-link"><i class="fas fa-satellite-dish nav-icon"></i>تواصل</a></li>
-                </ul>
-            </nav>
-            <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="فتح القائمة" aria-expanded="false">
-                <span class="bar bar1"></span>
-                <span class="bar bar2"></span>
-                <span class="bar bar3"></span>
-            </button>
-        </div>
-    </header>
-
-    <!-- القائمة الجانبية للجوال (تصميم فضائي فني) -->
-    <nav id="mobile-sidebar" class="mobile-sidebar" aria-hidden="true">
-        <div class="sidebar-glow sidebar-glow-top"></div>
-        <div class="sidebar-glow sidebar-glow-bottom"></div>
-        <div class="sidebar-content-wrapper">
-            <div class="sidebar-header">
-                <a href="#hero" class="sidebar-logo">NexForia<span class="logo-dot">.</span></a>
-                <button id="close-sidebar-btn" class="close-sidebar-btn close-btn-design" aria-label="إغلاق القائمة"><i class="fas fa-times"></i></button>
-            </div>
-            <ul class="sidebar-nav-links">
-                <li><a href="#hero" class="sidebar-link"><i class="fas fa-house"></i><span>الرئيسية</span></a></li>
-                <li><a href="#projects" class="sidebar-link"><i class="fas fa-rocket"></i><span>المشاريع</span></a></li>
-                <li><a href="#skills-galaxy" class="sidebar-link"><i class="fas fa-meteor"></i><span>المهارات</span></a></li>
-                <li><a href="#contact" class="sidebar-link"><i class="fas fa-satellite-dish"></i><span>تواصل</span></a></li>
-            </ul>
-            <div class="sidebar-footer">
-                <div class="social-links-sidebar">
-                    <a href="#" target="_blank" aria-label="Github"><i class="fab fa-github"></i></a>
-                    <a href="#" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                    <a href="#" target="_blank" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
-                </div>
-                <p class="copyright-sidebar">© <span class="current-year-sidebar"></span> NexForia. <br> إبداع بلا حدود.</p>
-            </div>
-        </div>
-    </nav>
-    <div id="sidebar-overlay" class="sidebar-overlay"></div>
-
-    <section id="hero">
-        <div class="hero-bg-animation"></div>
-        <div class="hero-content">
-            <h1 class="hero-title-animated">مرحباً بك في <span class="highlight">مجرة NexForia</span> الإبداعية</h1>
-            <p class="hero-subtitle-animated" id="hero-dynamic-subtitle">NexForia، حيث تتحول الأفكار إلى تجارب رقمية فريدة تسافر بك عبر عوالم الابتكار.</p>
-            <a href="#projects" class="btn btn-primary pulse hero-cta-animated">استكشف إبداعاتنا <i class="fas fa-meteor"></i></a>
-        </div>
-        <div class="scroll-down-indicator">
-            <i class="fas fa-chevron-down"></i>
-        </div>
-    </section>
-
-    <main id="projects">
-        <h2 class="section-title anim-on-scroll"><span><i class="fas fa-telescope"></i> مرصد المشاريع الكونية</span></h2>
-
-        <section id="large-projects-section" class="projects-category">
-            <h3 class="anim-on-scroll"><i class="fas fa-satellite-dish"></i> المشاريع المجرية (الكبيرة)</h3>
-             <details class="mobile-filter-accordion anim-on-scroll" open>
-                <summary><i class="fas fa-filter"></i> فلترة المشاريع الكبيرة بالتكنولوجيا</summary>
-                <div class="filter-container multi-select-filter" id="large-projects-filter">
-                </div>
-             </details>
-            <div class="projects-grid" id="large-projects-grid">
-            </div>
-            <div class="pagination-container anim-on-scroll">
-                 <div class="pagination" id="large-projects-pagination"></div>
-            </div>
-        </section>
-
-        <div class="section-divider anim-on-scroll"></div>
-
-        <section id="small-projects-section" class="projects-category">
-            <h3 class="anim-on-scroll"><i class="fas fa-shuttle-space"></i> الكويكبات البرمجية (الصغيرة)</h3>
-             <details class="mobile-filter-accordion anim-on-scroll">
-                 <summary><i class="fas fa-filter"></i> فلترة المشاريع الصغيرة بالتكنولوجيا</summary>
-                 <div class="filter-container multi-select-filter" id="small-projects-filter">
-                 </div>
-             </details>
-            <div class="projects-grid" id="small-projects-grid">
-            </div>
-             <div class="pagination-container anim-on-scroll">
-                <div class="pagination" id="small-projects-pagination"></div>
-             </div>
-        </section>
-    </main>
-
-    <section id="skills-galaxy">
-        <h2 class="section-title anim-on-scroll"><span><i class="fas fa-star-of-life"></i> كوكبة المهارات التقنية</span></h2>
-        <div class="skills-grid anim-on-scroll" id="skills-grid-container">
-        </div>
-    </section>
-
-
-    <section id="contact" class="contact-section-vortex">
-        <div class="contact-vortex-bg"></div>
-        <h2 class="section-title contact-title anim-on-scroll"><span><i class="fas fa-broadcast-tower"></i> محطة الاتصال النجمية</span></h2>
-        <div class="contact-wrapper-modern">
-            <div class="contact-info-capsule anim-on-scroll">
-                 <h3 class="contact-info-title"><i class="fas fa-satellite-dish"></i> تواصل مع NexForia</h3>
-                 <p class="contact-info-desc">هل لديك فكرة مشروع تتجاوز الآفاق، أو استفسار من كوكب آخر؟ فريق NexForia مستعد للانطلاق معك في رحلة إبداعية. أرسل إشارتك الكونية!</p>
-                 <ul class="contact-details-modern">
-                     <li><i class="fas fa-map-marked-alt"></i> <span>متواجدون في الفضاء الرقمي العالمي</span></li>
-                     <li><i class="fas fa-at"></i> <a href="mailto:contact@nexforia.dev">contact@nexforia.dev</a></li>
-                     <li><i class="fas fa-phone-alt"></i> <a href="tel:+1234567890">+123 456 7890</a> (اختياري)</li>
-                 </ul>
-                  <div class="social-links-contact-modern">
-                     <a href="#" target="_blank" aria-label="Github" data-tooltip="GitHub"><i class="fab fa-github"></i></a>
-                     <a href="#" target="_blank" aria-label="LinkedIn" data-tooltip="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                     <a href="#" target="_blank" aria-label="Twitter / X" data-tooltip="Twitter / X"><i class="fab fa-x-twitter"></i></a>
-                     <a href="#" target="_blank" aria-label="Dribbble" data-tooltip="Dribbble"><i class="fab fa-dribbble"></i></a>
-                 </div>
-            </div>
-            <form id="contact-form" class="contact-form-modern anim-on-scroll">
-                 <div class="form-group-modern input-icon">
-                     <i class="fas fa-user-astronaut form-icon"></i>
-                     <input type="text" id="name" name="name" placeholder="اسمك الكامل أو اسم المركبة" required>
-                     <label for="name" class="form-label-float">الاسم</label>
-                 </div>
-                 <div class="form-group-modern input-icon">
-                    <i class="fas fa-envelope-open-text form-icon"></i>
-                    <input type="email" id="email" name="email" placeholder="إحداثيات بريدك الإلكتروني" required>
-                    <label for="email" class="form-label-float">البريد الإلكتروني</label>
-                 </div>
-                  <div class="form-group-modern input-icon">
-                    <i class="fas fa-comment-alt-lines form-icon"></i>
-                    <textarea id="message" name="message" rows="5" placeholder="رسالتك عبر الأثير..." required></textarea>
-                    <label for="message" class="form-label-float">الرسالة</label>
-                </div>
-                <button type="submit" class="btn btn-primary btn-submit-modern glow-on-hover">
-                    <span class="btn-text">أرسل الإشارة الكونية</span>
-                    <span class="btn-icon-send"><i class="fas fa-space-shuttle"></i></span>
-                </button>
-            </form>
-        </div>
-    </section>
-
-    <footer id="main-footer-enhanced">
-        <div class="footer-grid-container container">
-            <div class="footer-main">
-                <a href="#hero" class="footer-logo">NexForia<span class="logo-dot">.</span></a>
-                <p class="footer-tagline">بوابة إلى عوالم الابتكار الرقمي، حيث نصنع تجارب فريدة تتجاوز المألوف. استكشف معنا آفاقاً جديدة في تصميم وتطوير الويب.</p>
-                <div class="footer-social-media">
-                    <h4>تابع رحلتنا الكونية</h4>
-                    <div class="social-links-footer">
-                        <a href="#" target="_blank" aria-label="Github" class="social-icon"><i class="fab fa-github"></i></a>
-                        <a href="#" target="_blank" aria-label="LinkedIn" class="social-icon"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" target="_blank" aria-label="Twitter / X" class="social-icon"><i class="fab fa-x-twitter"></i></a>
-                        <a href="#" target="_blank" aria-label="Instagram" class="social-icon"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-links-group">
-                <h4>روابط سريعة</h4>
-                <ul>
-                    <li><a href="#hero"><i class="fas fa-angle-left"></i> الرئيسية</a></li>
-                    <li><a href="#projects"><i class="fas fa-angle-left"></i> المشاريع</a></li>
-                    <li><a href="#skills-galaxy"><i class="fas fa-angle-left"></i> المهارات</a></li>
-                    <li><a href="#contact"><i class="fas fa-angle-left"></i> تواصل معنا</a></li>
-                    <li><a href="#"><i class="fas fa-angle-left"></i> سياسة الخصوصية (مثال)</a></li>
-                </ul>
-            </div>
-            <div class="footer-contact-group">
-                <h4>محطة الإرسال</h4>
-                 <ul class="footer-contact-details">
-                     <li><i class="fas fa-map-marker-alt"></i> <span>متواجدون في الفضاء الرقمي العالمي</span></li>
-                     <li><i class="fas fa-envelope-open-text"></i><a href="mailto:contact@nexforia.dev">contact@nexforia.dev</a></li>
-                     <li><i class="fas fa-phone-volume"></i><a href="tel:+1234567890">+123 456 7890 (اختياري)</a></li>
-                 </ul>
-                 <a href="#contact" class="btn btn-secondary footer-contact-btn">أرسل إشارة <i class="fas fa-arrow-left"></i></a>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>© <span id="current-year"></span> NexForia. كل الحقوق محفوظة. صُنع بشغف <i class="fas fa-heartbeat"></i> في مجرة الإبداع.</p>
-        </div>
-    </footer>
-
-    <!-- Modal لعرض تفاصيل المشروع (تصميم محسن) -->
-    <div id="project-modal" class="modal">
-        <div class="modal-content modal-cosmic">
-            <button class="close-button close-btn-design" aria-label="إغلاق النافذة"><i class="fas fa-times"></i></button>
-            <h3 id="modal-project-title">عنوان المشروع</h3>
-            <div class="modal-body">
-                <div class="modal-image-container interactive-image">
-                    <img src="" alt="صورة المشروع" id="modal-project-image" loading="lazy">
-                    <div class="image-zoom-hint"><i class="fas fa-search-plus"></i> انقر للتكبير</div>
-                </div>
-                <div class="modal-code-container">
-                    <div class="code-header">
-                        <div class="code-language-tabs" id="code-language-tabs">
-                        </div>
-                        <div class="code-actions">
-                            <button id="copy-code-button" class="copy-btn" aria-live="polite">
-                                <i class="fas fa-copy"></i> <span class="copy-text">نسخ</span>
-                            </button>
-                            <button id="fullscreen-code-button" class="fullscreen-btn" aria-label="تكبير الكود بملء الشاشة">
-                                <i class="fas fa-expand-alt"></i> <span class="fullscreen-text">تكبير</span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="code-display-area-wrapper">
-                        <div class="line-numbers" id="line-numbers-container"></div>
-                        <div class="code-display-area">
-                            <pre><code id="modal-project-code" class="hljs"></code></pre>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-description" id="modal-project-description">
-            </div>
+        
+        <!-- محتوى الموقع الحقيقي -->
+        <div id="mainContent">
+            <h2>محتوى الموقع الرئيسي</h2>
+            <p>هذا المحتوى سيكون مرئياً فقط إذا لم يتم اكتشاف مانع إعلانات.</p>
         </div>
     </div>
 
-    <!-- Modal لعرض الصورة بكامل الشاشة (تصميم محسن) -->
-    <div id="fullscreen-image-modal" class="fullscreen-modal">
-        <button class="close-fullscreen-button close-btn-design" aria-label="إغلاق عرض الصورة"><i class="fas fa-times"></i></button>
-        <img src="" alt="صورة المشروع مكبرة" id="fullscreen-image">
-    </div>
-
-    <!-- Modal لعرض الكود بكامل الشاشة -->
-    <div id="fullscreen-code-modal" class="fullscreen-modal code-fullscreen-view">
-        <div class="code-fullscreen-header">
-            <div class="code-language-tabs-fullscreen" id="code-language-tabs-fullscreen">
-            </div>
-            <div class="code-fullscreen-actions">
-                <button id="copy-code-button-fullscreen" class="copy-btn" aria-live="polite">
-                    <i class="fas fa-copy"></i> <span class="copy-text">نسخ الكود</span>
-                </button>
-            </div>
-             <button class="close-fullscreen-code-button close-btn-design" aria-label="إغلاق عرض الكود"><i class="fas fa-times"></i></button>
-        </div>
-        <div class="code-fullscreen-body">
-            <div class="line-numbers-fullscreen" id="line-numbers-container-fullscreen"></div>
-            <div class="code-display-area-fullscreen">
-                <pre><code id="fullscreen-project-code" class="hljs"></code></pre>
-            </div>
-        </div>
-    </div>
-
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script src="particles.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
