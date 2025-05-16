@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zaifrix - بوابة الكون المعرفي</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    <!-- Preloader V5 - Genesis Orb (Adapted with New Theme Colors) -->
+    <div id="preloader">
+        <div class="genesis-orb-master-container">
+            <div class="genesis-orb-animation-container">
+                <div class="genesis-orb">
+                    <div class="orb-glow-aura"></div>
+                    <div class="orb-surface-texture"></div>
+                    <div class="orb-inner-core"></div>
+                    <div class="preloader-logo-overlay">Zaifrix</div>
+                </div>
+                <div class="orbital-ring ring-outer"></div>
+                <div class="orbital-ring ring-middle"></div>
+                <div class="orbital-ring ring-inner"></div>
+            </div>
+            <div class="genesis-sparkle-field">
+                <div class="g-sparkle"></div><div class="g-sparkle"></div>
+                <div class="g-sparkle"></div><div class="g-sparkle"></div>
+                <div class="g-sparkle"></div><div class="g-sparkle"></div>
+                <div class="g-sparkle"></div><div class="g-sparkle"></div>
+                <div class="g-sparkle"></div><div class="g-sparkle"></div>
+                <div class="g-sparkle"></div><div class="g-sparkle"></div>
+                <div class="g-sparkle"></div><div class="g-sparkle"></div>
+                <div class="g-sparkle"></div>
+            </div>
+        </div>
+        <p class="preloader-text">تحميل وحدات المعرفة...</p>
+    </div>
+
+    <div id="particles-js"></div>
+    <div id="cursor-glow"></div>
+    <div id="click-effect-container"></div>
+
+    <header id="main-header">
+        <div class="header-container">
+            <a href="#hero" class="logo">Zaifrix</a>
+            <nav class="desktop-nav">
+                <ul>
+                    <div class="nav-highlighter"></div> 
+                    <li><a href="#hero" class="nav-link active"><i class="fas fa-home nav-icon"></i>الرئيسية</a></li>
+                    <li><a href="#texts-observatory" class="nav-link"><i class="fas fa-book-open nav-icon"></i>النصوص</a></li>
+                    <li><a href="#contact" class="nav-link"><i class="fas fa-satellite-dish nav-icon"></i>تواصل</a></li>
+                </ul>
+            </nav>
+            <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="فتح القائمة" aria-expanded="false">
+                <span class="bar bar1"></span>
+                <span class="bar bar2"></span>
+                <span class="bar bar3"></span>
+            </button>
+        </div>
+    </header>
+
+    <nav id="mobile-sidebar" class="mobile-sidebar" aria-hidden="true">
+        <div class="sidebar-glow sidebar-glow-top"></div>
+        <div class="sidebar-glow sidebar-glow-bottom"></div>
+        <div class="sidebar-content-wrapper">
+            <button id="close-sidebar-btn" class="close-btn-design" aria-label="إغلاق القائمة"><i class="fas fa-times"></i></button> 
+            <div class="sidebar-header">
+                <a href="#hero" class="sidebar-logo">Zaifrix</a>
+            </div>
+            <ul class="sidebar-nav-links">
+                <li><a href="#hero" class="sidebar-link"><i class="fas fa-home"></i><span>الرئيسية</span></a></li>
+                <li><a href="#texts-observatory" class="sidebar-link"><i class="fas fa-book-open"></i><span>النصوص</span></a></li>
+                <li><a href="#contact" class="sidebar-link"><i class="fas fa-satellite-dish"></i><span>تواصل</span></a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <div class="social-links-sidebar">
+                    <a href="#" target="_blank" aria-label="Github"><i class="fab fa-github"></i></a>
+                    <a href="#" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" target="_blank" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+                </div>
+                <p class="copyright-sidebar">© <span class="current-year-sidebar"></span> Zaifrix. <br> إبداع بلا حدود.</p>
+            </div>
+        </div>
+    </nav>
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+    <section id="hero">
+        <div class="hero-bg-animation"></div>
+        <div class="hero-content">
+            <h1 class="hero-title-animated">مرحباً بك في <span class="highlight">مجرة Zaifrix</span> المعرفية</h1>
+            <p class="hero-subtitle-animated" id="hero-dynamic-subtitle">Zaifrix، حيث تتحول المعرفة إلى رؤى مضيئة تسافر بك عبر عوالم الاستكشاف.</p>
+            <a href="#texts-observatory" class="btn btn-primary pulse hero-cta-animated">استكشف النصوص <i class="fas fa-feather-alt"></i></a>
+        </div>
+        <div class="scroll-down-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <main id="texts-observatory" class=" main-website">
+        <h2 class="section-title anim-on-scroll"><span><i class="fas fa-book-reader"></i> مرصد النصوص المعرفية</span></h2>
+
+        <section id="level1-texts-section" class="texts-category">
+            <h3 class="anim-on-scroll"><i class="fas fa-layer-group"></i> نصوص المستوى الأول</h3>
+             <details class="mobile-filter-accordion anim-on-scroll">
+                <summary aria-expanded="false" aria-controls="level1-texts-filter-content"><i class="fas fa-filter"></i> فلترة نصوص المستوى الأول حسب المحور</summary>
+                <div class="filter-container multi-select-filter" id="level1-texts-filter-content" aria-hidden="true">
+                </div>
+             </details>
+            <div class="texts-grid" id="level1-texts-grid">
+            </div>
+            <div class="pagination-container anim-on-scroll">
+                 <div class="pagination" id="level1-texts-pagination"></div>
+            </div>
+        </section>
+        <div class="section-divider anim-on-scroll"></div>
+
+        <section id="level2-texts-section" class="texts-category">
+            <h3 class="anim-on-scroll"><i class="fas fa-layer-group"></i> نصوص المستوى الثاني</h3>
+             <details class="mobile-filter-accordion anim-on-scroll">
+                 <summary aria-expanded="false" aria-controls="level2-texts-filter-content"><i class="fas fa-filter"></i> فلترة نصوص المستوى الثاني حسب المحور</summary>
+                 <div class="filter-container multi-select-filter" id="level2-texts-filter-content" aria-hidden="true">
+                 </div>
+             </details>
+            <div class="texts-grid" id="level2-texts-grid">
+            </div>
+             <div class="pagination-container anim-on-scroll">
+                <div class="pagination" id="level2-texts-pagination"></div>
+             </div>
+        </section>
+        <div class="section-divider anim-on-scroll"></div>
+        
+        <section id="level3-texts-section" class="texts-category">
+            <h3 class="anim-on-scroll"><i class="fas fa-layer-group"></i> نصوص المستوى الثالث</h3>
+             <details class="mobile-filter-accordion anim-on-scroll">
+                <summary aria-expanded="false" aria-controls="level3-texts-filter-content"><i class="fas fa-filter"></i> فلترة نصوص المستوى الثالث حسب المحور</summary>
+                <div class="filter-container multi-select-filter" id="level3-texts-filter-content" aria-hidden="true">
+                </div>
+             </details>
+            <div class="texts-grid" id="level3-texts-grid">
+            </div>
+            <div class="pagination-container anim-on-scroll">
+                 <div class="pagination" id="level3-texts-pagination"></div>
+            </div>
+        </section>
+        <div class="section-divider anim-on-scroll"></div>
+
+        <section id="level4-texts-section" class="texts-category">
+            <h3 class="anim-on-scroll"><i class="fas fa-layer-group"></i> نصوص المستوى الرابع</h3>
+             <details class="mobile-filter-accordion anim-on-scroll">
+                <summary aria-expanded="false" aria-controls="level4-texts-filter-content"><i class="fas fa-filter"></i> فلترة نصوص المستوى الرابع حسب المحور</summary>
+                <div class="filter-container multi-select-filter" id="level4-texts-filter-content" aria-hidden="true">
+                </div>
+             </details>
+            <div class="texts-grid" id="level4-texts-grid">
+            </div>
+            <div class="pagination-container anim-on-scroll">
+                 <div class="pagination" id="level4-texts-pagination"></div>
+            </div>
+        </section>
+        <div class="section-divider anim-on-scroll"></div>
+
+        <section id="level5-texts-section" class="texts-category">
+            <h3 class="anim-on-scroll"><i class="fas fa-layer-group"></i> نصوص المستوى الخامس</h3>
+             <details class="mobile-filter-accordion anim-on-scroll">
+                <summary aria-expanded="false" aria-controls="level5-texts-filter-content"><i class="fas fa-filter"></i> فلترة نصوص المستوى الخامس حسب المحور</summary>
+                <div class="filter-container multi-select-filter" id="level5-texts-filter-content" aria-hidden="true">
+                </div>
+             </details>
+            <div class="texts-grid" id="level5-texts-grid">
+            </div>
+            <div class="pagination-container anim-on-scroll">
+                 <div class="pagination" id="level5-texts-pagination"></div>
+            </div>
+        </section>
+        <div class="section-divider anim-on-scroll"></div>
+        
+        <section id="level6-texts-section" class="texts-category">
+            <h3 class="anim-on-scroll"><i class="fas fa-layer-group"></i> نصوص المستوى السادس</h3>
+             <details class="mobile-filter-accordion anim-on-scroll">
+                <summary aria-expanded="false" aria-controls="level6-texts-filter-content"><i class="fas fa-filter"></i> فلترة نصوص المستوى السادس حسب المحور</summary>
+                <div class="filter-container multi-select-filter" id="level6-texts-filter-content" aria-hidden="true">
+                </div>
+             </details>
+            <div class="texts-grid" id="level6-texts-grid">
+            </div>
+            <div class="pagination-container anim-on-scroll">
+                 <div class="pagination" id="level6-texts-pagination"></div>
+            </div>
+        </section>
+        <div class="section-divider anim-on-scroll"></div>
+
+        <section id="level7-texts-section" class="texts-category">
+            <h3 class="anim-on-scroll"><i class="fas fa-layer-group"></i> نصوص المستوى السابع</h3>
+             <details class="mobile-filter-accordion anim-on-scroll">
+                <summary aria-expanded="false" aria-controls="level7-texts-filter-content"><i class="fas fa-filter"></i> فلترة نصوص المستوى السابع حسب المحور</summary>
+                <div class="filter-container multi-select-filter" id="level7-texts-filter-content" aria-hidden="true">
+                </div>
+             </details>
+            <div class="texts-grid" id="level7-texts-grid">
+            </div>
+            <div class="pagination-container anim-on-scroll">
+                 <div class="pagination" id="level7-texts-pagination"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Contact Section V2 - Transmission Hub Theme (Modified) - REPLACED -->
+    <section id="contact" class="contact-transmission-hub">
+        <div class="contact-hub-bg-elements">
+            <div class="hub-circle hub-circle-1"></div>
+            <div class="hub-circle hub-circle-2"></div>
+            <div class="hub-circle hub-circle-3"></div>
+            <div class="hub-grid-overlay"></div>
+        </div>
+        <h2 class="section-title contact-title anim-on-scroll"><span><i class="fas fa-broadcast-tower"></i> محطة الإرسال الكوني</span></h2>
+        <div class="contact-hub-wrapper">
+            <div class="contact-info-panel anim-on-scroll">
+                 <h3 class="contact-info-title"><i class="fas fa-satellite-dish"></i> إحداثيات Zaifrix</h3>
+                 <p class="contact-info-desc">هل لديك مشروع يهدف إلى النجوم؟ أو استفسار من أبعاد أخرى؟ فريق Zaifrix جاهز لاستقبال إشاراتك والتعاون في رحلتك الإبداعية.</p>
+                 <ul class="contact-details-list">
+                     <li><i class="fas fa-globe-americas"></i> <span>متواجدون في الشبكة الكونية الرقمية</span></li>
+                     <li><i class="fas fa-at"></i> <a href="mailto:contact@zaifrix.dev">contact@zaifrix.dev</a></li>
+                     <li><i class="fab fa-telegram-plane"></i> <a href="https://t.me/zaifrix_support" target="_blank">zaifrix_support@ (تليجرام)</a></li>
+                 </ul>
+                  <div class="contact-social-links">
+                     <a href="#" target="_blank" aria-label="Github" data-tooltip="GitHub" class="social-link-hub"><i class="fab fa-github"></i></a>
+                     <a href="#" target="_blank" aria-label="LinkedIn" data-tooltip="LinkedIn" class="social-link-hub"><i class="fab fa-linkedin"></i></a>
+                     <a href="#" target="_blank" aria-label="Twitter / X" data-tooltip="Twitter / X" class="social-link-hub"><i class="fab fa-x-twitter"></i></a>
+                     <a href="#" target="_blank" aria-label="Dribbble" data-tooltip="Dribbble" class="social-link-hub"><i class="fab fa-dribbble"></i></a>
+                 </div>
+            </div>
+            <form id="contact-form" class="contact-form-styled anim-on-scroll"> <!-- Class name changed -->
+                <h3 class="form-main-title"><i class="fas fa-paper-plane"></i> أرسل استفسارك الكوني</h3>
+                 <div class="form-group-terminal input-icon-terminal">
+                     <i class="fas fa-user-astronaut form-icon"></i>
+                     <input type="text" id="name" name="name" placeholder="" required>
+                     <label for="name" class="form-label-terminal">الاسم / المعرف</label>
+                 </div>
+                 <div class="form-group-terminal input-icon-terminal">
+                    <i class="fas fa-envelope-open-text form-icon"></i>
+                    <input type="email" id="email" name="email" placeholder="" required>
+                    <label for="email" class="form-label-terminal">البريد الإلكتروني</label>
+                 </div>
+                  <div class="form-group-terminal input-icon-terminal">
+                    <i class="fas fa-comment-dots form-icon"></i>
+                    <textarea id="message" name="message" rows="5" placeholder="" required></textarea>
+                    <label for="message" class="form-label-terminal">نص الرسالة</label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-transmit-signal glow-on-hover">
+                    <span class="btn-text">إرسال الإشارة <span class="transmit-dots">...</span></span>
+                    <span class="btn-icon-transmit"><i class="fas fa-space-shuttle"></i></span>
+                </button>
+            </form>
+        </div>
+    </section>
+
+
+    <!-- Footer V2 - Cosmic Databank Theme (Modified) - REPLACED -->
+    <footer id="main-footer-v2" class="cosmic-databank-footer">
+        <div id="footer-nebula-bg"></div>
+        <div class="footer-scanline-overlay"></div>
+        <div class="footer-container-v2 container">
+            <div class="footer-col footer-brand-info">
+                <a href="#hero" class="footer-logo-v2">Zaifrix</a>
+                <p class="footer-tagline-v2">نحت تجارب رقمية تتجاوز حدود المجرات المعروفة. انضم إلينا في استكشاف عوالم الابتكار اللانهائية.</p>
+                <div class="footer-social-media-v2">
+                    <a href="#" target="_blank" aria-label="Github" class="social-icon-v2"><i class="fab fa-github"></i></a>
+                    <a href="#" target="_blank" aria-label="LinkedIn" class="social-icon-v2"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" target="_blank" aria-label="Twitter / X" class="social-icon-v2"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#" target="_blank" aria-label="Instagram" class="social-icon-v2"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-col footer-nav-links">
+                <h4 class="footer-col-title">إحداثيات سريعة</h4>
+                <ul>
+                    <li><a href="#hero"><i class="fas fa-satellite"></i> نقطة الانطلاق (الرئيسية)</a></li>
+                    <li><a href="#texts-observatory"><i class="fas fa-atom"></i> مرصد النصوص</a></li>
+                    <li><a href="#contact"><i class="fas fa-headset"></i> محطة الاتصال</a></li>
+                    <li><a href="#"><i class="fas fa-shield-alt"></i> بروتوكول الخصوصية</a></li>
+                </ul>
+            </div>
+            <div class="footer-col footer-direct-contact">
+                <h4 class="footer-col-title">قنوات الإرسال</h4>
+                 <ul class="footer-contact-details-v2">
+                     <li><i class="fas fa-map-pin"></i> <span>الشبكة الرقمية العالمية</span></li>
+                     <li><i class="fas fa-envelope"></i><a href="mailto:contact@zaifrix.dev">contact@zaifrix.dev</a></li>
+                     <li><i class="fab fa-telegram-plane"></i><a href="https://t.me/zaifrix_support" target="_blank">تواصل عبر تليجرام</a></li>
+                 </ul>
+                 <a href="#contact" class="btn btn-secondary footer-contact-btn-v2">أرسل إشارة مشفرة <i class="fas fa-angle-double-left"></i></a>
+            </div>
+        </div>
+        <div class="footer-bottom-v2">
+            <p>© <span id="current-year"></span> Zaifrix Systems. جميع الحقوق محفوظة. تم التشفير بشغف <i class="fas fa-heart-pulse"></i> في مجرة الإبداع.</p>
+        </div>
+    </footer>
+
+    <!-- Cosmic Gate Welcome Popup -->
+    <div id="welcome-popup" class="welcome-popup-overlay" style="display: none;" role="alertdialog" aria-labelledby="welcome-popup-title" aria-modal="true" tabindex="-1">
+        <div class="welcome-popup-gate">
+            <div class="gate-border gate-border-top"></div>
+            <div class="gate-border gate-border-bottom"></div>
+            <div class="gate-border gate-border-left"></div>
+            <div class="gate-border gate-border-right"></div>
+            
+            <div class="gate-glow-effect"></div>
+            <div class="gate-scanline-effect"></div>
+
+            <div class="welcome-popup-content-wrapper">
+                <!-- زر الإغلاق تمت إزالته -->
+                <div class="welcome-popup-icon-container">
+                    <i class="fas fa-meteor welcome-gate-icon"></i>
+                </div>
+                <h2 id="welcome-popup-title" class="welcome-gate-title">بوابة Zaifrix الكونية</h2>
+                <p class="welcome-gate-message">
+                    استعد للانطلاق! تم تفعيل وحدات المعرفة. مرحباً بك في رحلة عبر أبعاد الفكر والإبداع.
+                </p>
+                <p class="welcome-gate-instruction">
+                    <i class="fas fa-mouse-pointer"></i> انقر في أي مكان خارج هذه البوابة للبدء.
+                </p>
+            </div>
+            <div class="gate-spark-container" id="gate-spark-container-top"></div>
+            <div class="gate-spark-container" id="gate-spark-container-bottom"></div>
+            <div class="gate-spark-container" id="gate-spark-container-left"></div>
+            <div class="gate-spark-container" id="gate-spark-container-right"></div>
+        </div>
+    </div>
+
+
+    <!-- Modal لعرض تفاصيل النص -->
+    <div id="text-modal" class="modal">
+        <div class="modal-content modal-text-viewer">
+            <button class="close-button close-btn-design" aria-label="إغلاق النافذة"><i class="fas fa-times"></i></button>
+            <h3 id="modal-text-title">عنوان النص</h3>
+            <div class="modal-text-tabs">
+                <button class="modal-tab-btn active" data-tab-id="introduction" data-tab-title="التقديم"><i class="fas fa-info-circle"></i> التقديم</button>
+                <button class="modal-tab-btn" data-tab-id="topic" data-tab-title="الموضوع"><i class="fas fa-book-reader"></i> الموضوع</button>
+                <button class="modal-tab-btn" data-tab-id="units" data-tab-title="الوحدات"><i class="fas fa-cubes"></i> الوحدات</button>
+                <button class="modal-tab-btn" data-tab-id="questions" data-tab-title="الأسئلة"><i class="fas fa-question-circle"></i> الأسئلة</button>
+            </div>
+            <div class="modal-text-content-area">
+                <div id="modal-text-introduction" class="modal-tab-content active-text-content">
+                    <pre id="modal-text-introduction-content" class="text-content-display"></pre>
+                </div>
+                <div id="modal-text-topic" class="modal-tab-content">
+                    <div id="modal-topic-options" class="topic-options-grid">
+                        <!-- أزرار المواضيع الفرعية -->
+                    </div>
+                    <div id="modal-topic-content-display-area" class="topic-content-display" style="display: none;">
+                        <pre id="modal-topic-selected-content" class="text-content-display"></pre> 
+                    </div>
+                </div>
+                <div id="modal-text-units" class="modal-tab-content">
+                    <pre id="modal-text-units-content" class="text-content-display"></pre>
+                </div>
+                <div id="modal-text-questions" class="modal-tab-content">
+                    <div id="modal-question-options" class="question-options-grid">
+                        <!-- أزرار الأسئلة -->
+                    </div>
+                    <div id="modal-question-answer-area" class="question-answer-display" style="display: none;">
+                        <pre id="modal-answer-text-content" class="text-content-display"></pre> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="particles.min.js"></script>
+    <script src="script.js"></script>
+    <script src="ad-blocker.js"></script>
+</body>
+</html>

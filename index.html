@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة المعرفة والبرمجة الفضائية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+
+        :root {
+            --bg-color: #0a041a;
+            --primary-green: #39ff14;
+            --primary-green-darker: #28b80e;
+            --primary-purple: #bc13fe;
+            --primary-purple-darker: #a00fe2;
+            --text-color: #e0e0e0;
+            --frame-border-color: rgba(100, 220, 255, 0.7);
+            --card-bg: rgba(20, 10, 40, 0.85);
+            --glow-color-green: rgba(57, 255, 20, 0.7);
+            --glow-color-purple: rgba(188, 19, 254, 0.7);
+            --accent-cyan: #00ffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            cursor: default;
+        }
+
+        /* --- Electric Click Effect --- */
+        .electric-spark-container {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+        }
+
+        .electric-bolt {
+            position: absolute;
+            width: 2px;
+            background-color: var(--accent-cyan);
+            box-shadow: 0 0 6px var(--accent-cyan), 0 0 12px var(--accent-cyan), 0 0 3px white;
+            transform-origin: 0 50%;
+            animation: electricZap 0.4s ease-out forwards;
+            border-radius: 1px;
+        }
+
+        @keyframes electricZap {
+            0% {
+                opacity: 1;
+                transform: scaleY(1) scaleX(1) rotate(var(--bolt-angle));
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                opacity: 0;
+                transform: scaleY(0.3) scaleX(0.1) rotate(var(--bolt-angle));
+                height: 0;
+            }
+        }
+
+
+        #space-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* --- Preloader --- */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.6s ease-in-out, transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+            opacity: 1;
+            visibility: visible;
+        }
+        .preloader.hidden {
+            opacity: 0;
+            transform: translateY(-100%); 
+            pointer-events: none; 
+        }
+        .preloader-logo {
+            font-size: 4.5rem; 
+            margin-bottom: 30px;
+            color: var(--accent-cyan);
+            animation: floatShuttle 2.5s infinite ease-in-out, pulseLogo 2.5s infinite ease-in-out;
+            will-change: transform, opacity;
+        }
+        @keyframes floatShuttle {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-18px) rotate(5deg); }
+        }
+        @keyframes pulseLogo { 
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; text-shadow: 0 0 15px var(--accent-cyan); }
+        }
+
+        .preloader-bar-container {
+            width: 280px; 
+            height: 18px; 
+            background-color: rgba(255,255,255,0.08);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--accent-cyan);
+            box-shadow: inset 0 0 8px rgba(0, 255, 255, 0.3);
+            margin-bottom: 20px;
+        }
+        .preloader-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-purple), var(--accent-cyan), var(--primary-green));
+            border-radius: 10px;
+            animation: loadBar 2s ease-out forwards; 
+            will-change: width;
+            box-shadow: 0 0 10px var(--accent-cyan), 0 0 5px var(--primary-purple);
+        }
+        @keyframes loadBar {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+        .preloader-text {
+            font-size: 1.15rem;
+            color: var(--text-color);
+            letter-spacing: 1.5px;
+            opacity: 0; 
+            animation: fadeInText 1s ease-out 0.5s forwards;
+        }
+        @keyframes fadeInText {
+            to { opacity: 0.85; }
+        }
+
+
+        /* --- Main Content Container --- */
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            padding: 20px;
+            opacity: 0;
+            transform: translateY(30px) scale(0.9);
+            transition: opacity 1s ease-out 0.2s, transform 1s ease-out 0.2s;
+        }
+        .main-container.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .site-title {
+            font-size: 2.8rem; 
+            font-weight: 700;
+            color: var(--text-color); 
+            text-shadow: 0 0 8px var(--accent-cyan), 
+                         0 0 15px var(--accent-cyan), 
+                         0 0 25px var(--primary-purple); 
+            margin-bottom: 30px; 
+            text-align: center; 
+            
+            background: none;
+            -webkit-background-clip: initial;
+            -moz-background-clip: initial;
+            background-clip: initial;
+            
+            display: block; 
+            flex-wrap: initial; 
+            white-space: normal; 
+            letter-spacing: 1px; 
+            line-height: 1.3; 
+            padding: 0;
+
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInTitleSimple 1s ease-out 0.5s forwards;
+        }
+
+        @keyframes fadeInTitleSimple {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* Removed .site-title span and @keyframes revealCharColorShift */
+
+
+        /* --- Frame --- */
+        .content-frame {
+            border: 2px solid transparent;
+            border-radius: 25px;
+            padding: 40px; 
+            background: rgba(15, 5, 30, 0.6);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 30px rgba(100, 220, 255, 0.4),
+                        inset 0 0 20px rgba(100, 220, 255, 0.25);
+            display: flex;
+            gap: 40px; 
+            justify-content: center;
+            align-items: stretch;
+            position: relative;
+            overflow: visible;
+            opacity: 0;
+            transform: scale(0.85) rotate(-3deg);
+            animation: frameAppear 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s forwards;
+        }
+
+        @keyframes frameAppear {
+            0% { opacity: 0; transform: scale(0.85) rotate(-3deg); border-color: transparent; }
+            100% { opacity: 1; transform: scale(1) rotate(0deg); border-color: var(--frame-border-color); }
+        }
+
+        .frame-corner {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            border-color: var(--accent-cyan);
+            border-style: solid;
+            opacity: 0;
+            animation: cornerAppear 1s ease-out 1.5s forwards; 
+            will-change: opacity; 
+        }
+        @keyframes cornerAppear { 
+            to { 
+                opacity: 0.8; 
+            } 
+        }
+
+        .frame-corner.top-left { top: -10px; left: -10px; border-width: 3px 0 0 3px; border-top-left-radius: 10px;}
+        .frame-corner.top-right { top: -10px; right: -10px; border-width: 3px 3px 0 0; border-top-right-radius: 10px;}
+        .frame-corner.bottom-left { bottom: -10px; left: -10px; border-width: 0 0 3px 3px; border-bottom-left-radius: 10px;}
+        .frame-corner.bottom-right { bottom: -10px; right: -10px; border-width: 0 3px 3px 0; border-bottom-right-radius: 10px;}
+
+
+        /* --- Cards --- */
+        .card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 30px;
+            width: 320px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            transform-style: preserve-3d;
+            
+            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), 
+                        box-shadow 0.4s ease-in-out; 
+
+            opacity: 0; 
+            transform: translateY(40px) scale(0.95); 
+
+            --card-rotate-x: 0deg;
+            --card-rotate-y: 0deg;
+            will-change: opacity, transform, box-shadow;
+        }
+
+        .card.appearing {
+            transition-property: opacity, transform; 
+            transition-duration: 0.7s, 0.7s; 
+            transition-timing-function: ease-out, ease-out;
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        
+        .card:hover {
+            transform: translateY(-15px) scale(1.05) perspective(1000px) rotateX(var(--card-rotate-x)) rotateY(var(--card-rotate-y));
+        }
+
+        .card.green {
+            border-top: 6px solid var(--primary-green);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.25), 0 0 20px var(--glow-color-green);
+        }
+        .card.green:hover {
+            box-shadow: 0 18px 35px rgba(0,0,0,0.35), 0 0 30px var(--glow-color-green), 0 0 45px var(--glow-color-green);
+        }
+        .card.green .card-icon { color: var(--primary-green); text-shadow: 0 0 15px var(--glow-color-green); }
+        .card.green .card-title { color: var(--primary-green); }
+
+
+        .card.purple {
+            border-top: 6px solid var(--primary-purple);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.25), 0 0 20px var(--glow-color-purple);
+        }
+        .card.purple:hover {
+            box-shadow: 0 18px 35px rgba(0,0,0,0.35), 0 0 30px var(--glow-color-purple), 0 0 45px var(--glow-color-purple);
+        }
+        .card.purple .card-icon { color: var(--primary-purple); text-shadow: 0 0 15px var(--glow-color-purple); }
+        .card.purple .card-title { color: var(--primary-purple); }
+
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.12) 0%, transparent 50%);
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.7s ease;
+            opacity: 0;
+            z-index: 0;
+        }
+        .card:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+        .card > * { position: relative; z-index: 1; }
+
+        .card-icon {
+            font-size: 4rem;
+            margin-bottom: 22px;
+            transition: transform 0.4s ease, text-shadow 0.4s ease;
+        }
+        .card:hover .card-icon { transform: scale(1.15) rotate(-8deg); }
+
+        .card-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .card-details {
+            font-size: 1rem;
+            line-height: 1.75;
+            margin-bottom: 28px;
+            min-height: 70px;
+            color: #ccc; 
+            opacity: 0.9;
+        }
+
+        /* --- NEW BUTTON STYLES --- */
+        .card-button {
+            padding: 14px 32px; 
+            border: 2px solid; 
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: 'Tajawal', sans-serif;
+            cursor: pointer;
+            position: relative; 
+            overflow: hidden; 
+            z-index: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px; 
+            text-decoration: none; 
+            transition: color 0.4s ease-out, border-color 0.4s ease-out, transform 0.3s ease-out, box-shadow 0.4s ease-out;
+        }
+
+        .card-button::before { 
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0; 
+            height: 100%;
+            z-index: -1; 
+            transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .card-button:hover::before {
+            width: 100%; 
+        }
+
+        .card-button:hover {
+            transform: translateY(-2px); 
+        }
+        
+        .card-button:active {
+            transform: translateY(0px) scale(0.98);
+            box-shadow: none !important; 
+        }
+
+        .card.green .card-button {
+            border-color: var(--primary-green);
+            color: var(--primary-green);
+            box-shadow: 0 4px 12px -2px rgba(57, 255, 20, 0.3), 0 2px 6px -3px rgba(57, 255, 20, 0.2);
+        }
+        .card.green .card-button::before {
+            background-color: var(--primary-green);
+        }
+        .card.green .card-button:hover {
+            color: var(--bg-color); 
+            border-color: var(--primary-green); 
+            box-shadow: 0 7px 18px -1px rgba(57, 255, 20, 0.45), 0 4px 10px -2px rgba(57, 255, 20, 0.3);
+        }
+        .card.green .card-button:active { 
+            background-color: var(--primary-green-darker);
+            color: var(--bg-color);
+        }
+
+        .card.purple .card-button {
+            border-color: var(--primary-purple);
+            color: var(--primary-purple);
+            box-shadow: 0 4px 12px -2px rgba(188, 19, 254, 0.3), 0 2px 6px -3px rgba(188, 19, 254, 0.2);
+        }
+        .card.purple .card-button::before {
+            background-color: var(--primary-purple);
+        }
+        .card.purple .card-button:hover {
+            color: #fff; 
+            border-color: var(--primary-purple);
+            box-shadow: 0 7px 18px -1px rgba(188, 19, 254, 0.45), 0 4px 10px -2px rgba(188, 19, 254, 0.3);
+        }
+         .card.purple .card-button:active { 
+            background-color: var(--primary-purple-darker); 
+            color: #fff;
+        }
+
+        .card-button .btn-icon {
+            font-size: 1.1em;
+            transition: transform 0.3s ease-out;
+            margin-left: var(--dir-coeff-rtl, 0) * -2px;
+            margin-right: var(--dir-coeff-ltr, 0) * -2px;
+        }
+        .card-button:hover .btn-icon {
+            transform: translateX(var(--dir-coeff, 1) * 4px); 
+        }
+        html[dir="rtl"] .card-button {
+            --dir-coeff: -1;
+            --dir-coeff-rtl: 1;
+        }
+        html[dir="ltr"] .card-button, html:not([dir="rtl"]) .card-button {
+             --dir-coeff: 1;
+             --dir-coeff-ltr: 1;
+        }
+        /* --- END OF NEW BUTTON STYLES --- */
+
+
+        /* --- Custom Scrollbar --- */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: rgba(10, 4, 26, 0.7); }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(var(--primary-purple), var(--accent-cyan)); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(var(--primary-purple-darker), #00e0e0); }
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 768px) {
+            body {
+                overflow-y: auto;
+                align-items: flex-start;
+                padding-top: 20px;
+                padding-bottom: 20px;
+            }
+            .site-title { font-size: 2.2rem; letter-spacing: 0.5px; }
+            .content-frame {
+                flex-direction: column;
+                padding: 25px;
+                gap: 25px;
+            }
+            .card {
+                width: 90%;
+                max-width: 380px;
+            }
+            .card-icon { font-size: 3.5rem; }
+            .card-title { font-size: 1.7rem; }
+            .card-details { min-height: auto; }
+        }
+
+        @media (max-width: 480px) {
+            .site-title { font-size: 1.8rem; letter-spacing: 0.5px;} 
+            .content-frame { padding: 20px; }
+             .frame-corner { display: none; } 
+
+            .card { padding: 20px; }
+            .card-icon { font-size: 3rem; }
+            .card-title { font-size: 1.5rem; }
+            .card-details { font-size: 0.9rem; }
+            .card-button { padding: 10px 22px; font-size: 0.95rem; }
+        }
+
+    </style>
+</head>
+<body>
+    <canvas id="space-bg"></canvas>
+
+    <div class="preloader">
+        <div class="preloader-logo">
+            <i class="fas fa-space-shuttle"></i>
+        </div>
+        <div class="preloader-bar-container">
+            <div class="preloader-bar"></div>
+        </div>
+        <div class="preloader-text">تجميع بيانات المجرات...</div>
+    </div>
+
+    <div class="main-container">
+        <h1 class="site-title">بوابة المعرفة والبرمجة الفضائية</h1>
+
+        <div class="content-frame">
+            <div class="frame-corner top-left"></div>
+            <div class="frame-corner top-right"></div>
+            <div class="frame-corner bottom-left"></div>
+            <div class="frame-corner bottom-right"></div>
+
+            <div class="card green">
+                <div class="card-icon">
+                    <i class="fas fa-book-open-reader"></i>
+                </div>
+                <h2 class="card-title">بوابة المعرفة</h2>
+                <p class="card-details">
+                    انطلق في رحلة عبر كنوز العلم المخبأة، واستكشف حقائق الكون وأسرار الطبيعة. هنا، كل معلومة هي نجم يضيء دربك.
+                </p>
+                <a href="coding-Nas/zaifrix-Nas.html" class="card-button"> 
+                    اكتشف المزيد
+                    <i class="fas fa-arrow-right btn-icon"></i>
+                </a>
+            </div>
+
+            <div class="card purple">
+                <div class="card-icon">
+                    <i class="fas fa-laptop-code"></i>
+                </div>
+                <h2 class="card-title">ورشة الأكواد</h2>
+                <p class="card-details">
+                    صمم مستقبلك الرقمي سطرًا بسطر. تعلم لغات البرمجة، وابنِ تطبيقات مذهلة، وحوّل أفكارك إلى واقع ملموس في عالم التكنولوجيا.
+                </p>
+                <a href="coding-Dev/zaifrix-Dev.html" class="card-button"> 
+                    ابدأ البرمجة
+                    <i class="fas fa-code btn-icon"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        const body = document.body;
+
+        // --- Electric Click Effect ---
+        document.addEventListener('mousedown', (e) => {
+            if (e.target.closest('a, button, input, [role="button"]')) { 
+                return; 
+            }
+            const sparkContainer = document.createElement('div');
+            sparkContainer.classList.add('electric-spark-container');
+            sparkContainer.style.left = `${e.clientX}px`;
+            sparkContainer.style.top = `${e.clientY}px`;
+            body.appendChild(sparkContainer);
+
+            const numBolts = Math.floor(Math.random() * 5) + 5;
+
+            for (let i = 0; i < numBolts; i++) {
+                const bolt = document.createElement('div');
+                bolt.classList.add('electric-bolt');
+
+                const length = Math.random() * 25 + 10;
+                const angle = Math.random() * 360;
+
+                bolt.style.height = `${length}px`;
+                bolt.style.setProperty('--bolt-angle', `${angle}deg`);
+                
+                const offsetX = (Math.random() - 0.5) * 15;
+                const offsetY = (Math.random() - 0.5) * 15;
+                bolt.style.transform = `translate(${offsetX}px, ${offsetY}px) rotate(${angle}deg)`;
+
+                sparkContainer.appendChild(bolt);
+            }
+
+            setTimeout(() => {
+                sparkContainer.remove();
+            }, 400);
+        });
+
+
+        // --- Card 3D Tilt Effect (Desktop Only) ---
+        if (!isTouchDevice) {
+            const cardsForTilt = document.querySelectorAll('.card'); 
+            cardsForTilt.forEach(card => { 
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    
+                    const maxTilt = 7; 
+                    const tiltY = (x / (rect.width / 2)) * maxTilt;
+                    const tiltX = -(y / (rect.height / 2)) * maxTilt;
+
+                    card.style.setProperty('--card-rotate-x', `${tiltX}deg`);
+                    card.style.setProperty('--card-rotate-y', `${tiltY}deg`);
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.setProperty('--card-rotate-x', '0deg');
+                    card.style.setProperty('--card-rotate-y', '0deg');
+                });
+            });
+        }
+
+
+        // --- Preloader Logic ---
+        window.addEventListener('load', () => {
+            const preloader = document.querySelector('.preloader');
+            const mainContainer = document.querySelector('.main-container');
+            const cards = document.querySelectorAll('.card');
+            const preloaderMinDuration = 2200; 
+
+            setTimeout(() => {
+                preloader.classList.add('hidden');
+                
+                setTimeout(() => { 
+                     mainContainer.classList.add('visible');
+                     
+                     cards.forEach((card, index) => {
+                        const baseDelay = 0; 
+                        const staggerAmount = 0.15; 
+                        const calculatedDelaySeconds = baseDelay + (index * staggerAmount);
+                        const appearanceTransitionDurationMs = 700; 
+
+                        setTimeout(() => {
+                            card.classList.add('appearing'); 
+                            card.style.transitionDelay = `${calculatedDelaySeconds}s, ${calculatedDelaySeconds}s`; 
+                            card.classList.add('visible'); 
+
+                            setTimeout(() => {
+                                card.classList.remove('appearing');
+                                card.style.transitionDelay = ''; 
+                            }, (calculatedDelaySeconds * 1000) + appearanceTransitionDurationMs + 50); 
+                        }, 500 + (index * 150)); 
+                    });
+
+                    // Site title animation is now handled purely by CSS (@keyframes fadeInTitleSimple)
+                    // No JS needed here for character splitting.
+
+                }, 600); 
+
+            }, preloaderMinDuration); 
+        });
+
+        // --- Space Background Animation ---
+        const canvas = document.getElementById('space-bg');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let stars = [];
+        const numStars = 200;
+        let mouse = { x: null, y: null }; 
+
+        if (!isTouchDevice) {
+            window.addEventListener('mousemove', (event) => {
+                mouse.x = event.clientX;
+                mouse.y = event.clientY;
+            });
+        }
+
+
+        function setCanvasSize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
+
+        class Star {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.z = Math.random() * width; 
+                this.size = Math.random() * 2.5 + 0.5;
+                this.baseSpeedX = (Math.random() - 0.5) * 0.2;
+                this.baseSpeedY = (Math.random() - 0.5) * 0.2 + 0.15; 
+                this.opacity = Math.random() * 0.6 + 0.4;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size * (this.z / width * 0.5 + 0.5), 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(220, 220, 255, ${this.opacity * (this.z / width * 0.7 + 0.3) })`;
+                ctx.fill();
+            }
+
+            update() {
+                let speedX = this.baseSpeedX;
+                let speedY = this.baseSpeedY;
+
+                if (mouse.x && !isTouchDevice) {
+                    const mouseFactorBase = 0.00005;
+                    const mouseFactor = mouseFactorBase * (width - this.z); 
+                    speedX += (mouse.x - width / 2) * mouseFactor;
+                    speedY += (mouse.y - height / 2) * mouseFactor;
+                }
+                
+                this.x += speedX;
+                this.y += speedY;
+
+                if (this.y > height + this.size) { this.y = -this.size; this.x = Math.random() * width; this.z = Math.random() * width; }
+                if (this.y < -this.size) { this.y = height + this.size; this.x = Math.random() * width; this.z = Math.random() * width; }
+                if (this.x > width + this.size) { this.x = -this.size; this.y = Math.random() * height; this.z = Math.random() * width; }
+                if (this.x < -this.size) { this.x = width + this.size; this.y = Math.random() * height; this.z = Math.random() * width; }
+            }
+        }
+
+        function initStars() {
+            stars = [];
+            for (let i = 0; i < numStars; i++) {
+                stars.push(new Star());
+            }
+        }
+
+        function animateStars() {
+            ctx.clearRect(0, 0, width, height);
+            stars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+            requestAnimationFrame(animateStars);
+        }
+
+        setCanvasSize();
+        initStars();
+        animateStars();
+        
+        window.addEventListener('resize', () => { 
+            setCanvasSize(); 
+            initStars(); 
+        });
+    </script>
+</body>
+</html>

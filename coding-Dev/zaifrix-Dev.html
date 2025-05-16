@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zaifrix - بوابة الكون الإبداعي</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Preloader V5 - Genesis Orb -->
+    <div id="preloader">
+        <div class="genesis-orb-master-container">
+            <div class="genesis-orb-animation-container">
+                <div class="genesis-orb">
+                    <div class="orb-glow-aura"></div>
+                    <div class="orb-surface-texture"></div>
+                    <div class="orb-inner-core"></div>
+                    <div class="preloader-logo-overlay">Zaifrix</div>
+                </div>
+                <div class="orbital-ring ring-outer"></div>
+                <div class="orbital-ring ring-middle"></div>
+                <div class="orbital-ring ring-inner"></div>
+            </div>
+            <div class="genesis-sparkle-field">
+                <div class="g-sparkle"></div><div class="g-sparkle"></div>
+                <div class="g-sparkle"></div><div class="g-sparkle"></div>
+                <div class="g-sparkle"></div><div class="g-sparkle"></div>
+                <div class="g-sparkle"></div><div class="g-sparkle"></div>
+                <div class="g-sparkle"></div><div class="g-sparkle"></div>
+                <div class="g-sparkle"></div><div class="g-sparkle"></div>
+                <div class="g-sparkle"></div><div class="g-sparkle"></div>
+                <div class="g-sparkle"></div>
+            </div>
+        </div>
+        <p class="preloader-text">تكوين النواة الإبداعية...</p>
+    </div>
+
+    <!-- تأثير الجزيئات في الخلفية -->
+    <div id="particles-js"></div>
+
+    <!-- تأثير المؤشر المتوهج -->
+    <div id="cursor-glow"></div>
+
+    <!-- حاوية تأثير النقر -->
+    <div id="click-effect-container"></div>
+
+    <header id="main-header">
+        <div class="header-container">
+            <a href="#hero" class="logo">Zaifrix</a>
+            <nav class="desktop-nav">
+                <ul>
+                    <div class="nav-highlighter"></div> 
+                    <li><a href="#hero" class="nav-link active"><i class="fas fa-house nav-icon"></i>الرئيسية</a></li>
+                    <li><a href="#projects" class="nav-link"><i class="fas fa-rocket nav-icon"></i>المشاريع</a></li>
+                    <li><a href="#skills-galaxy" class="nav-link"><i class="fas fa-meteor nav-icon"></i>المهارات</a></li>
+                    <li><a href="#contact" class="nav-link"><i class="fas fa-satellite-dish nav-icon"></i>تواصل</a></li>
+                </ul>
+            </nav>
+            <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="فتح القائمة" aria-expanded="false">
+                <span class="bar bar1"></span>
+                <span class="bar bar2"></span>
+                <span class="bar bar3"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- القائمة الجانبية للجوال (تصميم فضائي فني) -->
+    <nav id="mobile-sidebar" class="mobile-sidebar" aria-hidden="true">
+        <div class="sidebar-glow sidebar-glow-top"></div>
+        <div class="sidebar-glow sidebar-glow-bottom"></div>
+        <div class="sidebar-content-wrapper">
+            <button id="close-sidebar-btn" class="close-btn-design" aria-label="إغلاق القائمة"><i class="fas fa-times"></i></button>
+            <div class="sidebar-header">
+                <a href="#hero" class="sidebar-logo">Zaifrix</a>
+            </div>
+            <ul class="sidebar-nav-links">
+                <li><a href="#hero" class="sidebar-link"><i class="fas fa-house"></i><span>الرئيسية</span></a></li>
+                <li><a href="#projects" class="sidebar-link"><i class="fas fa-rocket"></i><span>المشاريع</span></a></li>
+                <li><a href="#skills-galaxy" class="sidebar-link"><i class="fas fa-meteor"></i><span>المهارات</span></a></li>
+                <li><a href="#contact" class="sidebar-link"><i class="fas fa-satellite-dish"></i><span>تواصل</span></a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <div class="social-links-sidebar">
+                    <a href="#" target="_blank" aria-label="Github"><i class="fab fa-github"></i></a>
+                    <a href="#" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" target="_blank" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+                </div>
+                <p class="copyright-sidebar">© <span class="current-year-sidebar"></span> Zaifrix. <br> إبداع بلا حدود.</p>
+            </div>
+        </div>
+    </nav>
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+    <section id="hero">
+        <div class="hero-bg-animation"></div>
+        <div class="hero-content">
+            <h1 class="hero-title-animated">مرحباً بك في <span class="highlight">مجرة Zaifrix</span> الإبداعية</h1>
+            <p class="hero-subtitle-animated" id="hero-dynamic-subtitle">Zaifrix، حيث تتحول الأفكار إلى تجارب رقمية فريدة تسافر بك عبر عوالم الابتكار.</p>
+            <a href="#projects" class="btn btn-primary pulse hero-cta-animated">استكشف إبداعاتنا <i class="fas fa-meteor"></i></a>
+        </div>
+        <div class="scroll-down-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <main id="projects">
+        <h2 class="section-title anim-on-scroll"><span><i class="fas fa-telescope"></i> مرصد المشاريع الكونية</span></h2>
+
+        <section id="large-projects-section" class="projects-category">
+            <h3 class="anim-on-scroll"><i class="fas fa-satellite-dish"></i> المشاريع المجرية (الكبيرة)</h3>
+             <details class="mobile-filter-accordion anim-on-scroll">
+                <summary aria-expanded="false" aria-controls="large-projects-filter-content"><i class="fas fa-filter"></i> فلترة المشاريع الكبيرة بالتكنولوجيا</summary>
+                <div class="filter-container multi-select-filter" id="large-projects-filter-content" aria-hidden="true">
+                </div>
+             </details>
+            <div class="projects-grid" id="large-projects-grid">
+            </div>
+            <div class="pagination-container anim-on-scroll">
+                 <div class="pagination" id="large-projects-pagination"></div>
+            </div>
+        </section>
+
+        <div class="section-divider anim-on-scroll"></div>
+
+        <section id="small-projects-section" class="projects-category">
+            <h3 class="anim-on-scroll"><i class="fas fa-shuttle-space"></i> الكويكبات البرمجية (الصغيرة)</h3>
+             <details class="mobile-filter-accordion anim-on-scroll">
+                 <summary aria-expanded="false" aria-controls="small-projects-filter-content"><i class="fas fa-filter"></i> فلترة المشاريع الصغيرة بالتكنولوجيا</summary>
+                 <div class="filter-container multi-select-filter" id="small-projects-filter-content" aria-hidden="true">
+                 </div>
+             </details>
+            <div class="projects-grid" id="small-projects-grid">
+            </div>
+             <div class="pagination-container anim-on-scroll">
+                <div class="pagination" id="small-projects-pagination"></div>
+             </div>
+        </section>
+    </main>
+
+    <section id="skills-galaxy">
+        <h2 class="section-title anim-on-scroll"><span><i class="fas fa-star-of-life"></i> كوكبة المهارات التقنية</span></h2>
+        <div class="skills-grid anim-on-scroll" id="skills-grid-container">
+        </div>
+    </section>
+
+    <!-- Contact Section V2 - Transmission Hub Theme (Modified) -->
+    <section id="contact" class="contact-transmission-hub">
+        <div class="contact-hub-bg-elements">
+            <div class="hub-circle hub-circle-1"></div>
+            <div class="hub-circle hub-circle-2"></div>
+            <div class="hub-circle hub-circle-3"></div>
+            <div class="hub-grid-overlay"></div>
+        </div>
+        <h2 class="section-title contact-title anim-on-scroll"><span><i class="fas fa-broadcast-tower"></i> محطة الإرسال الكوني</span></h2>
+        <div class="contact-hub-wrapper">
+            <div class="contact-info-panel anim-on-scroll">
+                 <h3 class="contact-info-title"><i class="fas fa-satellite-dish"></i> إحداثيات Zaifrix</h3>
+                 <p class="contact-info-desc">هل لديك مشروع يهدف إلى النجوم؟ أو استفسار من أبعاد أخرى؟ فريق Zaifrix جاهز لاستقبال إشاراتك والتعاون في رحلتك الإبداعية.</p>
+                 <ul class="contact-details-list">
+                     <li><i class="fas fa-globe-americas"></i> <span>متواجدون في الشبكة الكونية الرقمية</span></li>
+                     <li><i class="fas fa-at"></i> <a href="mailto:contact@zaifrix.dev">contact@zaifrix.dev</a></li>
+                     <li><i class="fab fa-telegram-plane"></i> <a href="https://t.me/zaifrix_support" target="_blank">zaifrix_support@ (تليجرام)</a></li>
+                 </ul>
+                  <div class="contact-social-links">
+                     <a href="#" target="_blank" aria-label="Github" data-tooltip="GitHub" class="social-link-hub"><i class="fab fa-github"></i></a>
+                     <a href="#" target="_blank" aria-label="LinkedIn" data-tooltip="LinkedIn" class="social-link-hub"><i class="fab fa-linkedin"></i></a>
+                     <a href="#" target="_blank" aria-label="Twitter / X" data-tooltip="Twitter / X" class="social-link-hub"><i class="fab fa-x-twitter"></i></a>
+                     <a href="#" target="_blank" aria-label="Dribbble" data-tooltip="Dribbble" class="social-link-hub"><i class="fab fa-dribbble"></i></a>
+                 </div>
+            </div>
+            <form id="contact-form" class="contact-form-styled anim-on-scroll"> <!-- Class name changed -->
+                <h3 class="form-main-title"><i class="fas fa-paper-plane"></i> أرسل استفسارك الكوني</h3>
+                 <div class="form-group-terminal input-icon-terminal">
+                     <i class="fas fa-user-astronaut form-icon"></i>
+                     <input type="text" id="name" name="name" placeholder="" required>
+                     <label for="name" class="form-label-terminal">الاسم / المعرف</label>
+                 </div>
+                 <div class="form-group-terminal input-icon-terminal">
+                    <i class="fas fa-envelope-open-text form-icon"></i>
+                    <input type="email" id="email" name="email" placeholder="" required>
+                    <label for="email" class="form-label-terminal">البريد الإلكتروني</label>
+                 </div>
+                  <div class="form-group-terminal input-icon-terminal">
+                    <i class="fas fa-comment-dots form-icon"></i>
+                    <textarea id="message" name="message" rows="5" placeholder="" required></textarea>
+                    <label for="message" class="form-label-terminal">نص الرسالة</label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-transmit-signal glow-on-hover">
+                    <span class="btn-text">إرسال الإشارة <span class="transmit-dots">...</span></span>
+                    <span class="btn-icon-transmit"><i class="fas fa-space-shuttle"></i></span>
+                </button>
+            </form>
+        </div>
+    </section>
+
+
+    <!-- Footer V2 - Cosmic Databank Theme (Modified) -->
+    <footer id="main-footer-v2" class="cosmic-databank-footer">
+        <div id="footer-nebula-bg"></div>
+        <div class="footer-scanline-overlay"></div>
+        <div class="footer-container-v2 container">
+            <div class="footer-col footer-brand-info">
+                <a href="#hero" class="footer-logo-v2">Zaifrix</a>
+                <p class="footer-tagline-v2">نحت تجارب رقمية تتجاوز حدود المجرات المعروفة. انضم إلينا في استكشاف عوالم الابتكار اللانهائية.</p>
+                <div class="footer-social-media-v2">
+                    <a href="#" target="_blank" aria-label="Github" class="social-icon-v2"><i class="fab fa-github"></i></a>
+                    <a href="#" target="_blank" aria-label="LinkedIn" class="social-icon-v2"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" target="_blank" aria-label="Twitter / X" class="social-icon-v2"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#" target="_blank" aria-label="Instagram" class="social-icon-v2"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-col footer-nav-links">
+                <h4 class="footer-col-title">إحداثيات سريعة</h4>
+                <ul>
+                    <li><a href="#hero"><i class="fas fa-satellite"></i> نقطة الانطلاق (الرئيسية)</a></li>
+                    <li><a href="#projects"><i class="fas fa-atom"></i> مرصد المشاريع</a></li>
+                    <li><a href="#skills-galaxy"><i class="fas fa-brain"></i> كوكبة المهارات</a></li>
+                    <li><a href="#contact"><i class="fas fa-headset"></i> محطة الاتصال</a></li>
+                    <li><a href="#"><i class="fas fa-shield-alt"></i> بروتوكول الخصوصية</a></li>
+                </ul>
+            </div>
+            <div class="footer-col footer-direct-contact">
+                <h4 class="footer-col-title">قنوات الإرسال</h4>
+                 <ul class="footer-contact-details-v2">
+                     <li><i class="fas fa-map-pin"></i> <span>الشبكة الرقمية العالمية</span></li>
+                     <li><i class="fas fa-envelope"></i><a href="mailto:contact@zaifrix.dev">contact@zaifrix.dev</a></li>
+                     <li><i class="fab fa-telegram-plane"></i><a href="https://t.me/zaifrix_support" target="_blank">تواصل عبر تليجرام</a></li>
+                 </ul>
+                 <a href="#contact" class="btn btn-secondary footer-contact-btn-v2">أرسل إشارة مشفرة <i class="fas fa-angle-double-left"></i></a>
+            </div>
+        </div>
+        <div class="footer-bottom-v2">
+            <p>© <span id="current-year"></span> Zaifrix Systems. جميع الحقوق محفوظة. تم التشفير بشغف <i class="fas fa-heart-pulse"></i> في مجرة الإبداع.</p>
+        </div>
+    </footer>
+
+    <!-- Cosmic Gate Welcome Popup (Adapted for Portfolio) -->
+    <div id="welcome-popup" class="welcome-popup-overlay" style="display: none;" role="alertdialog" aria-labelledby="welcome-popup-title" aria-modal="true" tabindex="-1">
+        <div class="welcome-popup-gate">
+            <div class="gate-border gate-border-top"></div>
+            <div class="gate-border gate-border-bottom"></div>
+            <div class="gate-border gate-border-left"></div>
+            <div class="gate-border gate-border-right"></div>
+            
+            <div class="gate-glow-effect"></div>
+            <div class="gate-scanline-effect"></div>
+
+            <div class="welcome-popup-content-wrapper">
+                <div class="welcome-popup-icon-container">
+                    <i class="fas fa-meteor welcome-gate-icon"></i>
+                </div>
+                <h2 id="welcome-popup-title" class="welcome-gate-title">بوابة Zaifrix الإبداعية</h2>
+                <p class="welcome-gate-message">
+                    استعد للانطلاق! تم تفعيل وحدات الإبداع. مرحباً بك في رحلة عبر أبعاد الابتكار والتصميم.
+                </p>
+                <p class="welcome-gate-instruction">
+                    <i class="fas fa-mouse-pointer"></i> انقر في أي مكان خارج هذه البوابة للبدء.
+                </p>
+            </div>
+            <div class="gate-spark-container" id="gate-spark-container-top"></div>
+            <div class="gate-spark-container" id="gate-spark-container-bottom"></div>
+            <div class="gate-spark-container" id="gate-spark-container-left"></div>
+            <div class="gate-spark-container" id="gate-spark-container-right"></div>
+        </div>
+    </div>
+
+
+    <!-- Modal لعرض تفاصيل المشروع (تصميم محسن) -->
+    <div id="project-modal" class="modal">
+        <div class="modal-content modal-cosmic">
+            <button class="close-button close-btn-design" aria-label="إغلاق النافذة"><i class="fas fa-times"></i></button>
+            <h3 id="modal-project-title">عنوان المشروع</h3>
+            <div class="modal-body">
+                <div class="modal-image-container interactive-image">
+                    <div class="image-placeholder-loader">
+                        <div class="loader-spinner"></div>
+                        <p>جارٍ تحميل الصورة...</p>
+                    </div>
+                    <img src="" alt="صورة المشروع" id="modal-project-image" loading="lazy" style="opacity:0;">
+                    <div class="image-zoom-hint"><i class="fas fa-search-plus"></i> انقر للتكبير</div>
+                </div>
+                <div class="modal-code-container">
+                    <div class="code-header">
+                        <div class="code-language-tabs" id="code-language-tabs">
+                        </div>
+                        <div class="code-actions">
+                            <button id="copy-code-button" class="copy-btn" aria-live="polite">
+                                <i class="fas fa-copy"></i> <span class="copy-text">نسخ</span>
+                            </button>
+                            <button id="fullscreen-code-button" class="fullscreen-btn" aria-label="تكبير الكود بملء الشاشة">
+                                <i class="fas fa-expand-alt"></i> <span class="fullscreen-text">تكبير</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="code-display-area-wrapper">
+                        <div class="line-numbers" id="line-numbers-container"></div>
+                        <div class="code-display-area">
+                            <pre><code id="modal-project-code" class="hljs"></code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-description" id="modal-project-description">
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal لعرض الصورة بكامل الشاشة (تصميم محسن) -->
+    <div id="fullscreen-image-modal" class="fullscreen-modal">
+        <button class="close-fullscreen-button close-btn-design" aria-label="إغلاق عرض الصورة"><i class="fas fa-times"></i></button>
+        <img src="" alt="صورة المشروع مكبرة" id="fullscreen-image">
+    </div>
+
+    <!-- Modal لعرض الكود بكامل الشاشة -->
+    <div id="fullscreen-code-modal" class="fullscreen-modal code-fullscreen-view">
+        <div class="code-fullscreen-header">
+            <button class="close-fullscreen-code-button close-btn-design" aria-label="إغلاق عرض الكود"><i class="fas fa-times"></i></button>
+            <div class="code-language-tabs-fullscreen" id="code-language-tabs-fullscreen">
+            </div>
+            <div class="code-fullscreen-actions">
+                <button id="copy-code-button-fullscreen" class="copy-btn" aria-live="polite">
+                    <i class="fas fa-copy"></i> <span class="copy-text">نسخ الكود</span>
+                </button>
+            </div>
+        </div>
+        <div class="code-fullscreen-body">
+            <div class="line-numbers-fullscreen" id="line-numbers-container-fullscreen"></div>
+            <div class="code-display-area-fullscreen">
+                <pre><code id="fullscreen-project-code" class="hljs"></code></pre>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="particles.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
