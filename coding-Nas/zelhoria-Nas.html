@@ -50,8 +50,14 @@
     <div id="cursor-glow"></div>
     <div id="click-effect-container"></div>
 
-    <header id="main-header">
+        <header id="main-header">
         <div class="header-container">
+            <!-- تم نقل زر القائمة للجوال إلى هنا ليظهر في أقصى اليمين في واجهة RTL -->
+            <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="فتح القائمة" aria-expanded="false">
+                <span class="bar bar1"></span>
+                <span class="bar bar2"></span>
+                <span class="bar bar3"></span>
+            </button>
             <a href="#hero" class="logo">zelhoria</a>
             <nav class="desktop-nav">
                 <ul>
@@ -61,11 +67,7 @@
                     <li><a href="#contact" class="nav-link"><i class="fas fa-satellite-dish nav-icon"></i>تواصل</a></li>
                 </ul>
             </nav>
-            <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="فتح القائمة" aria-expanded="false">
-                <span class="bar bar1"></span>
-                <span class="bar bar2"></span>
-                <span class="bar bar3"></span>
-            </button>
+            <!-- تمت إزالة زر القائمة للجوال من مكانه الأصلي هنا -->
         </div>
     </header>
 
