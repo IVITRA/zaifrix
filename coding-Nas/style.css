@@ -641,7 +641,7 @@ body.scrolled .header-container::before {
     display: none; /* Will be flex in JS */
     flex-direction: column;
     border-left: 1px solid var(--border-color-strong);
-    overflow: hidden;
+    overflow: hidden; /* يمنع تمرير الصفحة بأكملها، التمرير الداخلي يتم عبر .sidebar-content-wrapper */
 }
 .mobile-sidebar.active {
     transform: translateX(0); opacity: 1; visibility: visible;
@@ -669,40 +669,69 @@ body.scrolled .header-container::before {
 
 
 .sidebar-content-wrapper {
-    display: flex; flex-direction: column; height: 100%;
-    padding: 25px;
-    overflow-y: auto; position: relative; z-index: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* padding: 25px; */ /* ORIGINAL */
+    padding: 15px 25px; /* CHANGED: قللت padding العلوي والسفلي */
+    overflow-y: auto; /* هذا يجب أن يسمح بالتمرير إذا كان المحتوى أطول من ارتفاع الـ wrapper */
+    position: relative;
+    z-index: 1;
 }
 
 #mobile-sidebar #close-sidebar-btn {
-    top: 20px;
-    left: 20px;
+    /* top: 20px; */ /* ORIGINAL */
+    top: 15px; /* ADJUSTED لتناسب padding الـ wrapper الجديد */
+    /* left: 20px; */ /* ORIGINAL */
+    left: 15px;  /* ADJUSTED لتناسب padding الـ wrapper الجديد */
     z-index: 15;
     padding: 0;
     margin: 0;
 }
 
 .sidebar-header {
-    /* padding-top: 65px; */ /* ORIGINAL - كان مرتفعًا جدًا */
-    padding-top: 40px; /* CHANGED - تم تقليله لتوفير مساحة أكبر للمحتوى والفوتر، مع ترك مسافة كافية تحت زر الإغلاق */
-    padding-bottom: 25px; margin-bottom: 25px;
-    display: flex; align-items: center;
+    /* padding-top: 40px; */ /* من التعديل السابق */
+    padding-top: 30px; /* CHANGED: تقليل إضافي قليل بعد تعديل padding الـ wrapper */
+    /* padding-bottom: 25px; */ /* ORIGINAL */
+    padding-bottom: 15px; /* CHANGED: تقليل padding السفلي */
+    /* margin-bottom: 25px; */ /* ORIGINAL */
+    margin-bottom: 15px; /* CHANGED: تقليل الهامش السفلي */
+    display: flex;
+    align-items: center;
     border-bottom: 1px solid var(--border-color-medium);
 }
-.sidebar-logo { font-size: 1.9rem; font-weight: 900; transition: text-shadow 0.3s ease; }
+.sidebar-logo {
+    font-size: 1.8rem; /* CHANGED: تقليل طفيف لحجم الشعار في القائمة الجانبية */
+    font-weight: 900;
+    transition: text-shadow 0.3s ease;
+}
 .sidebar-logo:hover {
     text-shadow: 0 0 15px var(--main-green), 0 0 5px var(--light-green-highlight);
 }
 
 
-.sidebar-nav-links { list-style: none; padding: 20px 0; flex-grow: 1; }
+.sidebar-nav-links {
+    list-style: none;
+    /* padding: 20px 0; */ /* ORIGINAL */
+    padding: 10px 0; /* CHANGED: تقليل padding العلوي والسفلي */
+    flex-grow: 1; /* هذا مهم لدفع الفوتر لأسفل */
+}
 .sidebar-nav-links li a.sidebar-link {
-    color: var(--text-secondary); font-size: 1.1rem; font-weight: 700;
-    display: flex; align-items: center; gap: 15px;
-    padding: 15px 18px; border-radius: var(--border-radius-main);
-    margin-bottom: 8px;
+    color: var(--text-secondary);
+    font-size: 1.05rem; /* CHANGED: تقليل طفيف لحجم خط الروابط */
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 12px; /* CHANGED: تقليل المسافة بين الأيقونة والنص قليلاً */
+    /* padding: 15px 18px; */ /* ORIGINAL */
+    padding: 10px 15px; /* CHANGED: تقليل padding العلوي والسفلي والجوانب للروابط */
+    border-radius: var(--border-radius-main);
+    /* margin-bottom: 8px; */ /* ORIGINAL */
+    margin-bottom: 5px; /* CHANGED: تقليل الهامش السفلي للروابط */
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    position: relative; overflow: hidden; z-index: 1;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
 }
 .sidebar-nav-links li a.sidebar-link::before {
     content: '';
@@ -721,41 +750,60 @@ body.scrolled .header-container::before {
 }
 
 .sidebar-nav-links li a.sidebar-link i {
-     width: 20px; text-align: center; color: var(--dark-green-accent);
-     transition: color 0.3s ease, transform 0.3s ease; font-size: 1.2em;
+     width: 18px; /* CHANGED: تقليل عرض حاوية الأيقونة قليلاً */
+     text-align: center;
+     color: var(--dark-green-accent);
+     transition: color 0.3s ease, transform 0.3s ease;
+     font-size: 1.1em; /* CHANGED: تقليل حجم الأيقونة قليلاً */
 }
 .sidebar-nav-links li a.sidebar-link span { transition: transform 0.3s ease; display: inline-block; }
 
 .sidebar-nav-links li a.sidebar-link:hover {
     color: var(--light-green-highlight);
-    transform: translateX(-8px) scale(1.02);
-    box-shadow: 0 5px 15px rgba(0, 194, 125, 0.2);
+    transform: translateX(-6px) scale(1.01); /* CHANGED: تقليل طفيف للحركة */
+    box-shadow: 0 4px 12px rgba(0, 194, 125, 0.15); /* CHANGED: تقليل طفيف للظل */
 }
 .sidebar-nav-links li a.sidebar-link:hover i {
-     color: var(--light-green-highlight); transform: scale(1.2) rotate(8deg) translateX(-2px);
+     color: var(--light-green-highlight); transform: scale(1.15) rotate(6deg) translateX(-1px); /* CHANGED: تقليل طفيف للحركة */
 }
 .sidebar-nav-links li a.sidebar-link.active {
     background: var(--main-green);
     color: var(--near-black-bg);
-    box-shadow: 0 8px 20px rgba(0, 194, 125, 0.3);
+    box-shadow: 0 6px 18px rgba(0, 194, 125, 0.25); /* CHANGED: تقليل طفيف للظل */
 }
-.sidebar-nav-links li a.sidebar-link.active i { color: var(--near-black-bg); transform: scale(1.15) rotate(5deg); }
+.sidebar-nav-links li a.sidebar-link.active i { color: var(--near-black-bg); transform: scale(1.1) rotate(4deg); } /* CHANGED: تقليل طفيف للحركة */
 .sidebar-nav-links li a.sidebar-link.active::before {
     width: 0;
 }
 
 
 .sidebar-footer {
-    padding-top: 25px; margin-top: auto;
-    border-top: 1px solid var(--border-color-subtle); text-align: center;
+    /* padding-top: 25px; */ /* ORIGINAL */
+    padding-top: 15px; /* CHANGED: تقليل padding العلوي */
+    margin-top: auto; /* هذا مهم لدفع الفوتر لأسفل */
+    border-top: 1px solid var(--border-color-subtle);
+    text-align: center;
+    padding-bottom: 10px; /* ADDED: لإعطاء مسافة سفلية بسيطة إذا كان هناك تمرير */
 }
-.social-links-sidebar { display: flex; justify-content: center; gap: 22px; margin-bottom: 18px; }
+.social-links-sidebar {
+    display: flex;
+    justify-content: center;
+    /* gap: 22px; */ /* ORIGINAL */
+    gap: 15px; /* CHANGED: تقليل المسافة بين الأيقونات */
+    /* margin-bottom: 18px; */ /* ORIGINAL */
+    margin-bottom: 10px; /* CHANGED: تقليل الهامش السفلي */
+}
 .social-links-sidebar a {
-    color: var(--text-muted); font-size: 1.6rem;
+    color: var(--text-muted);
+    font-size: 1.4rem; /* CHANGED: تقليل حجم أيقونات التواصل الاجتماعي */
     transition: color var(--transition-fast), transform var(--transition-fast), text-shadow var(--transition-fast);
 }
-.social-links-sidebar a:hover { color: var(--main-green); transform: translateY(-4px) scale(1.15) rotate(-5deg); text-shadow: 0 0 10px var(--main-green); }
-.copyright-sidebar { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
+.social-links-sidebar a:hover { color: var(--main-green); transform: translateY(-3px) scale(1.1) rotate(-4deg); text-shadow: 0 0 8px var(--main-green); } /* CHANGED: تقليل طفيف للحركة */
+.copyright-sidebar {
+    font-size: 0.75rem; /* CHANGED: تقليل حجم خط الحقوق */
+    color: var(--text-muted);
+    line-height: 1.3; /* CHANGED: تقليل ارتفاع السطر قليلاً */
+}
 
 .sidebar-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
