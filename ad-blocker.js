@@ -1,145 +1,199 @@
-// عناصر DOM الرئيسية
+// --- عناصر DOM الرئيسية ---
 const mainWebsites = document.querySelectorAll('.main-website');
 
-// متغير عام لتتبع الحالة الكلية لمانع الإعلانات
-let isAdBlockerGloballyActive = null;
+// --- متغيرات الحالة العالمية ---
+let currentGlobalAdBlockerState = null; // null: لم يفحص, true: فعال, false: غير فعال
+let uiUpdateInProgress = false; // لمنع التحديثات المتزامنة لواجهة المستخدم
 
-// خريطة لتخزين عناصر التحذير المرتبطة بكل موقع
-const warningElementsMap = new Map();
-
-// --- دوال الكشف (detectAdBlocker, detectDNSAdBlocking) تبقى كما هي من الإصدار السابق ---
-// كشف مانع الإعلانات التقليدي
+// --- دوال الكشف (تبقى كما هي من النسخة السابقة، يفترض أنها لا تسبب رمشًا بنفسها) ---
 function detectAdBlocker() {
     return new Promise((resolve) => {
         const ad = document.createElement('div');
         ad.innerHTML = ' ';
-        ad.className = 'adsbox adbanner advertisement ad-unit text-ad googleads'; 
-        ad.style.height = '1px';
-        ad.style.width = '1px';
-        ad.style.position = 'absolute';
-        ad.style.left = '-9999px';
-        ad.style.top = '-9999px';
-        ad.style.zIndex = '-9999';
+        ad.className = 'adsbox adbanner advertisement ad-unit text-ad googleads';
+        Object.assign(ad.style, {
+            height: '1px',
+            width: '1px',
+            position: 'absolute',
+            left: '-9999px',
+            top: '-9999px',
+            zIndex: '-9999',
+            visibility: 'hidden', // تأكيد إضافي على الإخفاء
+            display: 'block' // بعض الموانع قد تتفاعل مع display:none بشكل مختلف
+        });
         
         document.body.appendChild(ad);
         
+        // استخدام requestAnimationFrame لانتظار دورة الرسم التالية يمكن أن يساعد في الدقة
+        // ولكن setTimeout هنا أكثر شيوعًا. زد المهلة إذا لزم الأمر.
         setTimeout(() => {
-            const computedStyle = window.getComputedStyle(ad);
-            const isBlocked = ad.offsetHeight === 0 || 
-                             ad.offsetWidth === 0 ||
-                             computedStyle.getPropertyValue('display') === 'none' || 
-                             computedStyle.getPropertyValue('visibility') === 'hidden' ||
-                             computedStyle.getPropertyValue('opacity') === '0';
-
-            if (ad.parentNode) {
+            let isBlocked = false;
+            if (document.body.contains(ad)) { // تأكد من أن العنصر لا يزال موجودًا
+                const computedStyle = window.getComputedStyle(ad);
+                isBlocked = ad.offsetHeight === 0 || 
+                            ad.offsetWidth === 0 ||
+                            computedStyle.getPropertyValue('display') === 'none' || 
+                            computedStyle.getPropertyValue('visibility') === 'hidden' ||
+                            computedStyle.getPropertyValue('opacity') === '0';
                 document.body.removeChild(ad);
+            } else {
+                // إذا تمت إزالة العنصر بطريقة أخرى (نادر جدًا)، اعتبره محجوبًا كاحتياط
+                isBlocked = true;
             }
             resolve(isBlocked);
-        }, 250); 
+        }, 300); // زد المهلة قليلاً إلى 300ms
     });
 }
 
-// كشف DNS الذي يحجب الإعلانات
 async function detectDNSAdBlocking() {
     try {
         const testUrl = 'https://monetag.com/js/ads.js?t=' + Date.now();
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 2000);
+        const timeoutId = setTimeout(() => controller.abort(), 2500); // مهلة 2.5 ثانية
 
-        await fetch(testUrl, {
+        const response = await fetch(testUrl, {
             method: 'HEAD',
             mode: 'no-cors',
             cache: 'no-store',
             signal: controller.signal
         });
         clearTimeout(timeoutId);
-        return false;
+        // حتى مع no-cors، إذا وصل الرد (حتى لو كان opaque)، فهذا يعني أن DNS لم يحجبه
+        return false; 
     } catch (error) {
-        return true;
+        // console.warn("DNS ad blocking detection error:", error.name, error.message);
+        return true; // أي خطأ (فشل DNS، timeout، إلخ) يشير إلى حجب محتمل
     }
 }
 // --- نهاية دوال الكشف ---
 
+// --- إدارة واجهة المستخدم ---
 
-// إنشاء عنصر الرسالة التحذيرية (مع تعديلات طفيفة على النمط ليتناسب مع التراكب)
-function createWarningElementFor(websiteElement) {
-    const warningWrapper = document.createElement('div');
-    warningWrapper.className = 'adblock-warning-overlay';
-    // النمط الأساسي للتراكب
-    // قد تحتاج إلى تعديل هذا ليتناسب مع تصميم موقعك
-    warningWrapper.style.position = 'absolute';
-    warningWrapper.style.top = '0';
-    warningWrapper.style.left = '0';
-    warningWrapper.style.width = '100%';
-    warningWrapper.style.height = '100%';
-    warningWrapper.style.zIndex = '10'; // تأكد أنه فوق المحتوى الأصلي
-    warningWrapper.style.display = 'none'; // يبدأ مخفيًا
-    warningWrapper.style.alignItems = 'center'; // لتوسيط الرسالة
-    warningWrapper.style.justifyContent = 'center'; // لتوسيط الرسالة
-    warningWrapper.style.background = 'rgba(255, 255, 255, 0.8)'; // خلفية شبه شفافة إذا أردت
+// مخزن لحالة العرض الأصلية ورسائل التحذير
+const websiteStates = new Map(); // K: websiteElement, V: { originalStyle: CSSStyleDeclaration, warningElement: HTMLElement | null }
 
-    warningWrapper.innerHTML = `
-        <div style="padding: 20px; background: #fff3f3; border: 1px solid #ffcccc; border-radius: 5px; text-align: center;">
+function initializeWebsiteStates() {
+    mainWebsites.forEach(website => {
+        if (!websiteStates.has(website)) {
+            // حفظ نسخة من خاصية style الأصلية بأكملها
+            const originalStyle = document.createElement('div').style;
+            originalStyle.cssText = website.style.cssText;
+
+            websiteStates.set(website, {
+                originalStyle: originalStyle, // تخزين كائن StyleDeclaration
+                warningElement: null
+            });
+        }
+    });
+}
+
+function createOrGetWarningElement(website) {
+    let state = websiteStates.get(website);
+    if (state && state.warningElement && document.body.contains(state.warningElement)) {
+        return state.warningElement;
+    }
+
+    const warning = document.createElement('div');
+    warning.className = 'adblock-warning-message'; // اسم كلاس مختلف لتجنب التعارض
+    warning.style.display = 'none'; // يبدأ مخفيًا
+    // ضمان أن يكون فوق المحتوى، ولكن مع مرونة في التموضع
+    // يمكنك تخصيص هذه الأنماط بشكل كبير في ملف CSS الخاص بك
+    warning.innerHTML = `
+        <div style="padding: 20px; background: #fff3f3; border: 1px solid #ffcccc; border-radius: 5px; margin: 10px 0; text-align: center;">
             <h3 style="color: #d32f2f; margin-top:0;">أنت تستعمل مانع الإعلانات</h3>
-            <p style="color:black">لتصفح الموقع بشكل صحيح، يرجى تعطيل مانع الإعلانات وتحديث الصفحة</p>
+            <p style="color:black; margin-bottom:0;">لتصفح الموقع بشكل صحيح، يرجى تعطيل مانع الإعلانات وتحديث الصفحة.</p>
         </div>
     `;
-
-    // يجب أن يكون العنصر الأب لـ websiteElement ذو position: relative أو absolute أو fixed
-    // لكي يعمل position: absolute الخاص بالتحذير بشكل صحيح بالنسبة له.
-    if (window.getComputedStyle(websiteElement.parentNode).getPropertyValue('position') === 'static') {
-        websiteElement.parentNode.style.position = 'relative';
-    }
     
-    websiteElement.parentNode.insertBefore(warningWrapper, websiteElement.nextSibling);
-    warningElementsMap.set(websiteElement, warningWrapper); // تخزين مرجع لعنصر التحذير
-    return warningWrapper;
+    // إدراج التحذير بعد العنصر مباشرة
+    website.parentNode.insertBefore(warning, website.nextSibling);
+    if (state) {
+        state.warningElement = warning;
+    } else { // حالة نادرة إذا لم يتم تهيئة العنصر
+        const originalStyle = document.createElement('div').style;
+        originalStyle.cssText = website.style.cssText;
+        websiteStates.set(website, { originalStyle: originalStyle, warningElement: warning });
+    }
+    return warning;
 }
 
-// دالة لتحديث عرض المواقع بناءً على حالة مانع الإعلانات
-function updateWebsitesVisibility(shouldShowWarning) {
-    mainWebsites.forEach(website => {
-        let warningElement = warningElementsMap.get(website);
-        if (!warningElement) {
-            warningElement = createWarningElementFor(website);
-        }
+async function updateUIVisibility(showWarning) {
+    if (uiUpdateInProgress) {
+        // console.log("UI update already in progress, skipping.");
+        return;
+    }
+    uiUpdateInProgress = true;
 
-        if (shouldShowWarning) {
-            website.style.opacity = '0.2'; // اجعل المحتوى الأصلي شبه شفاف أو شفاف تمامًا
-            website.style.pointerEvents = 'none'; // اجعله غير قابل للتفاعل
-            warningElement.style.display = 'flex'; // أظهر رسالة التحذير (flex للتوسيط)
-        } else {
-            website.style.opacity = '1';
-            website.style.pointerEvents = 'auto'; // اجعله قابلاً للتفاعل
-            warningElement.style.display = 'none'; // أخفِ رسالة التحذير
-        }
+    // استخدام requestAnimationFrame لتجميع التغييرات في DOM
+    // هذا قد يساعد في سلاسة الانتقالات البصرية
+    return new Promise(resolve => {
+        requestAnimationFrame(() => {
+            mainWebsites.forEach(website => {
+                const state = websiteStates.get(website);
+                if (!state) return; // يجب أن يكون قد تم تهيئته
+
+                const warningElement = createOrGetWarningElement(website);
+
+                if (showWarning) {
+                    // إخفاء الموقع الأصلي بطريقة تقلل إعادة التخطيط
+                    website.style.visibility = 'hidden';
+                    website.style.height = '0px'; // أو قيمة صغيرة جدًا
+                    website.style.overflow = 'hidden';
+                    website.style.opacity = '0'; // إضافي
+                    website.style.position = 'absolute'; // إخراجه من التدفق تمامًا
+                    website.style.zIndex = '-1';
+
+
+                    warningElement.style.display = 'block'; // أو 'flex' إذا كنت تستخدم flexbox للتوسيط
+                } else {
+                    // استعادة نمط الموقع الأصلي
+                    website.style.cssText = state.originalStyle.cssText;
+                    // تأكد من أن الخصائص التي تم تعديلها لإخفائه قد تمت استعادتها
+                    // قد تحتاج إلى استعادة display الأصلي إذا تم تغييره
+                    // website.style.display = state.originalDisplay || 'block'; // إذا كنت قد حفظت display الأصلي
+
+                    warningElement.style.display = 'none';
+                }
+            });
+            uiUpdateInProgress = false;
+            resolve();
+        });
     });
 }
 
-// فحص شامل لمانع الإعلانات وتطبيق التغييرات فقط إذا تغيرت الحالة
-async function checkAndApplyAdBlockerState() {
-    const traditionalBlocker = await detectAdBlocker();
-    const dnsBlocker = await detectDNSAdBlocking();
-    const newGlobalBlockerState = traditionalBlocker || dnsBlocker;
 
-    if (newGlobalBlockerState !== isAdBlockerGloballyActive) {
-        // console.log(`Global ad blocker state changed from ${isAdBlockerGloballyActive} to ${newGlobalBlockerState}. Updating UI.`);
-        isAdBlockerGloballyActive = newGlobalBlockerState;
-        updateWebsitesVisibility(isAdBlockerGloballyActive);
+// --- الفحص الرئيسي وتطبيق التغييرات ---
+async function performAdBlockCheck() {
+    // console.log("Performing ad block check...");
+    const traditionalBlocked = await detectAdBlocker();
+    const dnsBlocked = await detectDNSAdBlocking();
+    const newDetectedState = traditionalBlocked || dnsBlocked;
+
+    // console.log(`Detection results - Traditional: ${traditionalBlocked}, DNS: ${dnsBlocked}. New state: ${newDetectedState}`);
+
+    if (newDetectedState !== currentGlobalAdBlockerState) {
+        // console.log(`Ad blocker state changed from ${currentGlobalAdBlockerState} to ${newDetectedState}. Requesting UI update.`);
+        currentGlobalAdBlockerState = newDetectedState;
+        await updateUIVisibility(currentGlobalAdBlockerState);
     } else {
-        // console.log("Global ad blocker state unchanged. No UI update needed.");
+        // console.log("Ad blocker state unchanged. No UI update needed.");
     }
 }
 
-// عند تحميل الصفحة
+// --- التهيئة والتشغيل ---
 window.addEventListener('DOMContentLoaded', () => {
-    // نهيئة عناصر التحذير مسبقًا (لكن مخفية)
-    mainWebsites.forEach(website => {
-        if (!warningElementsMap.has(website)) {
-             createWarningElementFor(website);
-        }
-    });
+    initializeWebsiteStates(); // تهيئة حالات العناصر مرة واحدة
 
-    setTimeout(checkAndApplyAdBlockerState, 700); 
-    setInterval(checkAndApplyAdBlockerState, 10000); 
+    // الفحص الأولي بعد فترة قصيرة للسماح للصفحة بالاستقرار
+    // زد هذه المهلة إذا كنت تشك أن الصفحة لا تزال تُحمّل مواردًا بشكل كبير
+    setTimeout(performAdBlockCheck, 1000); 
+
+    // الفحص الدوري. إذا استمر الرمش، فالمشكلة قد تكون في استقرار الكشف
+    // أو في كيفية تأثير التغييرات البسيطة على أداء المتصفح في الجوالات
+    setInterval(performAdBlockCheck, 10000); 
 });
+
+// ملاحظة هامة:
+// إذا كنت تستخدم CSS Transitions أو Animations على عناصر .main-website أو على الرسالة التحذيرية،
+// فقد تساهم هذه أيضًا في "الرمش" أو التأخيرات البصرية. تأكد من أن الانتقالات سلسة
+// أو قم بتعطيلها مؤقتًا أثناء الاختبار لمعرفة ما إذا كانت هي السبب.
