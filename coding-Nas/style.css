@@ -745,7 +745,7 @@ body.scrolled .header-container::before {
 
 
 .sidebar-footer {
-    margin-top: auto;
+    
     border-top: 1px solid var(--border-color-subtle); text-align: center;
 }
 .social-links-sidebar { display: flex; justify-content: center; gap: 22px; margin-bottom: 18px; }
