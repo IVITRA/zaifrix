@@ -88,4 +88,5 @@ async function checkAdBlocker() {
 // عند تحميل الصفحة
 window.addEventListener('DOMContentLoaded', () => {
     setTimeout(checkAdBlocker, 300);
+    setInterval(checkAdBlocker, 30000);
 });
