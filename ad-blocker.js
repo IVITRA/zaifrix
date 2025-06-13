@@ -1,12 +1,15 @@
 // عناصر DOM الرئيسية
 const mainWebsites = document.querySelectorAll('.main-website');
 
+// خريطة لتتبع حالة التحذير لكل موقع
+const warningStates = new Map(); // سيخزن: websiteElement -> { isWarningShown: boolean }
+
 // كشف مانع الإعلانات التقليدي
 function detectAdBlocker() {
     return new Promise((resolve) => {
         const ad = document.createElement('div');
-        ad.innerHTML = '&nbsp;';
-        ad.className = 'adsbox';
+        ad.innerHTML = ' ';
+        ad.className = 'adsbox'; // يجب أن يكون هذا الكلاس مستهدفًا من قبل موانع الإعلانات
         ad.style.height = '1px';
         ad.style.position = 'absolute';
         ad.style.left = '-9999px';
@@ -16,8 +19,8 @@ function detectAdBlocker() {
         
         setTimeout(() => {
             const isBlocked = ad.offsetHeight === 0 || 
-                             ad.style.display === 'none' || 
-                             ad.style.visibility === 'hidden';
+                             window.getComputedStyle(ad).getPropertyValue('display') === 'none' || 
+                             window.getComputedStyle(ad).getPropertyValue('visibility') === 'hidden';
             
             document.body.removeChild(ad);
             resolve(isBlocked);
@@ -28,8 +31,8 @@ function detectAdBlocker() {
 // كشف DNS الذي يحجب الإعلانات
 async function detectDNSAdBlocking() {
     try {
-        const testUrl = 'https://monetag.com/js/ads.js?t=' + Date.now();
-        const response = await fetch(testUrl, {
+        const testUrl = 'https://monetag.com/js/ads.js?t=' + Date.now(); // <-- تم إرجاع النطاق الأصلي هنا
+        await fetch(testUrl, {
             method: 'HEAD',
             mode: 'no-cors',
             cache: 'no-store'
@@ -51,9 +54,7 @@ function createWarningMessage(element) {
         </div>
     `;
     
-    // حفظ العنصر الأصلي
-    warning.dataset.originalElement = element.outerHTML;
-    warning.dataset.originalDisplay = element.style.display;
+    warning.dataset.originalDisplay = element.style.display || window.getComputedStyle(element).getPropertyValue('display');
     
     return warning;
 }
@@ -65,28 +66,34 @@ async function checkAdBlocker() {
     const hasBlocker = traditionalBlocker || dnsBlocker;
     
     mainWebsites.forEach(website => {
+        let currentState = warningStates.get(website);
+        if (!currentState) {
+            currentState = { isWarningShown: false };
+            warningStates.set(website, currentState);
+        }
+
         if (hasBlocker) {
-            // إذا كان هناك مانع إعلانات، نستبدل العنصر برسالة التحذير
-            if (!website.nextElementSibling || !website.nextElementSibling.classList.contains('adblock-warning')) {
+            if (!currentState.isWarningShown) {
                 const warning = createWarningMessage(website);
                 website.parentNode.insertBefore(warning, website.nextSibling);
                 website.style.display = 'none';
+                currentState.isWarningShown = true;
             }
         } else {
-            // إذا لم يكن هناك مانع إعلانات، نعيد العنصر الأصلي
-            const warning = website.previousElementSibling;
-            if (warning && warning.classList.contains('adblock-warning')) {
-                website.style.display = warning.dataset.originalDisplay || 'block';
-                warning.remove();
+            if (currentState.isWarningShown) {
+                const warning = website.nextElementSibling;
+                if (warning && warning.classList.contains('adblock-warning')) {
+                    website.style.display = warning.dataset.originalDisplay || 'block';
+                    warning.remove();
+                }
+                currentState.isWarningShown = false;
             }
         }
     });
-    
-    return hasBlocker;
 }
 
 // عند تحميل الصفحة
 window.addEventListener('DOMContentLoaded', () => {
-    setTimeout(checkAdBlocker, 300);
-    setInterval(checkAdBlocker, 500);
+    setTimeout(checkAdBlocker, 500);
+    setInterval(checkAdBlocker, 10000); 
 });
