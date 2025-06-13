@@ -683,7 +683,7 @@ body.scrolled .header-container::before {
 }
 
 .sidebar-header {
-    padding-top: 20px;
+    padding-top: 65px;
     padding-bottom: 25px; margin-bottom: 25px;
     display: flex; align-items: center;
     border-bottom: 1px solid var(--border-color-medium);
@@ -745,7 +745,7 @@ body.scrolled .header-container::before {
 
 
 .sidebar-footer {
-    
+    padding-top: 25px; margin-top: auto;
     border-top: 1px solid var(--border-color-subtle); text-align: center;
 }
 .social-links-sidebar { display: flex; justify-content: center; gap: 22px; margin-bottom: 18px; }
