@@ -683,7 +683,7 @@ body.scrolled .header-container::before {
 }
 
 .sidebar-header {
-    padding-top: 65px;
+    padding-top: 40px;
     padding-bottom: 25px; margin-bottom: 25px;
     display: flex; align-items: center;
     border-bottom: 1px solid var(--border-color-medium);
@@ -694,7 +694,7 @@ body.scrolled .header-container::before {
 }
 
 
-.sidebar-nav-links { list-style: none; padding: 5px 0; flex-grow: 1; }
+.sidebar-nav-links { list-style: none; padding: 20px 0; flex-grow: 1; }
 .sidebar-nav-links li a.sidebar-link {
     color: var(--text-secondary); font-size: 1.1rem; font-weight: 700;
     display: flex; align-items: center; gap: 15px;
