@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
             type: 'large',
             description: 'لوحة تحكم متقدمة لعرض وتحليل البيانات مع واجهة مستخدم تفاعلية وتصميم مستقبلي مستوحى من الفضاء. تم استخدام أحدث التقنيات لضمان أداء عالٍ وتجربة مستخدم سلسة.',
             imageUrl: '',
-            detailsImageUrl: 'https://iili.io/2CCb6KJ.jpg',
+            detailsImageUrl: '',
             languagesUsed: ['JavaScript', 'React', 'Node.js', 'CSS', 'D3.js', 'API'],
             liveDemoUrl: 'https://example.com/dashboard-demo',
             repoUrl: 'https://github.com/yourusername/dashboard-repo',
