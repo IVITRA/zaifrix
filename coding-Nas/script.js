@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const allTexts = [
-        {
+       {
             id: 1, title: 'المدرسة الاولى', level: 1, axis: 'الأسرة',
             description: 'نص سردي يتخلله الوصف للكاتب المصري أحمد أمين ، اقتطف من كتاب حياتي و هو في الترجمة الذاتية، ويندرج ضمن محور الأسرة.',
             content: {
@@ -2151,11 +2151,10 @@ document.addEventListener('DOMContentLoaded', () => {
         ]
     }
 }
-        
     ];
 
 
-        const ITEMS_PER_PAGE = 6;
+    const ITEMS_PER_PAGE = 6;
     const VISIBLE_PAGINATION_BUTTONS_THRESHOLD = 7;
 
     const header = document.getElementById('main-header');
@@ -2202,7 +2201,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentYearSidebar = document.querySelector('.current-year-sidebar');
 
     const navHighlighter = document.querySelector('.desktop-nav .nav-highlighter');
-    const navLinksForHighlighter = document.querySelectorAll('.desktop-nav .nav-link');
+    const navLinksForHighlighter = document.querySelectorAll('.desktop-nav .nav-link'); // Used for click update
 
     const intersectionObserverOptions = {
         root: null,
@@ -2222,7 +2221,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Cosmic Gate Welcome Popup Variables
     const welcomePopupOverlay = document.getElementById('welcome-popup');
-    // closeWelcomePopupButton is removed
     const sparkContainers = {
         top: document.getElementById('gate-spark-container-top'),
         bottom: document.getElementById('gate-spark-container-bottom'),
@@ -2248,8 +2246,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (clickEffectContainer) {
         document.addEventListener('click', (e) => {
-            // Prevent click effect if clicking inside the welcome gate itself
-            if (e.target.closest('button, a, input, textarea, .text-card, .modal, .mobile-sidebar, .welcome-popup-gate')) {
+            if (e.target.closest('button, a, input, textarea, .text-card, .modal, .mobile-sidebar, .welcome-popup-gate, .faq-question-btn, .crypto-address-display input, .payment-id-display input')) {
                 return;
             }
             const particleCount = Math.floor(Math.random() * 6) + 10;
@@ -2673,15 +2670,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const topicContentDisplayAreaEl = document.getElementById('modal-topic-content-display-area');
         const topicSelectedContentEl = document.getElementById('modal-topic-selected-content');
         const unitsContentEl = document.getElementById('modal-text-units-content');
-        const modalCriterionTextEl = document.getElementById('modal-criterion-text-content'); // MODIFIED: Get criterion element
+        const modalCriterionTextEl = document.getElementById('modal-criterion-text-content');
 
         // Populate Criterion
-        if (modalCriterionTextEl) { // MODIFIED: Populate criterion
+        if (modalCriterionTextEl) {
             modalCriterionTextEl.textContent = textItem.content.criterion || "لم يتم تحديد معيار لهذا النص.";
         }
 
         if(introductionContentEl) introductionContentEl.textContent = textItem.content.introduction;
-        if(unitsContentEl) unitsContentEl.textContent = textItem.content.units; // Expects a string
+        if(unitsContentEl) unitsContentEl.textContent = textItem.content.units;
 
         if(topicOptionsGridEl) topicOptionsGridEl.innerHTML = '';
         if(topicContentDisplayAreaEl) topicContentDisplayAreaEl.style.display = 'none';
@@ -2890,7 +2887,7 @@ document.addEventListener('DOMContentLoaded', () => {
     sidebarLinks.forEach(link => {
         link.addEventListener('click', () => {
             const targetHref = link.getAttribute('href');
-            document.querySelectorAll('.desktop-nav .nav-link').forEach(navLink => {
+            document.querySelectorAll('.desktop-nav .nav-link, .mobile-sidebar .sidebar-link').forEach(navLink => {
                  navLink.classList.toggle('active', navLink.getAttribute('href') === targetHref);
             });
              if (navHighlighter) updateNavHighlighter();
@@ -2937,7 +2934,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let currentSectionId = 'hero';
         const sections = document.querySelectorAll(
-            '#hero[id], main#texts-observatory[id], #contact[id]'
+            '#hero[id], main#texts-observatory[id], #faq[id], #support-me[id], #contact[id]' // Added FAQ and Support Me
         );
 
         let headerHeightOffset = header ? header.offsetHeight : 65;
@@ -2985,13 +2982,13 @@ document.addEventListener('DOMContentLoaded', () => {
          );
 
          let firstFocusableEl = focusableEls[0];
-         if (focusableEls.length === 0 && element === welcomePopupOverlay) { // Specific for welcome popup if no internal focusable
+         if (focusableEls.length === 0 && element === welcomePopupOverlay) {
              if (element.getAttribute('tabindex') === null) {
                  element.setAttribute('tabindex', '-1');
              }
              firstFocusableEl = element;
-         } else if (focusableEls.length === 0) { // Generic for other modals
-             return; // If no focusable elements, do nothing
+         } else if (focusableEls.length === 0) {
+             return;
          }
 
          const lastFocusableEl = focusableEls.length > 0 ? focusableEls[focusableEls.length - 1] : firstFocusableEl;
@@ -2999,25 +2996,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
          setTimeout(() => {
             if (element.style.display !== 'none' &&
-                (element.classList.contains('show') || element.classList.contains('active') || element.classList.contains('modal-open')) &&
+                (element.classList.contains('show') || element.classList.contains('active') || element.classList.contains('modal-open') || element === textModal) && // Added check for textModal being the element
                 firstFocusableEl && typeof firstFocusableEl.focus === 'function') {
                 if(!element.contains(document.activeElement) || document.activeElement === body ) {
                     firstFocusableEl.focus();
                  }
             }
-         }, 250); // Delay to allow animations to settle
+         }, 250);
 
 
          element.addEventListener('keydown', function(e) {
              const isTabPressed = e.key === 'Tab' || e.keyCode === 9;
              if (!isTabPressed) return;
 
-             if (e.shiftKey) { // Shift + Tab
+             if (e.shiftKey) {
                  if (document.activeElement === firstFocusableEl) {
                      lastFocusableEl.focus();
                      e.preventDefault();
                  }
-             } else { // Tab
+             } else {
                  if (document.activeElement === lastFocusableEl) {
                      firstFocusableEl.focus();
                      e.preventDefault();
@@ -3032,7 +3029,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const spark = document.createElement('div');
         spark.classList.add('gate-spark');
 
-        const size = Math.random() * 3 + 1; // 1px to 4px
+        const size = Math.random() * 3 + 1;
         spark.style.width = `${size}px`;
         spark.style.height = `${size}px`;
 
@@ -3083,10 +3080,6 @@ document.addEventListener('DOMContentLoaded', () => {
         Object.keys(sparkContainers).forEach(side => {
             const container = sparkContainers[side];
             if (container) {
-                // Clear any previous sparks if re-triggering (though not expected here)
-                // while (container.firstChild) {
-                //     container.removeChild(container.firstChild);
-                // }
                 for (let i = 0; i < sparksPerSide; i++) {
                     createGateSpark(container, side);
                 }
@@ -3096,12 +3089,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function showWelcomePopup() {
         if (!welcomePopupOverlay) return;
-        body.classList.add('welcome-popup-open'); // was modal-open
+        body.classList.add('welcome-popup-open');
         welcomePopupOverlay.style.display = 'flex';
 
         setTimeout(() => {
             welcomePopupOverlay.classList.add('show');
-            setTimeout(triggerGateSparks, 1000); // Delay sparks until gate animation is well underway
+            setTimeout(triggerGateSparks, 1000);
             setTimeout(() => trapFocus(welcomePopupOverlay), 1200);
         }, 50);
     }
@@ -3109,7 +3102,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function hideWelcomePopup() {
         if (!welcomePopupOverlay || !welcomePopupOverlay.classList.contains('show')) return;
 
-        body.classList.remove('welcome-popup-open'); // was modal-open
+        body.classList.remove('welcome-popup-open');
         welcomePopupOverlay.classList.remove('show');
 
         const onPopupHide = (event) => {
@@ -3128,10 +3121,84 @@ document.addEventListener('DOMContentLoaded', () => {
                 welcomePopupOverlay.style.display = 'none';
                 startHeroAnimations();
             }
-        }, 700); // Match or slightly exceed CSS transition time for opacity
+        }, 700);
     }
 
-    // Removed closeWelcomePopupButton related code
+
+    // ----- FAQ Section Logic -----
+    const faqQuestionButtons = document.querySelectorAll('.faq-question-btn');
+    const faqAnswerContentDisplay = document.getElementById('faq-answer-content-display');
+    const faqInitialMessage = document.querySelector('.faq-answer-area .faq-initial-message');
+
+    if (faqQuestionButtons.length > 0 && faqAnswerContentDisplay && faqInitialMessage) {
+        faqQuestionButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                faqQuestionButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                faqInitialMessage.style.display = 'none';
+                const answerId = button.dataset.answerId;
+                const answerTemplate = document.getElementById(answerId);
+                if (answerTemplate) {
+                    faqAnswerContentDisplay.innerHTML = answerTemplate.innerHTML;
+                    faqAnswerContentDisplay.classList.remove('active-answer');
+                    void faqAnswerContentDisplay.offsetWidth;
+                    faqAnswerContentDisplay.classList.add('active-answer');
+                } else {
+                    faqAnswerContentDisplay.innerHTML = '<p>عفواً، لم يتم العثور على إجابة لهذا السؤال.</p>';
+                    faqAnswerContentDisplay.classList.add('active-answer');
+                }
+            });
+        });
+    }
+
+    // ----- Support Me - Copy Address/ID Logic -----
+    const allCopyButtons = document.querySelectorAll('.copy-address-btn, .copy-id-btn');
+
+    allCopyButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const dataToCopy = button.dataset.address || button.dataset.id;
+            const copyTextSpan = button.querySelector('.copy-btn-text');
+            const originalButtonText = copyTextSpan ? copyTextSpan.textContent : 'نسخ';
+            const iconElement = button.querySelector('i');
+            const originalIconClass = iconElement ? iconElement.className : 'fas fa-copy';
+
+            navigator.clipboard.writeText(dataToCopy).then(() => {
+                if (copyTextSpan) copyTextSpan.textContent = 'تم النسخ!';
+                if (iconElement) iconElement.className = 'fas fa-check';
+                button.classList.add('copied');
+
+                setTimeout(() => {
+                    if (copyTextSpan) copyTextSpan.textContent = originalButtonText;
+                     if (iconElement) iconElement.className = originalIconClass;
+                    button.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                const inputField = button.closest('.crypto-address-display, .payment-id-display').querySelector('input[type="text"]');
+                if (inputField) {
+                    inputField.select();
+                    inputField.setSelectionRange(0, 99999);
+                    try {
+                        document.execCommand('copy');
+                        if (copyTextSpan) copyTextSpan.textContent = 'تم النسخ!';
+                        if (iconElement) iconElement.className = 'fas fa-check';
+                        button.classList.add('copied');
+                        setTimeout(() => {
+                            if (copyTextSpan) copyTextSpan.textContent = originalButtonText;
+                             if (iconElement) iconElement.className = originalIconClass;
+                            button.classList.remove('copied');
+                        }, 2000);
+                    } catch (execErr) {
+                        console.error('Fallback copy failed: ', execErr);
+                        alert('فشل النسخ. يرجى النسخ يدوياً.');
+                    }
+                } else {
+                    alert('فشل النسخ. يرجى النسخ يدوياً.');
+                }
+            });
+        });
+    });
+
 
     function init() {
         for (let i = 1; i <= 7; i++) {
@@ -3302,21 +3369,25 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("zelhoria Knowledge Base - Genesis Initialized!");
     }
 
-    function startHeroAnimations() {
+        function startHeroAnimations() {
         const heroTitle = document.querySelector('.hero-title-animated');
-        const heroCta = document.querySelector('.hero-cta-animated');
+        // MODIFIED: Select all hero CTA buttons
+        const heroCtaLinks = document.querySelectorAll('.hero-cta-animated'); 
 
         if (heroTitle) setTimeout(() => heroTitle.classList.add('animate-in'), 0);
         if (heroDynamicSubtitle) setTimeout(() => heroDynamicSubtitle.classList.add('animate-in'), 200);
-        if (heroCta) setTimeout(() => heroCta.classList.add('animate-in'), 400);
-
+        
+        // MODIFIED: Loop through all CTA buttons to animate them
+        heroCtaLinks.forEach((cta, index) => { 
+            setTimeout(() => cta.classList.add('animate-in'), 400 + (index * 150)); // Stagger animation
+        });
+        
         if (heroDynamicSubtitle) {
-            if (subtitleInterval) clearInterval(subtitleInterval);
+            if (subtitleInterval) clearInterval(subtitleInterval); 
             subtitleInterval = setInterval(changeHeroSubtitle, 7000);
         }
     }
 
-    // Updated hidePreloader function for Genesis Orb
     function hidePreloader() {
         if (preloader) {
             preloader.classList.add('loaded');
@@ -3338,11 +3409,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            setTimeout(() => {
+            setTimeout(() => { // Fallback
                 if (preloader && preloader.parentElement && parseFloat(window.getComputedStyle(preloader).opacity) < 0.1) {
                     onPreloaderFadeEnd();
                 }
-            }, 2500); // Genesis Orb timeout
+            }, 2500);
         } else {
             if (welcomePopupOverlay) {
                 showWelcomePopup();
@@ -3353,7 +3424,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     window.addEventListener('load', () => {
-        let minPreloadTime = 2200; // Genesis Orb min time
+        let minPreloadTime = 2200;
         const loadStartTime = performance.now();
 
         const checkParticlesAndInit = (callback) => {

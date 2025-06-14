@@ -381,16 +381,22 @@ body.sidebar-open-transition { overflow: hidden; }
 ::-webkit-scrollbar-thumb:hover { background: var(--main-green); }
 
 .text-fullscreen-body::-webkit-scrollbar,
-.modal-text-content-area pre::-webkit-scrollbar {
+.modal-text-content-area pre::-webkit-scrollbar,
+.modal-tab-content .text-content-display::-webkit-scrollbar /* Added scrollbar for text content display in modal */
+{
     height: 10px;
     width: 10px;
 }
 .text-fullscreen-body::-webkit-scrollbar-thumb,
-.modal-text-content-area pre::-webkit-scrollbar-thumb {
+.modal-text-content-area pre::-webkit-scrollbar-thumb,
+.modal-tab-content .text-content-display::-webkit-scrollbar-thumb /* Added scrollbar for text content display in modal */
+{
     background-color: var(--border-color-strong);
 }
 .text-fullscreen-body::-webkit-scrollbar-track,
-.modal-text-content-area pre::-webkit-scrollbar-track {
+.modal-text-content-area pre::-webkit-scrollbar-track,
+.modal-tab-content .text-content-display::-webkit-scrollbar-track /* Added scrollbar for text content display in modal */
+{
     background-color: rgba(0,0,0,0.2);
 }
 
@@ -838,12 +844,18 @@ body.scrolled .header-container::before {
 .hero-content h1 { font-size: clamp(3rem, 9vw, 5.5rem); margin-bottom: 2rem; line-height: 1.2; font-weight: 900; }
 .hero-content p {
     font-size: clamp(1.15rem, 3.8vw, 1.6rem);
-    margin-bottom: 3.8rem;
+    margin-bottom: 2rem; /* Adjusted from 3.8rem to make space for hero-actions */
     color: var(--text-secondary);
     max-width: 750px;
     font-weight: 400;
     margin-left: auto;
     margin-right: auto;
+}
+.hero-actions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 1.8rem; /* Added space above buttons */
 }
 .scroll-down-indicator {
     position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
@@ -1357,9 +1369,9 @@ body.scrolled .header-container::before {
     font-family: var(--font-primary);
 }
 .contact-transmission-hub .form-group-terminal input:focus ~ .form-label-terminal,
-.contact-transmission-hub .form-group-terminal input:not(:placeholder-shown) ~ .form-label-terminal,
+.contact-transmission-hub .form-group-terminal input:not([placeholder=" "]):not(:placeholder-shown) ~ .form-label-terminal,
 .contact-transmission-hub .form-group-terminal textarea:focus ~ .form-label-terminal,
-.contact-transmission-hub .form-group-terminal textarea:not(:placeholder-shown) ~ .form-label-terminal,
+.contact-transmission-hub .form-group-terminal textarea:not([placeholder=" "]):not(:placeholder-shown) ~ .form-label-terminal,
 .contact-transmission-hub .form-label-terminal.active {
     top: -10px; right: 15px; font-size: 0.75rem; color: var(--accent-glow-green);
     background-color: rgba(15, 41, 31, 0.9);
@@ -1368,7 +1380,7 @@ body.scrolled .header-container::before {
 }
 .contact-transmission-hub .form-group-terminal textarea ~ .form-label-terminal { right: 20px; }
 .contact-transmission-hub .form-group-terminal textarea:focus ~ .form-label-terminal,
-.contact-transmission-hub .form-group-terminal textarea:not(:placeholder-shown) ~ .form-label-terminal {
+.contact-transmission-hub .form-group-terminal textarea:not([placeholder=" "]):not(:placeholder-shown) ~ .form-label-terminal {
     right: 15px;
 }
 
@@ -1738,7 +1750,9 @@ html[dir="rtl"] #fullscreen-text-display-modal .close-fullscreen-text-button {
 
 #modal-text-introduction.modal-tab-content.active-text-content,
 #modal-text-topic.modal-tab-content.active-text-content,
-#modal-text-questions.modal-tab-content.active-text-content {
+#modal-text-questions.modal-tab-content.active-text-content,
+#modal-text-units.modal-tab-content.active-text-content /* Added units to ensure it's displayed */
+ {
     display: block;
 }
 
@@ -2168,6 +2182,7 @@ html[dir="rtl"] #fullscreen-text-display-title {
 
 
 /* --- Responsive Design (Re-checked for Green Theme) --- */
+/* Includes responsive adjustments for FAQ and Support Me within the existing media queries */
 @media (max-width: 1024px) {
     .contact-transmission-hub .contact-hub-wrapper { grid-template-columns: 1fr; gap: 40px; }
     #main-footer-v2 .footer-container-v2 { grid-template-columns: 1fr 1fr; gap: 40px; }
@@ -2225,6 +2240,18 @@ html[dir="rtl"] #fullscreen-text-display-title {
     .welcome-gate-title {
         font-size: clamp(1.7rem, 4.5vw, 2.2rem);
     }
+
+    /* FAQ & Support Me Responsive */
+    .faq-container {
+        grid-template-columns: 1fr; /* Stack on medium screens */
+    }
+    .faq-questions-list {
+        border-left: none;
+        padding-left: 0;
+        border-bottom: 1px solid var(--border-color-medium);
+        padding-bottom: 30px;
+        margin-bottom: 30px;
+    }
 }
 
 @media (max-width: 768px) {
@@ -2253,6 +2280,15 @@ html[dir="rtl"] #fullscreen-text-display-title {
 
     .hero-content h1 { font-size: clamp(2.6rem, 10vw, 3.8rem); }
     .hero-content p { font-size: clamp(1.05rem, 4.2vw, 1.4rem); }
+    .hero-actions { /* Added for hero button responsiveness */
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+    .hero-actions .btn { /* Added for hero button responsiveness */
+        width: 100%;
+        max-width: 300px; 
+    }
     .section-title { font-size: clamp(2rem, 6.5vw, 2.6rem); margin-bottom: 60px; }
     .texts-category h3 { font-size: clamp(1.7rem, 5.5vw, 2.2rem); margin-bottom: 45px; }
 
@@ -2306,6 +2342,52 @@ html[dir="rtl"] #fullscreen-text-display-title {
     .welcome-gate-icon {
         font-size: 3rem;
     }
+
+    /* FAQ & Support Me Responsive */
+    #faq, #support-me {
+        padding: 80px 15px;
+    }
+    .faq-container {
+        padding: 20px;
+    }
+    .faq-question-btn {
+        padding: 12px 15px;
+        font-size: 0.95rem;
+    }
+    .faq-answer-area {
+        padding: 20px;
+    }
+    .faq-answer-content h4 {
+        font-size: 1.3rem;
+    }
+    .faq-answer-content p, .faq-answer-content ul li, .faq-answer-content ol li {
+        font-size: 0.95rem;
+    }
+
+    .support-intro {
+        font-size: 1rem;
+        margin-bottom: 40px;
+    }
+    .support-category {
+        padding: 25px;
+    }
+    .support-category-title {
+        font-size: clamp(1.3rem, 3.5vw, 1.7rem);
+    }
+    .crypto-grid {
+        grid-template-columns: 1fr; /* Stack crypto items */
+    }
+    .crypto-name, .payment-id-name {
+        font-size: 1rem;
+    }
+    .copy-address-btn, .copy-id-btn {
+        font-size: 0.85rem;
+        padding: 8px 15px;
+    }
+    .shortlink-btn {
+        width: 100%;
+        max-width: 300px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -2317,7 +2399,7 @@ html[dir="rtl"] #fullscreen-text-display-title {
     .contact-transmission-hub .form-label-terminal { right: 48px; }
     .contact-transmission-hub .form-group-terminal textarea ~ .form-label-terminal { right: 20px; }
     .contact-transmission-hub .form-group-terminal textarea:focus ~ .form-label-terminal,
-    .contact-transmission-hub .form-group-terminal textarea:not(:placeholder-shown) ~ .form-label-terminal {
+    .contact-transmission-hub .form-group-terminal textarea:not([placeholder=" "]):not(:placeholder-shown) ~ .form-label-terminal {
         right: 15px;
     }
     #main-footer-v2 .footer-container-v2 { gap: 30px; }
@@ -2364,5 +2446,808 @@ html[dir="rtl"] #fullscreen-text-display-title {
     }
      .welcome-gate-icon {
         font-size: 2.8rem;
+    }
+
+    /* FAQ & Support Me Responsive */
+    .faq-question-btn {
+        font-size: 0.9rem;
+    }
+    .faq-answer-content h4 {
+        font-size: 1.2rem;
+    }
+     .faq-answer-content p, .faq-answer-content ul li, .faq-answer-content ol li {
+        font-size: 0.9rem;
+    }
+
+    .support-intro {
+        font-size: 0.95rem;
+    }
+    .support-category {
+        padding: 20px;
+    }
+     .support-category-title {
+        font-size: clamp(1.2rem, 3vw, 1.5rem);
+    }
+    .crypto-item, .payment-id-item {
+        padding: 15px; /* Slightly less padding */
+    }
+    .crypto-info, .payment-id-info {
+        flex-direction: column; /* Stack icon/logo and name */
+        align-items: flex-start; /* Align to start for RTL */
+        gap: 5px;
+        margin-bottom: 10px; /* Space before address/id input */
+    }
+    .crypto-icon, .crypto-icon-img, .payment-id-logo {
+        margin-bottom: 0; /* Reset margin if any was added previously */
+    }
+    .crypto-name, .payment-id-name {
+        font-size: 0.95rem;
+    }
+    .crypto-address-display input[type="text"],
+    .payment-id-display input[type="text"] {
+        font-size: 0.75rem;
+        padding: 8px 10px;
+    }
+    .copy-address-btn, .copy-id-btn {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+    .copy-address-btn .copy-btn-text,
+    .copy-id-btn .copy-btn-text {
+        /* Potentially hide text on very small screens if space is an issue */
+        /* display: none; */
+    }
+    .copy-address-btn i, .copy-id-btn i {
+        margin-right: 0; /* If text is hidden */
+    }
+}
+
+/* ========================== FAQ Section (Green Theme) ========================== */
+#faq {
+    padding: 100px 20px;
+    background: linear-gradient(180deg, var(--dark-element-bg-medium) 0%, var(--dark-element-bg) 30%, var(--near-black-bg) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+#faq .section-title i {
+    color: var(--light-green-highlight); /* Green Theme */
+    animation: questionBounce 3s infinite ease-in-out;
+}
+
+@keyframes questionBounce { /* Generic, so no theme suffix needed */
+    0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+    25% { transform: translateY(-3px) rotate(5deg) scale(1.1); }
+    50% { transform: translateY(0) rotate(0deg) scale(1); }
+    75% { transform: translateY(3px) rotate(-5deg) scale(1.1); }
+}
+
+.faq-container {
+    max-width: 1200px;
+    margin: 40px auto 0;
+    display: grid;
+    grid-template-columns: 1fr 2fr; /* Questions on right (1fr), Answer on left (2fr) due to RTL */
+    gap: 40px;
+    background-color: rgba(var(--near-black-bg-rgb), 0.5);
+    padding: 30px;
+    border-radius: var(--border-radius-xl);
+    border: 1px solid var(--border-color-subtle);
+    box-shadow: var(--shadow-elevation-2), inset 0 0 15px rgba(var(--dark-green-shadow-rgb),0.3); /* Green Theme */
+}
+
+.faq-questions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    border-left: 1px solid var(--border-color-medium); /* Separator line for RTL */
+    padding-left: 30px; /* Space from separator */
+}
+
+.faq-question-btn {
+    background-color: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color-subtle);
+    padding: 15px 20px;
+    text-align: right;
+    font-family: var(--font-primary);
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: var(--border-radius-main);
+    cursor: pointer;
+    transition: all var(--transition-medium);
+    position: relative;
+    overflow: hidden;
+}
+
+.faq-question-btn::before {
+    content: "\f100"; /* Font Awesome left chevron for RTL */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    position: absolute;
+    left: 20px; /* Left for RTL */
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.5;
+    transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+.faq-question-btn:hover {
+    background-color: rgba(var(--dark-green-accent-rgb), 0.15); /* Green Theme */
+    color: var(--light-green-highlight);
+    border-color: var(--dark-green-accent); /* Green Theme */
+    transform: translateX(-5px); /* Slight move for RTL */
+    box-shadow: 0 5px 15px rgba(var(--dark-green-accent-rgb), 0.1); /* Green Theme */
+}
+
+.faq-question-btn:hover::before {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.1) translateX(3px);
+}
+
+.faq-question-btn.active {
+    background-color: var(--main-green); /* Green Theme */
+    color: var(--near-black-bg); /* Green Theme for text contrast */
+    border-color: var(--accent-glow-green); /* Green Theme */
+    box-shadow: 0 0 20px var(--glow-color-main), inset 0 0 8px rgba(var(--light-green-highlight-rgb), 0.1); /* Green Theme */
+    transform: translateX(0px); /* Reset transform */
+}
+
+.faq-question-btn.active::before {
+    opacity: 1;
+    color: var(--near-black-bg); /* Green Theme for contrast */
+    transform: translateY(-50%) rotate(90deg); /* Pointing down when active */
+}
+
+.faq-answer-area {
+    background-color: rgba(var(--dark-element-bg-rgb), 0.4); /* Green Theme */
+    padding: 25px;
+    border-radius: var(--border-radius-large);
+    border: 1px solid var(--border-color-subtle);
+    min-height: 300px; /* Ensure it has some height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* For initial message */
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+}
+
+.faq-initial-message {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    opacity: 0.7;
+}
+.faq-initial-message i {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    display: block;
+    color: var(--dark-green-accent); /* Green Theme */
+}
+
+.faq-answer-content {
+    display: none; /* Hidden by default, shown by JS */
+    opacity: 0;
+    animation: faqAnswerFadeIn 0.5s var(--transition-smooth) forwards;
+}
+.faq-answer-content.active-answer {
+    display: block;
+}
+
+@keyframes faqAnswerFadeIn { /* Generic, no theme suffix needed */
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.faq-answer-content h4 {
+    font-family: var(--font-secondary);
+    color: var(--light-green-highlight);
+    font-size: 1.5rem;
+    margin-bottom: 18px;
+    border-bottom: 1px solid var(--border-color-medium);
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+.faq-answer-content h4 i {
+    margin-left: 12px;
+    color: var(--accent-glow-green); /* Green Theme */
+    font-size: 0.9em;
+}
+
+.faq-answer-content p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    margin-bottom: 1em;
+}
+.faq-answer-content ul {
+    list-style-type: none;
+    padding-right: 20px; /* RTL padding */
+    margin-bottom: 1em;
+}
+.faq-answer-content ul li {
+    position: relative;
+    padding-right: 25px; /* RTL padding */
+    margin-bottom: 0.5em;
+    color: var(--text-secondary);
+}
+.faq-answer-content ul li::before {
+    content: "\f0c8"; /* fa-square-o or similar, adjust if needed */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 400; /* Regular for fa-square-o */
+    position: absolute;
+    right: 0; /* Right for RTL */
+    top: 2px;
+    color: var(--accent-glow-green); /* Green Theme */
+    font-size: 0.8em;
+}
+.faq-answer-content ol {
+    padding-right: 20px; /* RTL padding */
+    margin-bottom: 1em;
+    color: var(--text-secondary);
+}
+.faq-answer-content ol li {
+    margin-bottom: 0.5em;
+    line-height: 1.8;
+}
+.faq-answer-content strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.hidden-answer-template {
+    display: none; /* For JS to clone/use content */
+}
+
+
+/* ========================== Support Me Section (Green Theme) ========================== */
+#support-me {
+    padding: 100px 20px 80px;
+    background: var(--near-black-bg);
+    position: relative;
+    overflow: hidden;
+}
+#support-me::before { /* Subtle top border glow */
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--main-green) 30%, var(--accent-glow-green) 50%, var(--main-green) 70%, transparent); /* Green Theme */
+    opacity: 0.5;
+    animation: supportBorderShine 8s linear infinite;
+}
+@keyframes supportBorderShine { /* Generic, no theme suffix needed */
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+
+#support-me .section-title i {
+    color: var(--light-green-highlight); /* Green Theme */
+    animation: heartBeatSupport 2s infinite ease-in-out;
+}
+@keyframes heartBeatSupport { /* Generic, no theme suffix needed */
+  0%, 100% { transform: scale(1); }
+  10%, 30% { transform: scale(0.9); }
+  20%, 40%, 60%, 80% { transform: scale(1.15); }
+  50%, 70% { transform: scale(1.05); }
+}
+
+.support-intro {
+    max-width: 800px;
+    margin: -40px auto 50px;
+    text-align: center;
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.9;
+}
+
+.support-me-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+}
+
+.support-category {
+    background-color: rgba(var(--dark-element-bg-rgb), 0.7); /* Green Theme */
+    padding: 30px;
+    border-radius: var(--border-radius-xl);
+    border: 1px solid var(--border-color-subtle);
+    box-shadow: var(--shadow-elevation-1), inset 0 0 10px rgba(0,0,0,0.2);
+}
+
+.support-category-title {
+    font-family: var(--font-secondary);
+    font-size: clamp(1.5rem, 4vw, 1.9rem);
+    color: var(--light-green-highlight);
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--border-color-medium);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.support-category-title i {
+    color: var(--accent-glow-green); /* Green Theme */
+    font-size: 0.9em;
+}
+
+.crypto-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjusted minmax */
+    gap: 25px;
+}
+.payment-id-item{
+    margin-top: 20px;
+}
+.crypto-item, .payment-id-item {
+    background-color: var(--dark-element-bg-lighter);
+    padding: 20px;
+    border-radius: var(--border-radius-main);
+    border: 1px solid var(--border-color-medium);
+    display: flex;
+    flex-direction: column; /* Changed for better layout with visible address */
+    gap: 15px;
+    transition: all var(--transition-medium);
+    box-shadow: var(--shadow-elevation-1);
+}
+.crypto-item:hover, .payment-id-item:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(var(--main-green-rgb), 0.25), 0 0 20px var(--glow-color-accent); /* Green Theme */
+    border-color: var(--accent-glow-green); /* Green Theme */
+}
+
+.crypto-info, .payment-id-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.crypto-icon {
+    font-size: 2rem; /* Slightly smaller */
+    width: 35px;   /* Slightly smaller */
+    text-align: center;
+}
+.crypto-icon-img { /* For images like LTC */
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.payment-id-logo {
+    width: 32px; /* Slightly smaller */
+    height: 32px;
+    object-fit: contain;
+}
+.payeer-logo { /* If needs specific theming beyond default image color */
+    /* filter: invert(89%) sepia(7%) saturate(1239%) hue-rotate(194deg) brightness(94%) contrast(89%); */ /* Original was for a light logo on dark bg, might not be needed */
+}
+
+
+.crypto-name, .payment-id-name {
+    font-family: var(--font-primary);
+    font-weight: 600;
+    color: var(--text-primary);
+    flex-grow: 1;
+    font-size: 1rem;
+}
+
+.crypto-address-display, .payment-id-display {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background-color: var(--dark-element-bg);
+    border-radius: var(--border-radius-small);
+    border: 1px solid var(--border-color-subtle);
+    overflow: hidden; /* To contain the input and button nicely */
+}
+
+.crypto-address-display input[type="text"],
+.payment-id-display input[type="text"] {
+    flex-grow: 1;
+    padding: 10px 12px;
+    border: none;
+    background-color: transparent;
+    color: var(--text-secondary);
+    font-family: var(--font-code);
+    font-size: 0.85rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    outline: none;
+}
+.crypto-address-display input[type="text"]:focus,
+.payment-id-display input[type="text"]:focus {
+    color: var(--text-primary);
+}
+
+
+.copy-address-btn, .copy-id-btn {
+    background-color: var(--dark-green-accent); /* Green Theme */
+    color: var(--text-primary);
+    border: none;
+    padding: 10px 15px; /* Adjusted padding */
+    border-radius: 0 var(--border-radius-small) var(--border-radius-small) 0; /* Rounded only on one side */
+    font-family: var(--font-primary);
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0; /* Prevent button from shrinking */
+}
+.copy-address-btn:hover, .copy-id-btn:hover {
+    background-color: var(--main-green); /* Green Theme */
+    color: var(--near-black-bg); /* Contrast for Green Theme */
+    box-shadow: 0 0 10px var(--glow-color-main); /* Adjusted shadow */
+    transform: none; /* Removed scale on hover for stability */
+}
+.copy-address-btn.copied, .copy-id-btn.copied {
+    background-color: #4CAF50; /* Green for success (kept from original) */
+    color: white;
+}
+.copy-address-btn.copied .fa-copy::before,
+.copy-id-btn.copied .fa-copy::before {
+    content: "\f00c"; /* Checkmark icon */
+}
+.copy-address-btn .copy-btn-text,
+.copy-id-btn .copy-btn-text {
+    display: inline-block; /* Ensures text is shown */
+}
+
+
+.support-category-description {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: 25px;
+    text-align: center;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.shortlink-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+.shortlink-btn {
+    min-width: 200px;
+    padding: 14px 30px;
+    font-size: 1rem;
+    text-transform: none;
+}
+.shortlink-btn i {
+    margin-left: 10px;
+    font-size: 0.9em;
+}
+
+
+/* --- Responsive Design (Re-checked for Green Theme) --- */
+/* Includes responsive adjustments for FAQ and Support Me within the existing media queries */
+@media (max-width: 1024px) {
+    .contact-transmission-hub .contact-hub-wrapper { grid-template-columns: 1fr; gap: 40px; }
+    #main-footer-v2 .footer-container-v2 { grid-template-columns: 1fr 1fr; gap: 40px; }
+    #main-footer-v2 .footer-brand-info { grid-column: 1 / -1; text-align: center;}
+    #main-footer-v2 .footer-brand-info .footer-logo-v2,
+    #main-footer-v2 .footer-brand-info .footer-tagline-v2 { margin-left:auto; margin-right:auto; max-width: 500px;}
+    #main-footer-v2 .footer-social-media-v2 { justify-content: center; }
+    #main-footer-v2 .footer-col-title { text-align: center; }
+    #main-footer-v2 .footer-col-title::after {
+        right: 50%;
+        transform: translateX(50%);
+    }
+
+    #main-header { left: 15px; right: 15px; --header-side-margin: 15px;}
+
+    .modal-content.modal-text-viewer {
+        max-width: 95%;
+    }
+    .modal-text-tabs {
+        flex-wrap: wrap;
+    }
+    .modal-tab-btn {
+        font-size: 0.9rem;
+        padding: 8px 15px;
+    }
+
+    .text-fullscreen-header {
+        padding: 12px 15px;
+        gap: 10px;
+        align-items: center;
+    }
+    #fullscreen-text-display-modal .close-fullscreen-text-button {
+        top: 12px;
+        left: 12px;
+        font-size: 1.6rem;
+        width: 36px;
+        height: 36px;
+    }
+    html[dir="rtl"] #fullscreen-text-display-modal .close-fullscreen-text-button {
+        left: auto;
+        right: 12px;
+    }
+    #fullscreen-text-display-title {
+        padding-left: 45px;
+        padding-right: 45px;
+        font-size: 1.1rem;
+        margin-top: 0; /* Ensure it aligns correctly */
+    }
+    .texts-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Adjust minmax for 2 columns earlier */
+    }
+    .welcome-popup-gate {
+        max-width: 90%;
+    }
+    .welcome-gate-title {
+        font-size: clamp(1.7rem, 4.5vw, 2.2rem);
+    }
+
+    /* FAQ & Support Me Responsive */
+    .faq-container {
+        grid-template-columns: 1fr; /* Stack on medium screens */
+    }
+    .faq-questions-list {
+        border-left: none;
+        padding-left: 0;
+        border-bottom: 1px solid var(--border-color-medium);
+        padding-bottom: 30px;
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .contact-transmission-hub .contact-form-styled,
+    .contact-transmission-hub .contact-info-panel { padding: 30px 25px; }
+    .contact-transmission-hub .contact-hub-wrapper { grid-template-columns: 1fr; }
+
+    #main-footer-v2 .footer-container-v2 {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    #main-footer-v2 .footer-nav-links ul li a,
+    #main-footer-v2 .footer-contact-details-v2 li {
+        justify-content: center;
+    }
+
+    .desktop-nav { display: none; }
+    .nav-highlighter { display: none; }
+    .mobile-menu-toggle { display: block; }
+
+    #main-header { top: 15px; --header-top-margin: 15px; }
+    body.scrolled #main-header { top: 0; }
+    .header-container { padding: 0 20px; height: calc(var(--header-height) - 5px); }
+    body.scrolled .header-container { height: calc(var(--header-height) - 10px); }
+    .logo { font-size: 1.7rem; }
+
+    .hero-content h1 { font-size: clamp(2.6rem, 10vw, 3.8rem); }
+    .hero-content p { font-size: clamp(1.05rem, 4.2vw, 1.4rem); }
+    .hero-actions { /* Added for hero button responsiveness */
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+    .hero-actions .btn { /* Added for hero button responsiveness */
+        width: 100%;
+        max-width: 300px; 
+    }
+    .section-title { font-size: clamp(2rem, 6.5vw, 2.6rem); margin-bottom: 60px; }
+    .texts-category h3 { font-size: clamp(1.7rem, 5.5vw, 2.2rem); margin-bottom: 45px; }
+
+    .texts-grid { grid-template-columns: 1fr; gap: 35px; } /* Single column for smaller screens */
+
+
+    .modal-content.modal-text-viewer {
+        width: 95%;
+        padding: 20px 15px;
+        margin: 5% auto;
+    }
+    #modal-text-title {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        padding-right: 30px;
+    }
+    .close-btn-design {
+        font-size: 1.4rem; width: 36px; height: 36px;
+    }
+    #text-modal .close-button { top: 12px; left: 12px;}
+    #fullscreen-text-display-modal .close-fullscreen-text-button { top: 15px; left: 15px; font-size: 1.8rem;}
+    html[dir="rtl"] #fullscreen-text-display-modal .close-fullscreen-text-button { left: auto; right: 15px;}
+    #fullscreen-text-display-title { font-size: 1.1rem; }
+
+
+    .question-options-grid, .topic-options-grid {
+        grid-template-columns: 1fr;
+    }
+    .modal-tab-btn {
+        font-size: 0.85rem;
+        padding: 8px 12px;
+    }
+    .modal-text-content-area {
+        min-height: 200px;
+    }
+    .modal-tab-content .text-content-display, #fullscreen-text-display-content {
+        font-size: 0.95rem;
+    }
+     .welcome-popup-gate {
+       max-width: 95%;
+    }
+    .welcome-popup-content-wrapper {
+        padding: 30px 20px;
+    }
+    .welcome-gate-title {
+        font-size: clamp(1.6rem, 4.5vw, 2rem);
+    }
+    .welcome-gate-message {
+        font-size: 1rem;
+    }
+    .welcome-gate-icon {
+        font-size: 3rem;
+    }
+
+    /* FAQ & Support Me Responsive */
+    #faq, #support-me {
+        padding: 80px 15px;
+    }
+    .faq-container {
+        padding: 20px;
+    }
+    .faq-question-btn {
+        padding: 12px 15px;
+        font-size: 0.95rem;
+    }
+    .faq-answer-area {
+        padding: 20px;
+    }
+    .faq-answer-content h4 {
+        font-size: 1.3rem;
+    }
+    .faq-answer-content p, .faq-answer-content ul li, .faq-answer-content ol li {
+        font-size: 0.95rem;
+    }
+
+    .support-intro {
+        font-size: 1rem;
+        margin-bottom: 40px;
+    }
+    .support-category {
+        padding: 25px;
+    }
+    .support-category-title {
+        font-size: clamp(1.3rem, 3.5vw, 1.7rem);
+    }
+    .crypto-grid {
+        grid-template-columns: 1fr; /* Stack crypto items */
+    }
+    .crypto-name, .payment-id-name {
+        font-size: 1rem;
+    }
+    .copy-address-btn, .copy-id-btn {
+        font-size: 0.85rem;
+        padding: 8px 15px;
+    }
+    .shortlink-btn {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-transmission-hub .contact-form-styled,
+    .contact-transmission-hub .contact-info-panel { padding: 25px 20px; }
+    .contact-transmission-hub .form-group-terminal { margin-bottom: 25px; }
+    .contact-transmission-hub .form-group-terminal input,
+    .contact-transmission-hub .form-group-terminal textarea { padding-right: 48px; }
+    .contact-transmission-hub .form-label-terminal { right: 48px; }
+    .contact-transmission-hub .form-group-terminal textarea ~ .form-label-terminal { right: 20px; }
+    .contact-transmission-hub .form-group-terminal textarea:focus ~ .form-label-terminal,
+    .contact-transmission-hub .form-group-terminal textarea:not([placeholder=" "]):not(:placeholder-shown) ~ .form-label-terminal {
+        right: 15px;
+    }
+    #main-footer-v2 .footer-container-v2 { gap: 30px; }
+
+    :root { --header-height: 60px; --header-top-margin: 10px; --header-side-margin: 10px;}
+    .header-container { padding: 0 15px; }
+    .logo { font-size: 1.5rem; }
+
+    .texts-grid { grid-template-columns: 1fr; gap: 30px; }
+    .pagination button, .pagination-ellipsis { min-width: 36px; height: 36px; font-size: 0.9rem; }
+    .pagination { gap: 8px; padding: 8px; }
+
+    .modal-content.modal-text-viewer {
+        padding: 15px 10px;
+    }
+    #modal-text-title {
+        font-size: 1.3rem;
+        padding-right: 25px;
+    }
+    .close-btn-design {
+        top: 10px; left: 10px; width: 32px; height: 32px; font-size: 1.3rem;
+    }
+    #text-modal .close-button { top: 10px; left: 10px;}
+    #fullscreen-text-display-modal .close-fullscreen-text-button { top: 12px; left: 12px; font-size: 1.6rem;}
+     html[dir="rtl"] #fullscreen-text-display-modal .close-fullscreen-text-button { left: auto; right: 12px;}
+    #fullscreen-text-display-title { font-size: 1rem; padding-top: 5px;}
+
+
+    .modal-text-content-area {min-height: 180px;}
+    .modal-tab-content .text-content-display, #fullscreen-text-display-content {font-size: 0.9rem; line-height: 1.6;}
+    .modal-tab-btn { padding: 6px 10px; font-size: 0.8rem; }
+
+    .welcome-popup-gate {
+        max-width: 95%;
+    }
+    .welcome-popup-content-wrapper {
+        padding: 25px 15px;
+    }
+    .welcome-gate-title {
+        font-size: 1.5rem;
+    }
+    .welcome-gate-message {
+        font-size: 0.9rem;
+    }
+     .welcome-gate-icon {
+        font-size: 2.8rem;
+    }
+
+    /* FAQ & Support Me Responsive */
+    .faq-question-btn {
+        font-size: 0.9rem;
+    }
+    .faq-answer-content h4 {
+        font-size: 1.2rem;
+    }
+     .faq-answer-content p, .faq-answer-content ul li, .faq-answer-content ol li {
+        font-size: 0.9rem;
+    }
+
+    .support-intro {
+        font-size: 0.95rem;
+    }
+    .support-category {
+        padding: 20px;
+    }
+     .support-category-title {
+        font-size: clamp(1.2rem, 3vw, 1.5rem);
+    }
+    .crypto-item, .payment-id-item {
+        padding: 15px; /* Slightly less padding */
+    }
+    .crypto-info, .payment-id-info {
+        flex-direction: column; /* Stack icon/logo and name */
+        align-items: flex-start; /* Align to start for RTL */
+        gap: 5px;
+        margin-bottom: 10px; /* Space before address/id input */
+    }
+    .crypto-icon, .crypto-icon-img, .payment-id-logo {
+        margin-bottom: 0; /* Reset margin if any was added previously */
+    }
+    .crypto-name, .payment-id-name {
+        font-size: 0.95rem;
+    }
+    .crypto-address-display input[type="text"],
+    .payment-id-display input[type="text"] {
+        font-size: 0.75rem;
+        padding: 8px 10px;
+    }
+    .copy-address-btn, .copy-id-btn {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+    .copy-address-btn .copy-btn-text,
+    .copy-id-btn .copy-btn-text {
+        /* Potentially hide text on very small screens if space is an issue */
+        /* display: none; */
+    }
+    .copy-address-btn i, .copy-id-btn i {
+        margin-right: 0; /* If text is hidden */
     }
 }

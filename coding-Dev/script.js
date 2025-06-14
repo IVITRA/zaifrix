@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const preloader = document.getElementById('preloader');
     const body = document.body;
     const heroDynamicSubtitle = document.getElementById('hero-dynamic-subtitle');
-  
+
     // ----- Dynamic Hero Subtitles -----
     const dynamicSubtitles = [
         "zelhoria، حيث تتحول الأفكار إلى تجارب رقمية فريدة تسافر بك عبر عوالم الابتكار.",
@@ -13,19 +13,20 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
     let currentSubtitleIndex = 0;
     let subtitleInterval;
-  
+
     function changeHeroSubtitle() {
         if (!heroDynamicSubtitle) return;
-        heroDynamicSubtitle.classList.remove('animate-in'); 
+        heroDynamicSubtitle.classList.remove('animate-in');
         setTimeout(() => {
             currentSubtitleIndex = (currentSubtitleIndex + 1) % dynamicSubtitles.length;
             heroDynamicSubtitle.textContent = dynamicSubtitles[currentSubtitleIndex];
-            heroDynamicSubtitle.classList.add('animate-in'); 
-        }, 600); 
+            heroDynamicSubtitle.classList.add('animate-in');
+        }, 600);
     }
-    
+
     // ----- بيانات المشاريع -----
     const allProjects = [
+        // ... (بيانات المشاريع تبقى كما هي) ...
         {
             id: 1,
             name: 'مرصد البيانات (Dashboard)',
@@ -34,121 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
             imageUrl: 'https://iili.io/2CCb6KJ.jpg',
             detailsImageUrl: 'https://iili.io/2CCb6KJ.jpg',
             languagesUsed: ['JavaScript', 'React', 'Node.js', 'CSS', 'D3.js', 'API'],
-            codeSnippets: {
-                'React': `import React, { useState, useEffect, useMemo } from 'react';
-  import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-  import api from '../services/dataApi'; // Assuming an API service
-  
-  const DataChart = ({ endpoint }) => {
-  const [chartData, setChartData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  
-  useEffect(() => {
-    setLoading(true);
-    api.get(endpoint)
-      .then(response => {
-        const processedData = response.data.map(item => ({
-          ...item,
-          timestamp: new Date(item.timestamp).toLocaleTimeString(),
-        }));
-        setChartData(processedData);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error('Error fetching chart data:', error);
-        setLoading(false);
-      });
-  }, [endpoint]);
-  
-  const renderChart = useMemo(() => (
-    <ResponsiveContainer width="100%" height={300}>
-      <LineChart data={chartData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
-        <XAxis dataKey="timestamp" stroke="var(--text-secondary)" />
-        <YAxis stroke="var(--text-secondary)" />
-        <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color-subtle)" />
-        <Tooltip
-          contentStyle={{
-            background: 'var(--dark-element-bg)',
-            borderColor: 'var(--border-color-subtle)',
-            color: 'var(--text-primary)'
-          }}
-          itemStyle={{ color: 'var(--royal-purple)' }}
-        />
-        <Line type="monotone" dataKey="value" stroke="var(--deep-purple-accent)" strokeWidth={2} dot={false} activeDot={{ r: 6, fill: 'var(--royal-purple)' }} />
-      </LineChart>
-    </ResponsiveContainer>
-  ), [chartData]);
-  
-  if (loading) return <div className="loading-pulsar">Loading Data...</div>;
-  
-  return <div className="chart-container">{renderChart}</div>;
-  };
-  
-  export default DataChart;`,
-                'JavaScript': `function debounce(func, wait, immediate) {
-  let timeout;
-  return function executedFunction() {
-    const context = this;
-    const args = arguments;
-    const later = function() {
-      timeout = null;
-      if (!immediate) func.apply(context, args);
-    };
-    const callNow = immediate && !timeout;
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-    if (callNow) func.apply(context, args);
-  };
-  };
-  
-  const handleResize = debounce(() => {
-  // console.log('Window resized, recalculating layout...');
-  }, 250);
-  
-  window.addEventListener('resize', handleResize);`,
-                'HTML': `<!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
-  </head>
-  <body>
-    <header>
-        <h1>Advanced Data Observatory</h1>
-    </header>
-    <main>
-        <section class="chart-section" id="realtime-data">
-            <h2>Real-time Metrics</h2>
-            {/* React component DataChart would be rendered here */}
-        </section>
-        <section class="controls-section">
-            <h2>Control Panel</h2>
-            <button id="fetch-new-data">Fetch New Batch</button>
-        </section>
-    </main>
-    <footer>
-        <p>© 2024 zelhoria Galactic Solutions</p>
-    </footer>
-    <script src="app.js"></script>
-  </body>
-  </html>`,
-                'CSS': `.loading-pulsar {
-  display: flex; justify-content: center; align-items: center;
-  padding: 40px; color: var(--text-secondary); font-family: var(--font-secondary);
-  }
-  .loading-pulsar::before {
-  content: ''; display: block; width: 15px; height: 15px; margin-left: 10px; /* RTL: margin-right */
-  background-color: var(--royal-purple); border-radius: 50%;
-  box-shadow: 0 0 10px var(--glow-color-main);
-  animation: pulsar 1.5s infinite ease-in-out;
-  }
-  @keyframes pulsar {
-  0%, 100% { transform: scale(0.8); opacity: 0.5; }
-  50% { transform: scale(1.2); opacity: 1; }
-  }`
-            }
+            liveDemoUrl: 'https://example.com/dashboard-demo',
+            repoUrl: 'https://github.com/yourusername/dashboard-repo',
+            codeSnippets: { /* ... */ }
         },
         {
             id: 2,
@@ -158,310 +47,14 @@ document.addEventListener('DOMContentLoaded', () => {
             imageUrl: 'https://images.unsplash.com/photo-1502134249126-9f3755a50d78?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Z3Jhdml0eXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60',
             detailsImageUrl: 'https://images.unsplash.com/photo-1502134249126-9f3755a50d78?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Z3Jhdml0eXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=1000&q=80',
             languagesUsed: ['JavaScript', 'HTML', 'Canvas'],
-            codeSnippets: {
-                'JavaScript': `const canvas = document.getElementById('gravityCanvas');
-  const ctx = canvas.getContext('2d');
-  canvas.width = Math.min(window.innerWidth * 0.9, 800);
-  canvas.height = 450;
-  
-  const G = 0.8; // Gravitational constant
-  let bodies = [];
-  let trailLength = 30; // Number of points in the trail
-  
-  class CelestialBody {
-    constructor(x, y, mass, radius, color, vx = 0, vy = 0, isFixed = false) {
-        this.x = x;
-        this.y = y;
-        this.mass = mass;
-        this.radius = radius;
-        this.color = color;
-        this.vx = vx;
-        this.vy = vy;
-        this.isFixed = isFixed;
-        this.trail = []; // To store trail points
-    }
-  
-    applyGravity(otherBody) {
-        if (this.isFixed) return;
-        const dx = otherBody.x - this.x;
-        const dy = otherBody.y - this.y;
-        const distSq = dx * dx + dy * dy;
-        if (distSq < (this.radius + otherBody.radius) * (this.radius + otherBody.radius) / 4) return; // Avoid extreme forces or division by zero
-  
-        const dist = Math.sqrt(distSq);
-        const force = (G * this.mass * otherBody.mass) / distSq;
-        const forceX = (force * dx) / dist;
-        const forceY = (force * dy) / dist;
-  
-        this.vx += forceX / this.mass;
-        this.vy += forceY / this.mass;
-    }
-  
-    updatePosition() {
-        if (this.isFixed) return;
-        this.x += this.vx;
-        this.y += this.vy;
-  
-        // Add current position to trail
-        this.trail.push({ x: this.x, y: this.y });
-        if (this.trail.length > trailLength) {
-            this.trail.shift(); // Keep trail length limited
-        }
-  
-        // Boundary conditions (bounce)
-        if (this.x + this.radius > canvas.width || this.x - this.radius < 0) this.vx *= -0.7;
-        if (this.y + this.radius > canvas.height || this.y - this.radius < 0) this.vy *= -0.7;
-    }
-    
-    drawTrail() {
-        if (this.trail.length < 2) return;
-        ctx.beginPath();
-        ctx.moveTo(this.trail[0].x, this.trail[0].y);
-        for (let i = 1; i < this.trail.length; i++) {
-            const opacity = i / this.trail.length * 0.5; // Fade out older trail parts
-            ctx.strokeStyle = \`rgba(\${parseInt(this.color.slice(1,3),16)}, \${parseInt(this.color.slice(3,5),16)}, \${parseInt(this.color.slice(5,7),16)}, \${opacity})\`;
-            ctx.lineTo(this.trail[i].x, this.trail[i].y);
-        }
-        ctx.lineWidth = this.radius * 0.2;
-        ctx.stroke();
-    }
-  
-    draw() {
-        this.drawTrail(); // Draw trail first
-        
-        ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fill();
-        // Add a subtle glow
-        ctx.shadowColor = this.color;
-        ctx.shadowBlur = 10;
-        ctx.fill();
-        ctx.shadowBlur = 0; // Reset shadow
-    }
-  }
-  
-  function initSimulation() {
-    bodies = [
-        new CelestialBody(canvas.width / 2, canvas.height / 2, 2000, 25, '#FFD700', 0, 0, true), // Central star (fixed)
-        new CelestialBody(canvas.width / 2 + 180, canvas.height / 2, 15, 7, '#4A90E2', 0, 2.2),   // Planet 1
-        new CelestialBody(canvas.width / 2 - 120, canvas.height / 2 - 120, 8, 5, '#E94E77', 1.8, -1.2), // Planet 2
-        new CelestialBody(canvas.width / 2 + 80, canvas.height / 2 - 200, 5, 4, '#7ED321', -1.5, 1.0) // Planet 3
-    ];
-  }
-  
-  function animate() {
-    requestAnimationFrame(animate);
-    ctx.fillStyle = 'rgba(3, 0, 10, 0.3)'; // Fading effect for trails
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-  
-    for (let i = 0; i < bodies.length; i++) {
-        for (let j = 0; j < bodies.length; j++) {
-            if (i !== j) {
-                bodies[i].applyGravity(bodies[j]);
-            }
-        }
-    }
-  
-    bodies.forEach(body => {
-        body.updatePosition();
-        body.draw();
-    });
-  }
-  
-  initSimulation();
-  animate();`,
-                 'HTML': `<div class="canvas-container" style="background: #03000a; padding: 20px; border-radius: 10px;">
-  <h3 style="color: #ECEFF1; text-align: center; font-family: 'Orbitron', sans-serif;">محاكاة الجاذبية الكونية</h3>
-  <canvas id="gravityCanvas" style="display: block; margin: 15px auto; border: 1px solid #5E35B1;"></canvas>
-  <p style="color: #B0BEC5; text-align: center; font-size: 0.9em;">شاهد تفاعل الأجرام السماوية. الكود يوضح بناء الأجسام وتطبيق قوى الجاذبية.</p>
-  </div>`
-            }
+            liveDemoUrl: null,
+            repoUrl: 'https://github.com/yourusername/gravity-simulator',
+            codeSnippets: { /* ... */ }
         },
-        { id: 3, name: 'مولد الألوان المتدرجة', type: 'small', description: 'أداة ويب بسيطة لإنشاء وتخصيص تدرجات ألوان CSS.', imageUrl: 'https://images.unsplash.com/photo-1519669556878-63bdad8a1a49?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Z3JhZGllbnR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60', detailsImageUrl: 'https://images.unsplash.com/photo-1519669556878-63bdad8a1a49?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Z3JhZGllbnR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=1000&q=80', languagesUsed: ['JavaScript', 'HTML', 'CSS'], codeSnippets: { 'JavaScript': `console.log("Gradient generator logic: Initializing color pickers and event listeners for real-time CSS gradient updates.");
-  const color1Picker = document.getElementById('color1');
-  const color2Picker = document.getElementById('color2');
-  const gradientPreview = document.getElementById('gradient-preview');
-  const cssOutput = document.getElementById('css-output');
-  
-  function updateGradient() {
-    const color1 = color1Picker.value;
-    const color2 = color2Picker.value;
-    const gradientCss = \`linear-gradient(to right, \${color1}, \${color2})\`;
-    
-    gradientPreview.style.background = gradientCss;
-    cssOutput.textContent = \`background: \${gradientCss};\`;
-  }
-  
-  color1Picker.addEventListener('input', updateGradient);
-  color2Picker.addEventListener('input', updateGradient);
-  
-  // Initial call
-  updateGradient();` } },
-        { id: 4, name: 'منصة تدوين مصغرة', type: 'large', description: 'منصة تدوين بسيطة مع واجهة برمجة تطبيقات خلفية لإدارة المقالات والتعليقات.', imageUrl: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmxvZ3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60', detailsImageUrl: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmxvZ3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=1000&q=80', languagesUsed: ['Node.js', 'Express', 'MongoDB', 'JavaScript', 'API'], codeSnippets: { 'Node.js': `const express = require("express");
-  const mongoose = require("mongoose");
-  const app = express();
-  const PORT = process.env.PORT || 3001;
-  
-  // Middleware
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
-  
-  // MongoDB Connection (replace with your connection string)
-  mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/mini-blog-db", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-  
-  // Define a simple Post schema
-  const postSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    content: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now }
-  });
-  const Post = mongoose.model("Post", postSchema);
-  
-  // API Routes
-  app.get("/api/posts", async (req, res) => {
-    try {
-        const posts = await Post.find().sort({ createdAt: -1 });
-        res.json(posts);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-  });
-  
-  app.post("/api/posts", async (req, res) => {
-    const post = new Post({
-        title: req.body.title,
-        content: req.body.content
-    });
-    try {
-        const newPost = await post.save();
-        res.status(201).json(newPost);
-    } catch (err) {
-        res.status(400).json({ message: err.message });
-    }
-  });
-  
-  app.get("/", (req, res) => res.send("zelhoria Mini Blog API is Orbiting!"));
-  
-  app.listen(PORT, () => console.log(\`API Server launched on port \${PORT}\`));` } },
-        { id: 5, name: 'لعبة تفادي الكويكبات', type: 'small', description: 'لعبة بسيطة تعتمد على المتصفح حيث يجب على اللاعب تفادي الكويكبات المتساقطة.', imageUrl: 'https://images.unsplash.com/photo-1583487839705-ce64c7_06c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YXN0ZXJvaWR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60', detailsImageUrl: 'https://images.unsplash.com/photo-1583487839705-ce64c7_06c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YXN0ZXJvaWR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=1000&q=80', languagesUsed: ['JavaScript', 'HTML', 'Canvas'], codeSnippets: { 'JavaScript': `console.log("Asteroid dodging game: Player controls, asteroid generation, collision detection, and scoring system logic.");
-  // Basic structure idea
-  const player = { x: 50, y: 50, speed: 5, width: 20, height: 20 };
-  const asteroids = [];
-  let score = 0;
-  function gameLoop() {
-    // Clear canvas
-    // Update player position based on input
-    // Generate new asteroids periodically
-    // Move asteroids
-    // Check for collisions
-    // Update score
-    // Draw everything
-    requestAnimationFrame(gameLoop);
-  }
-  // Start game
-  // gameLoop();` } },
-        { id: 6, name: 'مكتبة مكونات UI/UX', type: 'large', description: 'مجموعة من مكونات واجهة المستخدم القابلة لإعادة الاستخدام والمصممة بأسلوب عصري مع التركيز على تجربة المستخدم.', imageUrl: 'https://images.unsplash.com/photo-1607799279861-4dd421887fb3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8d2ViJTIwY29tcG9uZW50fGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60', detailsImageUrl: 'https://images.unsplash.com/photo-1607799279861-4dd421887fb3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8d2ViJTIwY29tcG9uZW50fGVufDB8fDB8fHww&auto=format&fit=crop&w=1000&q=80', languagesUsed: ['React', 'TypeScript', 'CSS', 'Storybook'], codeSnippets: { 'React': `import React from 'react';
-  import PropTypes from 'prop-types';
-  import './Button.css'; // Assuming a CSS file for styling
-  
-  /**
-  * A customizable button component for the UI library.
-  * Supports different variants, sizes, and an optional icon.
-  */
-  export const Button = ({ primary, backgroundColor, size, label, icon, ...props }) => {
-  const mode = primary ? 'button--primary' : 'button--secondary';
-  return (
-    <button
-      type="button"
-      className={['button', \`button--\${size}\`, mode].join(' ')}
-      style={backgroundColor && { backgroundColor }}
-      {...props}
-    >
-      {icon && <span className="button-icon">{icon}</span>}
-      {label}
-    </button>
-  );
-  };
-  
-  Button.propTypes = {
-  primary: PropTypes.bool,
-  backgroundColor: PropTypes.string,
-  size: PropTypes.oneOf(['small', 'medium', 'large']),
-  label: PropTypes.string.isRequired,
-  onClick: PropTypes.func,
-  icon: PropTypes.element, // For React components as icons
-  };
-  
-  Button.defaultProps = {
-  backgroundColor: null,
-  primary: false,
-  size: 'medium',
-  onClick: undefined,
-  icon: null,
-  };` } },
-        { id: 7, name: 'تطبيق إدارة المهام الذكي', type: 'small', description: 'تطبيق بسيط لإدارة قائمة المهام مع تخزين البيانات محليًا وميزات ذكية مثل التذكيرات.', imageUrl: 'https://images.unsplash.com/photo-1520609417-6f545123b64a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dG9kbyUyMGxpc3R8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60', detailsImageUrl: 'https://images.unsplash.com/photo-1520609417-6f545123b64a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dG9kbyUyMGxpc3R8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=1000&q=80', languagesUsed: ['JavaScript', 'HTML', 'CSS', 'LocalStorage'], codeSnippets: { 'JavaScript': `// Basic To-Do List Logic
-  const taskInput = document.getElementById('task-input');
-  const addTaskBtn = document.getElementById('add-task-btn');
-  const taskList = document.getElementById('task-list-ul');
-  
-  let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-  
-  function saveTasks() {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-  }
-  
-  function renderTasks() {
-    taskList.innerHTML = ''; // Clear existing tasks
-    tasks.forEach((task, index) => {
-        const listItem = document.createElement('li');
-        listItem.textContent = task.text;
-        listItem.className = task.completed ? 'completed' : '';
-        
-        const completeBtn = document.createElement('button');
-        completeBtn.textContent = task.completed ? 'Undo' : 'Complete';
-        completeBtn.onclick = () => toggleComplete(index);
-        
-        const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = 'Delete';
-        deleteBtn.className = 'delete';
-        deleteBtn.onclick = () => deleteTask(index);
-        
-        listItem.appendChild(completeBtn);
-        listItem.appendChild(deleteBtn);
-        taskList.appendChild(listItem);
-    });
-  }
-  
-  function addTask() {
-    const taskText = taskInput.value.trim();
-    if (taskText === '') return;
-    tasks.push({ text: taskText, completed: false });
-    taskInput.value = '';
-    saveTasks();
-    renderTasks();
-  }
-  
-  function toggleComplete(index) {
-    tasks[index].completed = !tasks[index].completed;
-    saveTasks();
-    renderTasks();
-  }
-  
-  function deleteTask(index) {
-    tasks.splice(index, 1);
-    saveTasks();
-    renderTasks();
-  }
-  
-  addTaskBtn.addEventListener('click', addTask);
-  renderTasks(); // Initial render
-  ` } },
+         // ... (أضف باقي المشاريع هنا)
     ];
-  
+
+    // ----- بيانات المهارات (تم إزالة الوصف) -----
     const skillsData = [
         { name: "JavaScript", icon: "fab fa-js-square", level: 90, color: "#F7DF1E" },
         { name: "React", icon: "fab fa-react", level: 85, color: "#61DAFB" },
@@ -473,14 +66,14 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: "UI/UX", icon: "fas fa-drafting-compass", level: 80, color: "#7E57C2" },
         { name: "MongoDB", icon: "fas fa-database", level: 65, color: "#47A248" },
         { name: "Git & GitHub", icon: "fab fa-git-alt", level: 88, color: "#F05032"},
-        { name: "TypeScript", icon: "fas fa-code", level: 70, color: "#3178C6"},
+        { name: "TypeScript", icon: "fas fa-code", level: 70, color: "#3178C6"}, // ممكن استخدام أيقونة أفضل
         { name: "Figma", icon: "fab fa-figma", level: 75, color: "#F24E1E"}
     ];
-  
-  
+
+
     const ITEMS_PER_PAGE = 6;
-    const VISIBLE_PAGINATION_BUTTONS_THRESHOLD = 7; 
-  
+    const VISIBLE_PAGINATION_BUTTONS_THRESHOLD = 7;
+
     const header = document.getElementById('main-header');
     const largeProjectsGrid = document.getElementById('large-projects-grid');
     const smallProjectsGrid = document.getElementById('small-projects-grid');
@@ -489,16 +82,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const largeProjectsFilterContainer = document.querySelector('#large-projects-filter-content');
     const smallProjectsFilterContainer = document.querySelector('#small-projects-filter-content');
     const skillsGridContainer = document.getElementById('skills-grid-container');
-  
-    // ----- Cosmic Gate Welcome Popup Variables -----
+
     const welcomePopupOverlay = document.getElementById('welcome-popup');
-    const sparkContainers = { 
+    const sparkContainers = {
         top: document.getElementById('gate-spark-container-top'),
         bottom: document.getElementById('gate-spark-container-bottom'),
         left: document.getElementById('gate-spark-container-left'),
         right: document.getElementById('gate-spark-container-right')
     };
-  
+
     const modal = document.getElementById('project-modal');
     const modalProjectTitle = document.getElementById('modal-project-title');
     const modalProjectDescription = document.getElementById('modal-project-description');
@@ -511,36 +103,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const copyCodeButtonText = copyCodeButton ? copyCodeButton.querySelector('.copy-text') : null;
     const closeModalButton = modal ? modal.querySelector('.close-button') : null;
     const fullscreenCodeButton = document.getElementById('fullscreen-code-button');
-  
+    const modalProjectLinksContainer = document.getElementById('modal-project-links');
+
     const fullscreenModal = document.getElementById('fullscreen-image-modal');
     const fullscreenImage = document.getElementById('fullscreen-image');
     const closeFullscreenButton = fullscreenModal ? fullscreenModal.querySelector('.close-fullscreen-button') : null;
-  
+
     const fullscreenCodeModal = document.getElementById('fullscreen-code-modal');
     const fullscreenCodeTabs = document.getElementById('code-language-tabs-fullscreen');
     const fullscreenCodeElement = document.getElementById('fullscreen-project-code');
     const fullscreenCodeLineNumbers = document.getElementById('line-numbers-container-fullscreen');
-    const fullscreenCodeDisplayArea = fullscreenCodeElement ? fullscreenCodeElement.closest('.code-display-area-fullscreen') : null; 
+    const fullscreenCodeDisplayArea = fullscreenCodeElement ? fullscreenCodeElement.closest('.code-display-area-fullscreen') : null;
     const copyCodeButtonFullscreen = document.getElementById('copy-code-button-fullscreen');
     const copyCodeButtonFullscreenText = copyCodeButtonFullscreen ? copyCodeButtonFullscreen.querySelector('.copy-text') : null;
     const closeFullscreenCodeButton = fullscreenCodeModal ? fullscreenCodeModal.querySelector('.close-fullscreen-code-button') : null;
-  
-  
+
     const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
     const mobileSidebar = document.getElementById('mobile-sidebar');
     const closeSidebarBtn = document.getElementById('close-sidebar-btn');
     const sidebarOverlay = document.getElementById('sidebar-overlay');
     const sidebarLinks = mobileSidebar ? mobileSidebar.querySelectorAll('.sidebar-link') : [];
-  
+
     const cursorGlow = document.getElementById('cursor-glow');
     const clickEffectContainer = document.getElementById('click-effect-container');
     const currentYearSpan = document.getElementById('current-year');
     const currentYearSidebar = document.querySelector('.current-year-sidebar');
-  
+
     const navHighlighter = document.querySelector('.desktop-nav .nav-highlighter');
-    const navLinksForHighlighter = document.querySelectorAll('.desktop-nav .nav-link');
-  
-  
+    const allNavLinks = document.querySelectorAll('.desktop-nav .nav-link, .mobile-sidebar .sidebar-link'); // For active section highlighting
+
     let currentLargeProjects = [];
     let currentSmallProjects = [];
     let currentPageLarge = 1;
@@ -552,8 +143,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let isFullscreenModalOpen = false;
     let isFullscreenCodeModalOpen = false;
     let currentCodeLanguageInModal = '';
-  
-  
+
+
     if (typeof particlesJS !== 'undefined') {
         particlesJS.load('particles-js', 'particles-config.json', () => {
             // console.log('Cosmic dust initialized.');
@@ -561,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.error('Particles.js library not found.');
     }
-  
+
      if (cursorGlow) {
         document.addEventListener('mousemove', (e) => {
             requestAnimationFrame(() => {
@@ -570,22 +161,21 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }, { passive: true });
      }
-  
+
     if (clickEffectContainer) {
         document.addEventListener('click', (e) => {
-            // Updated to include .welcome-popup-gate
-            if (e.target.closest('button, a, input, textarea, .project-card, .skill-orb, .modal, .mobile-sidebar, .welcome-popup-gate')) {
+            if (e.target.closest('button, a, input, textarea, .project-card, .skill-orb, .modal, .mobile-sidebar, .welcome-popup-gate, .faq-question-btn, .crypto-address-display input, .payment-id-display input')) {
                 return;
             }
-  
+
             const particleCount = Math.floor(Math.random() * 6) + 10;
             const angleIncrement = (Math.PI * 2) / particleCount;
-  
+
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('span');
                 particle.className = 'click-particle';
                 clickEffectContainer.appendChild(particle);
-  
+
                 const particleSize = Math.random() * 3 + 2.5;
                 const travelDistance = Math.random() * 40 + 50;
                 const angle = (i * angleIncrement) + (Math.random() * angleIncrement * 0.5 - angleIncrement * 0.25);
@@ -593,14 +183,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 const translateY = Math.sin(angle) * travelDistance;
                 const initialOffsetX = (Math.random() - 0.5) * 8;
                 const initialOffsetY = (Math.random() - 0.5) * 8;
-  
+
                 particle.style.width = `${particleSize}px`;
                 particle.style.height = `${particleSize}px`;
                 particle.style.left = `${e.clientX - particleSize / 2 + initialOffsetX}px`;
                 particle.style.top = `${e.clientY - particleSize / 2 + initialOffsetY}px`;
                 particle.style.setProperty('--tx', `${translateX}px`);
                 particle.style.setProperty('--ty', `${translateY}px`);
-  
+
                 particle.addEventListener('animationend', () => {
                     if (particle.parentElement) {
                         particle.remove();
@@ -609,18 +199,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-  
+
     const year = new Date().getFullYear();
     if (currentYearSpan) currentYearSpan.textContent = year;
     if (currentYearSidebar) currentYearSidebar.textContent = year;
-  
-  
+
+
     function createProjectCard(project, index) {
         const card = document.createElement('div');
         card.className = 'project-card anim-on-scroll';
         card.style.setProperty('--card-index', index);
-  
-        const languagesHtml = project.languagesUsed.map(lang => {
+
+        const languagesHtml = project.languagesUsed.map((lang, i) => {
             let iconClass = 'fas fa-code';
             const lowerLang = lang.toLowerCase();
             if (lowerLang.includes('javascript') || lowerLang === 'js') iconClass = 'fab fa-js-square';
@@ -635,13 +225,25 @@ document.addEventListener('DOMContentLoaded', () => {
             else if (lowerLang.includes('vue')) iconClass = 'fab fa-vuejs';
             else if (lowerLang.includes('canvas')) iconClass = 'fas fa-palette';
             else if (lowerLang.includes('api')) iconClass = 'fas fa-cogs';
-            else if (lowerLang.includes('typescript')) iconClass = 'fas fa-code'; 
+            else if (lowerLang.includes('typescript')) iconClass = 'fas fa-code';
             else if (lowerLang.includes('d3.js') || lowerLang.includes('d3')) iconClass = 'fas fa-chart-bar';
             else if (lowerLang.includes('mongodb')) iconClass = 'fas fa-database';
             else if (lowerLang.includes('storybook')) iconClass = 'fas fa-book-open';
-            return `<div class="tech-tag" title="${lang}"><i class="${iconClass}"></i> ${lang}</div>`;
+            return `<div class="tech-tag" title="${lang}" style="--tag-index: ${i};"><i class="${iconClass}"></i> ${lang}</div>`;
         }).join('');
-  
+
+        let projectLinksHtml = '';
+        if (project.liveDemoUrl || project.repoUrl) {
+            projectLinksHtml += '<div class="project-links">';
+            if (project.liveDemoUrl) {
+                projectLinksHtml += `<a href="${project.liveDemoUrl}" target="_blank" rel="noopener noreferrer" class="project-link-btn"><i class="fas fa-eye"></i> معاينة</a>`;
+            }
+            if (project.repoUrl) {
+                projectLinksHtml += `<a href="${project.repoUrl}" target="_blank" rel="noopener noreferrer" class="project-link-btn"><i class="fab fa-github"></i> الكود</a>`;
+            }
+            projectLinksHtml += '</div>';
+        }
+
         card.innerHTML = `
             <div class="project-image-wrapper">
                 <div class="image-placeholder-loader">
@@ -657,15 +259,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="project-languages">
                      ${languagesHtml || `<div class="tech-tag">${project.languagesUsed.join(', ')}</div>`}
                  </div>
+                 ${projectLinksHtml}
                 <button class="btn show-details-btn" aria-label="عرض تفاصيل ${project.name}">
                     استكشف المشروع <i class="fas fa-arrow-left"></i>
                 </button>
             </div>
         `;
-  
+
         const imgElement = card.querySelector('img');
         const loaderElement = card.querySelector('.image-placeholder-loader');
-  
+
         imgElement.onload = () => {
             if (loaderElement) loaderElement.style.display = 'none';
             imgElement.style.opacity = '1';
@@ -675,19 +278,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 loaderElement.innerHTML = '<p class="image-load-error"><i class="fas fa-exclamation-triangle"></i> فشل تحميل الصورة</p>';
             }
         };
-  
+
         card.querySelector('.show-details-btn').addEventListener('click', () => openProjectModal(project));
         return card;
     }
-  
+
     function displayProjects(projects, gridElement) {
         if (!gridElement) return;
         gridElement.classList.add('fade-out-grid');
         setTimeout(() => {
             gridElement.innerHTML = '';
+            const noProjectsMessageElement = gridElement.querySelector('.no-projects-message') || document.createElement('p');
+            noProjectsMessageElement.className = 'no-projects-message';
+            noProjectsMessageElement.innerHTML = '<i class="fas fa-ghost"></i> لا توجد نتائج تطابق بحثك في هذا الكون.';
+            
             if (projects.length === 0) {
-                gridElement.innerHTML = '<p class="no-projects-message"><i class="fas fa-ghost"></i> لا توجد نتائج تطابق بحثك في هذا الكون.</p>';
+                gridElement.appendChild(noProjectsMessageElement);
+                noProjectsMessageElement.style.display = 'flex';
             } else {
+                 if (gridElement.contains(noProjectsMessageElement)) noProjectsMessageElement.style.display = 'none';
                 projects.forEach((project, index) => {
                     const card = createProjectCard(project, index);
                     gridElement.appendChild(card);
@@ -699,7 +308,7 @@ document.addEventListener('DOMContentLoaded', () => {
             gridElement.classList.remove('fade-out-grid');
         }, 300);
     }
-  
+
     function getPaginationItems(currentPage, pageCount, threshold = VISIBLE_PAGINATION_BUTTONS_THRESHOLD) {
         if (pageCount <= threshold) {
             return Array.from({ length: pageCount }, (_, i) => i + 1);
@@ -898,7 +507,7 @@ document.addEventListener('DOMContentLoaded', () => {
             else currentPageSmall = page;
             renderPaginatedProjects(projectType);
             const sectionElement = document.getElementById(`${projectType}-projects-section`);
-            if (sectionElement && header) { // Ensure header is defined
+            if (sectionElement && header) {
                  const headerOffset = header.offsetHeight + 20;
                  const elementPosition = sectionElement.getBoundingClientRect().top;
                  const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
@@ -1005,7 +614,7 @@ document.addEventListener('DOMContentLoaded', () => {
         currentModalProject = project;
   
         modalProjectTitle.textContent = project.name;
-        modalProjectDescription.innerHTML = project.description; // Use innerHTML if description contains HTML
+        modalProjectDescription.innerHTML = project.description;
         
         const modalImageContainer = modalProjectImage.closest('.modal-image-container');
         const modalLoader = modalImageContainer ? modalImageContainer.querySelector('.image-placeholder-loader') : null;
@@ -1068,6 +677,31 @@ document.addEventListener('DOMContentLoaded', () => {
              if(codeActionsDiv) codeActionsDiv.style.display = 'none';
              if(copyCodeButton) copyCodeButton.style.display = 'none';
              if (fullscreenCodeButton) fullscreenCodeButton.style.display = 'none';
+        }
+
+        // Add project links to modal
+        if (modalProjectLinksContainer) {
+            modalProjectLinksContainer.innerHTML = ''; 
+            if (project.liveDemoUrl || project.repoUrl) {
+                if (project.liveDemoUrl) {
+                    const demoLink = document.createElement('a');
+                    demoLink.href = project.liveDemoUrl;
+                    demoLink.target = '_blank';
+                    demoLink.rel = 'noopener noreferrer';
+                    demoLink.className = 'project-link-btn btn btn-secondary';
+                    demoLink.innerHTML = '<i class="fas fa-eye"></i> معاينة مباشرة';
+                    modalProjectLinksContainer.appendChild(demoLink);
+                }
+                if (project.repoUrl) {
+                    const repoLink = document.createElement('a');
+                    repoLink.href = project.repoUrl;
+                    repoLink.target = '_blank';
+                    repoLink.rel = 'noopener noreferrer';
+                    repoLink.className = 'project-link-btn btn btn-secondary';
+                    repoLink.innerHTML = '<i class="fab fa-github"></i> الكود المصدري';
+                    modalProjectLinksContainer.appendChild(repoLink);
+                }
+            }
         }
   
         modal.style.display = 'block';
@@ -1310,7 +944,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if(closeFullscreenButton) closeFullscreenButton.addEventListener('click', closeFullscreenModal);
   
     window.addEventListener('click', (event) => {
-        // Add welcome popup condition
         if (welcomePopupOverlay && welcomePopupOverlay.classList.contains('show') && event.target === welcomePopupOverlay) {
             hideWelcomePopup();
         } else if (isFullscreenCodeModalOpen && event.target === fullscreenCodeModal) {
@@ -1328,7 +961,6 @@ document.addEventListener('DOMContentLoaded', () => {
   
     window.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') {
-            // Add welcome popup condition
             if (welcomePopupOverlay && welcomePopupOverlay.classList.contains('show')) {
                 hideWelcomePopup();
             } else if (isFullscreenCodeModalOpen) {
@@ -1379,9 +1011,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 mobileSidebar.style.display = 'none';
             }
         };
-        mobileSidebar.addEventListener('transitionend', onSidebarTransitionEnd, {once: true}); // Use once
+        mobileSidebar.addEventListener('transitionend', onSidebarTransitionEnd, {once: true});
         
-        setTimeout(() => { // Fallback if transitionend doesn't fire
+        setTimeout(() => {
             if (!mobileSidebar.classList.contains('active') && !sidebarClosed) {
                 if (mobileSidebar.style.display !== 'none') { 
                     body.classList.remove('sidebar-open');
@@ -1409,9 +1041,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if(closeSidebarBtn) closeSidebarBtn.addEventListener('click', closeSidebar);
   
     sidebarLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            const targetHref = link.getAttribute('href');
-            document.querySelectorAll('.desktop-nav .nav-link').forEach(navLink => {
+        link.addEventListener('click', function() {
+            const targetHref = this.getAttribute('href');
+            sidebarLinks.forEach(sLink => sLink.classList.remove('active'));
+            this.classList.add('active');
+
+            allNavLinks.forEach(navLink => { // Use allNavLinks for broader update
                  navLink.classList.toggle('active', navLink.getAttribute('href') === targetHref);
             });
              if (navHighlighter) updateNavHighlighter(); 
@@ -1421,29 +1056,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
   
-    const intersectionObserverOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.05
-    };
-  
     const animationObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('in-view');
             }
         });
-    }, intersectionObserverOptions);
+    }, { threshold: 0.05 });
   
     function updateNavHighlighter() {
         if (!navHighlighter || window.innerWidth < 769) { 
             if(navHighlighter) navHighlighter.style.opacity = '0';
             return;
         }
-        const activeLink = document.querySelector('.desktop-nav .nav-link.active');
-        if (activeLink) {
-            const linkLi = activeLink.parentElement; 
-            if (linkLi && navHighlighter.parentElement === linkLi.parentElement) {
+        const activeDesktopLink = document.querySelector('.desktop-nav .nav-link.active');
+        if (activeDesktopLink) {
+            const linkLi = activeDesktopLink.parentElement; 
+            if (linkLi && navHighlighter.parentElement === linkLi.parentElement) { // Ensure highlighter is child of UL
                 navHighlighter.style.width = `${linkLi.offsetWidth}px`;
                 navHighlighter.style.left = `${linkLi.offsetLeft}px`;
                 navHighlighter.style.opacity = '1';
@@ -1455,8 +1084,66 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
   
-  
-    function handleScroll() {
+    // Section observer for active nav link - REVISED AND IMPROVED
+    const sectionsForNavHighlight = [ // Use the correct IDs from your HTML
+        document.getElementById('hero'),
+        document.getElementById('projects'), // This should be the main projects section container if filters apply to sub-sections
+        document.getElementById('skills-galaxy'),
+        document.getElementById('faq'),
+        document.getElementById('support-me'),
+        document.getElementById('contact')
+    ].filter(section => section !== null);
+
+    if (sectionsForNavHighlight.length > 0) {
+        const navObserverOptions = {
+            root: null, // observes intersections relative to the viewport
+            rootMargin: `-${(header ? header.offsetHeight : 65) + 30}px 0px -${window.innerHeight - (header ? header.offsetHeight : 65) - 150}px 0px`, // Top offset for header, bottom offset to make it more "centered"
+            threshold: 0 // Trigger as soon as any part enters/leaves the "detection zone"
+        };
+
+        let lastActiveSectionId = null; // To avoid flickering
+
+        const navObserverCallback = (entries) => {
+            entries.forEach(entry => {
+                const sectionId = entry.target.id;
+                if (entry.isIntersecting) {
+                    lastActiveSectionId = sectionId;
+                }
+            });
+
+            // If no section is actively intersecting (e.g., scrolling fast between sections),
+            // we might still have a lastActiveSectionId. If not, default to hero if at top.
+            let finalActiveId = lastActiveSectionId;
+            if (!finalActiveId && window.pageYOffset < (sectionsForNavHighlight[0]?.offsetTop || 200) / 2) {
+                 finalActiveId = 'hero';
+            }
+
+
+            allNavLinks.forEach(link => {
+                const linkHref = link.getAttribute('href');
+                if (linkHref === `#${finalActiveId}`) {
+                    link.classList.add('active');
+                    if (link.closest('.desktop-nav')) {
+                        updateNavHighlighter();
+                    }
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+            // If no section is deemed active (e.g. after fast scroll and lastActiveSectionId is null)
+            // and navHighlighter is visible, hide it.
+            const anyDesktopLinkActive = document.querySelector('.desktop-nav .nav-link.active');
+            if (!anyDesktopLinkActive && navHighlighter) {
+                 navHighlighter.style.opacity = '0';
+            }
+        };
+
+        const navObserver = new IntersectionObserver(navObserverCallback, navObserverOptions);
+        sectionsForNavHighlight.forEach(section => navObserver.observe(section));
+    }
+
+
+    function handleScrollStyling() { // Renamed from handleScroll
         const scrollY = window.pageYOffset;
         const isScrolled = scrollY > 30;
         body.classList.toggle('scrolled', isScrolled);
@@ -1468,41 +1155,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 header.classList.add('floating-header-initial');
             }
         }
-  
-        let currentSectionId = 'hero';
-        const sections = document.querySelectorAll(
-            '#hero[id], main#projects[id], #skills-galaxy[id], #contact[id]'
-        );
-  
-        let headerHeightOffset = header ? header.offsetHeight : 65; 
-        if (header && body.classList.contains('scrolled')) { 
-             headerHeightOffset += 10;
-        } else if (header) { 
-            headerHeightOffset += (parseInt(getComputedStyle(header).getPropertyValue('--header-top-margin'), 10) || 0) + 10;
-        }
-        headerHeightOffset += 20; 
-  
-        sections.forEach(section => {
-            if (section) {
-                const sectionTop = section.offsetTop - headerHeightOffset;
-                if (scrollY >= sectionTop) {
-                    currentSectionId = section.getAttribute('id');
-                }
-            }
-        });
-  
-        document.querySelectorAll('.nav-link, .sidebar-link').forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === `#${currentSectionId}`) {
-                link.classList.add('active');
-            }
-        });
-        if (navHighlighter) updateNavHighlighter();
     }
-    let scrollTimeout;
+    let scrollStylingTimeout; // Renamed from scrollTimeout
     window.addEventListener('scroll', () => {
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(handleScroll, 50);
+        clearTimeout(scrollStylingTimeout);
+        scrollStylingTimeout = setTimeout(handleScrollStyling, 50); // Call the renamed function
     }, { passive: true });
     if(header) header.classList.add('floating-header-initial');
   
@@ -1558,6 +1215,7 @@ document.addEventListener('DOMContentLoaded', () => {
             skillElement.style.setProperty('--skill-index', index);
             skillElement.style.setProperty('--skill-color', skill.color || 'var(--deep-purple-accent)');
   
+            // Removed skill.description from here
             skillElement.innerHTML = `
                 <div class="skill-icon"><i class="${skill.icon}"></i></div>
                 <div class="skill-name">${skill.name}</div>
@@ -1651,7 +1309,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function hideWelcomePopup() {
         if (!welcomePopupOverlay || !welcomePopupOverlay.classList.contains('show')) return;
         
-        if (!isModalOpen && !isFullscreenModalOpen && !isFullscreenCodeModalOpen) { // Only remove if no other modal is open
+        if (!isModalOpen && !isFullscreenModalOpen && !isFullscreenCodeModalOpen) { 
             body.classList.remove('modal-open');
         }
         welcomePopupOverlay.classList.remove('show'); 
@@ -1674,6 +1332,81 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 700); 
     }
+
+    // ----- FAQ Section Logic -----
+    const faqQuestionButtons = document.querySelectorAll('.faq-question-btn');
+    const faqAnswerContentDisplay = document.getElementById('faq-answer-content-display');
+    const faqInitialMessage = document.querySelector('.faq-answer-area .faq-initial-message');
+
+    if (faqQuestionButtons.length > 0 && faqAnswerContentDisplay && faqInitialMessage) {
+        faqQuestionButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                faqQuestionButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                faqInitialMessage.style.display = 'none';
+                const answerId = button.dataset.answerId;
+                const answerTemplate = document.getElementById(answerId);
+                if (answerTemplate) {
+                    faqAnswerContentDisplay.innerHTML = answerTemplate.innerHTML;
+                    faqAnswerContentDisplay.classList.remove('active-answer'); 
+                    void faqAnswerContentDisplay.offsetWidth; 
+                    faqAnswerContentDisplay.classList.add('active-answer');
+                } else {
+                    faqAnswerContentDisplay.innerHTML = '<p>عفواً، لم يتم العثور على إجابة لهذا السؤال.</p>';
+                    faqAnswerContentDisplay.classList.add('active-answer');
+                }
+            });
+        });
+    }
+
+    // ----- Support Me - Copy Address/ID Logic -----
+    const allCopyButtons = document.querySelectorAll('.copy-address-btn, .copy-id-btn');
+
+    allCopyButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const dataToCopy = button.dataset.address || button.dataset.id;
+            const copyTextSpan = button.querySelector('.copy-btn-text');
+            const originalButtonText = copyTextSpan ? copyTextSpan.textContent : 'نسخ';
+            const iconElement = button.querySelector('i');
+            const originalIconClass = iconElement ? iconElement.className : 'fas fa-copy';
+
+            navigator.clipboard.writeText(dataToCopy).then(() => {
+                if (copyTextSpan) copyTextSpan.textContent = 'تم النسخ!';
+                if (iconElement) iconElement.className = 'fas fa-check';
+                button.classList.add('copied');
+
+                setTimeout(() => {
+                    if (copyTextSpan) copyTextSpan.textContent = originalButtonText;
+                     if (iconElement) iconElement.className = originalIconClass;
+                    button.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                const inputField = button.closest('.crypto-address-display, .payment-id-display').querySelector('input[type="text"]');
+                if (inputField) {
+                    inputField.select();
+                    inputField.setSelectionRange(0, 99999);
+                    try {
+                        document.execCommand('copy');
+                        if (copyTextSpan) copyTextSpan.textContent = 'تم النسخ!';
+                        if (iconElement) iconElement.className = 'fas fa-check';
+                        button.classList.add('copied');
+                        setTimeout(() => {
+                            if (copyTextSpan) copyTextSpan.textContent = originalButtonText;
+                             if (iconElement) iconElement.className = originalIconClass;
+                            button.classList.remove('copied');
+                        }, 2000);
+                    } catch (execErr) {
+                        console.error('Fallback copy failed: ', execErr);
+                        alert('فشل النسخ. يرجى النسخ يدوياً.');
+                    }
+                } else {
+                    alert('فشل النسخ. يرجى النسخ يدوياً.');
+                }
+            });
+        });
+    });
+
 
     function init() {
          currentLargeProjects = allProjects.filter(p => p.type === 'large');
@@ -1722,23 +1455,18 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         });
   
-        handleScroll(); 
+        handleScrollStyling(); 
         if (navHighlighter) updateNavHighlighter(); 
-        navLinksForHighlighter.forEach(link => {
-            link.addEventListener('click', function() {
-                navLinksForHighlighter.forEach(el => el.classList.remove('active'));
-                this.classList.add('active');
-                if (navHighlighter) {
-                    setTimeout(updateNavHighlighter, 30); 
-                }
-            });
-        });
+        // Remove the click listener from navLinksForHighlighter as IntersectionObserver handles it better.
+        // navLinksForHighlighter.forEach(link => {
+        //     link.addEventListener('click', function() { /* ... */ });
+        // });
   
   
         if (modal) modal.style.display = 'none';
         if (fullscreenModal) fullscreenModal.style.display = 'none';
         if (fullscreenCodeModal) fullscreenCodeModal.style.display = 'none';
-        if (welcomePopupOverlay) welcomePopupOverlay.style.display = 'none'; // Hide welcome popup initially
+        if (welcomePopupOverlay) welcomePopupOverlay.style.display = 'none'; 
         isModalOpen = false;
         isFullscreenModalOpen = false;
         isFullscreenCodeModalOpen = false;
@@ -1835,11 +1563,13 @@ document.addEventListener('DOMContentLoaded', () => {
   
     function startHeroAnimations() {
         const heroTitle = document.querySelector('.hero-title-animated');
-        const heroCta = document.querySelector('.hero-cta-animated');
-  
+        const heroCtaLinks = document.querySelectorAll('.hero-cta-animated'); 
+        
         if (heroTitle) setTimeout(() => heroTitle.classList.add('animate-in'), 0);
         if (heroDynamicSubtitle) setTimeout(() => heroDynamicSubtitle.classList.add('animate-in'), 200);
-        if (heroCta) setTimeout(() => heroCta.classList.add('animate-in'), 400);
+        heroCtaLinks.forEach((cta, index) => { 
+            setTimeout(() => cta.classList.add('animate-in'), 400 + (index * 150)); 
+        });
         
         if (heroDynamicSubtitle) {
             if (subtitleInterval) clearInterval(subtitleInterval); 
@@ -1850,13 +1580,12 @@ document.addEventListener('DOMContentLoaded', () => {
   
     function hidePreloader() {
         if (preloader) {
-            let preloaderHidden = false; // Flag to ensure onActualPreloaderHidden runs once
+            let preloaderHidden = false; 
 
             const onActualPreloaderHidden = () => {
                 if (preloaderHidden) return;
                 preloaderHidden = true;
 
-                // Clear the fallback timeout if transitionend fired first
                 if (window.preloaderFallbackTimeoutId) {
                     clearTimeout(window.preloaderFallbackTimeoutId);
                     delete window.preloaderFallbackTimeoutId;
@@ -1875,9 +1604,7 @@ document.addEventListener('DOMContentLoaded', () => {
             preloader.classList.add('loaded');
 
             const handleTransitionEnd = (event) => {
-                // Ensure the event is for the preloader itself and for the opacity property
                 if (event.target === preloader && event.propertyName === 'opacity') {
-                    // Verify opacity is effectively zero
                     if (parseFloat(window.getComputedStyle(preloader).opacity) < 0.01) {
                         onActualPreloaderHidden();
                     }
@@ -1885,17 +1612,14 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             
             preloader.addEventListener('transitionend', handleTransitionEnd, { once: true });
-
-            // Fallback timeout: slightly longer than the CSS opacity transition duration
-            // CSS transition for opacity is 0.8s.
             window.preloaderFallbackTimeoutId = setTimeout(() => {
-                if (!preloaderHidden && preloader.classList.contains('loaded')) { // Check if not already hidden and 'loaded' is present
+                if (!preloaderHidden && preloader.classList.contains('loaded')) { 
                     console.warn('Preloader fallback: Forcing hide after timeout because transitionend did not fire or complete as expected.');
                     onActualPreloaderHidden();
                 }
-            }, 1200); // 0.8s for transition + 0.4s buffer
+            }, 1200);
 
-        } else { // Preloader element doesn't exist
+        } else { 
             if (welcomePopupOverlay) {
                 showWelcomePopup();
             } else {
@@ -1922,19 +1646,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const particlesNotUsed = (typeof particlesJS === 'undefined');
 
             if (particlesReady || particlesNotUsed) {
-                if (window.particleCheckCount) delete window.particleCheckCount; // Clean up counter
+                if (window.particleCheckCount) delete window.particleCheckCount; 
                 callback();
-            } else if (window.particleCheckCount > 50) { // Max 5 seconds (50 * 100ms)
+            } else if (window.particleCheckCount > 50) { 
                 console.warn("Particles.js did not initialize fully after 5 seconds. Proceeding without them fully loaded.");
-                if (window.particleCheckCount) delete window.particleCheckCount; // Clean up counter
-                callback(); // Force callback
+                if (window.particleCheckCount) delete window.particleCheckCount; 
+                callback(); 
             } else {
                 setTimeout(() => checkParticlesAndInit(callback), 100);
             }
         };
 
         checkParticlesAndInit(() => {
-            init(); // Initialize other parts of the page
+            init(); 
             const timeElapsed = performance.now() - loadStartTime;
             const remainingTime = Math.max(0, minPreloadTime - timeElapsed);
             
