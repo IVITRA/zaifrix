@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
             name: 'مرصد البيانات (Dashboard)',
             type: 'large',
             description: 'لوحة تحكم متقدمة لعرض وتحليل البيانات مع واجهة مستخدم تفاعلية وتصميم مستقبلي مستوحى من الفضاء. تم استخدام أحدث التقنيات لضمان أداء عالٍ وتجربة مستخدم سلسة.',
-            imageUrl: 'https://iili.io/2CCb6KJ.jpg',
+            imageUrl: '',
             detailsImageUrl: 'https://iili.io/2CCb6KJ.jpg',
             languagesUsed: ['JavaScript', 'React', 'Node.js', 'CSS', 'D3.js', 'API'],
             liveDemoUrl: 'https://example.com/dashboard-demo',
