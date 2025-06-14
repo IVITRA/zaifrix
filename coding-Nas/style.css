@@ -628,20 +628,27 @@ body.scrolled .header-container::before {
 .mobile-menu-toggle.active .bar3 { transform: translateY(-9px) rotate(-45deg); background-color: var(--main-green); }
 
 
-/* --- Mobile Sidebar (Artistic Space Theme - Green) --- */
 .mobile-sidebar {
-    position: fixed; top: 0; right: 0;
-    width: 300px; max-width: 80vw; height: 100vh;
+    position: fixed; 
+    top: 0; 
+    right: 0;
+    bottom: 0; 
+    width: 300px; 
+    max-width: 80vw; 
+    min-height: 100%; 
     background: rgba(5, 15, 10, 0.92);
     backdrop-filter: blur(25px) saturate(190%);
     box-shadow: -15px 0 60px rgba(0, 0, 0, 0.8), inset 3px 0 15px rgba(var(--accent-glow-green-rgb), 0.2);
     z-index: 1002;
-    transform: translateX(100%); opacity: 0; visibility: hidden;
+    transform: translateX(100%); 
+    opacity: 0; 
+    visibility: hidden;
     transition: transform 0.5s var(--transition-sidebar), opacity 0.4s ease-out, visibility 0s 0.5s;
     display: none;
     flex-direction: column;
     border-left: 1px solid var(--border-color-strong);
     overflow: hidden;
+    box-sizing: border-box;
 }
 .mobile-sidebar.active {
     transform: translateX(0); opacity: 1; visibility: visible;
@@ -667,14 +674,19 @@ body.scrolled .header-container::before {
     100% { background-position: 0 -100px; filter: brightness(1.3); }
 }
 
-
 .sidebar-content-wrapper {
-    display: flex; flex-direction: column; height: 100%;
+    display: flex; 
+    flex-direction: column; 
+    height: 100%; /* تغيير إلى 100% */
     padding: 25px;
-    overflow-y: auto; position: relative; z-index: 1;
+    overflow-y: auto; 
+    position: relative; 
+    z-index: 1;
+    box-sizing: border-box; /* إضافة */
 }
 
 #mobile-sidebar #close-sidebar-btn {
+    position: absolute;
     top: 20px;
     left: 20px;
     z-index: 15;
@@ -683,9 +695,15 @@ body.scrolled .header-container::before {
 }
 
 .sidebar-header {
+    position: sticky;
+    top: 0;
+    background: rgba(5, 15, 10, 0.92);
+    z-index: 5;
     padding-top: 65px;
-    padding-bottom: 25px; margin-bottom: 25px;
-    display: flex; align-items: center;
+    padding-bottom: 25px; 
+    margin-bottom: 25px;
+    display: flex; 
+    align-items: center;
     border-bottom: 1px solid var(--border-color-medium);
 }
 .sidebar-logo { font-size: 1.9rem; font-weight: 900; transition: text-shadow 0.3s ease; }
@@ -745,8 +763,14 @@ body.scrolled .header-container::before {
 
 
 .sidebar-footer {
-    padding-top: 25px; margin-top: auto;
-    border-top: 1px solid var(--border-color-subtle); text-align: center;
+    position: sticky;
+    bottom: 0;
+    background: rgba(5, 15, 10, 0.92);
+    z-index: 5;
+    padding-top: 25px; 
+    margin-top: auto;
+    border-top: 1px solid var(--border-color-subtle); 
+    text-align: center;
 }
 .social-links-sidebar { display: flex; justify-content: center; gap: 22px; margin-bottom: 18px; }
 .social-links-sidebar a {
