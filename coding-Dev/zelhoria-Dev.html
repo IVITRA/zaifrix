@@ -55,51 +55,49 @@
     <!-- حاوية تأثير النقر -->
     <div id="click-effect-container"></div>
 
-    <header id="main-header">
+   <header id="main-header">
         <div class="header-container">
-            <a href="#hero" class="logo">zelhoria</a>
-            <nav class="desktop-nav">
-                <ul>
-                    <div class="nav-highlighter"></div> 
-                    <li><a href="#hero" class="nav-link active"><i class="fas fa-house nav-icon"></i>الرئيسية</a></li>
-                    <li><a href="#projects" class="nav-link"><i class="fas fa-rocket nav-icon"></i>المشاريع</a></li>
-                    <li><a href="#skills-galaxy" class="nav-link"><i class="fas fa-meteor nav-icon"></i>المهارات</a></li>
-                    <li><a href="#contact" class="nav-link"><i class="fas fa-satellite-dish nav-icon"></i>تواصل</a></li>
-                </ul>
-            </nav>
             <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="فتح القائمة" aria-expanded="false">
                 <span class="bar bar1"></span>
                 <span class="bar bar2"></span>
                 <span class="bar bar3"></span>
             </button>
+            <a href="#hero" class="logo">zelhoria</a>
+            <nav class="desktop-nav">
+                <ul>
+                    <div class="nav-highlighter"></div> 
+                    <li><a href="#hero" class="nav-link active"><i class="fas fa-home nav-icon"></i>الرئيسية</a></li>
+                    <li><a href="#texts-observatory" class="nav-link"><i class="fas fa-book-open nav-icon"></i>النصوص</a></li>
+                    <li><a href="#contact" class="nav-link"><i class="fas fa-satellite-dish nav-icon"></i>تواصل</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
 
-    <!-- القائمة الجانبية للجوال (تصميم فضائي فني) -->
-    <nav id="mobile-sidebar" class="mobile-sidebar" aria-hidden="true">
-        <div class="sidebar-glow sidebar-glow-top"></div>
-        <div class="sidebar-glow sidebar-glow-bottom"></div>
-        <div class="sidebar-content-wrapper">
-            <button id="close-sidebar-btn" class="close-btn-design" aria-label="إغلاق القائمة"><i class="fas fa-times"></i></button>
-            <div class="sidebar-header">
-                <a href="#hero" class="sidebar-logo">zelhoria</a>
-            </div>
-            <ul class="sidebar-nav-links">
-                <li><a href="#hero" class="sidebar-link"><i class="fas fa-house"></i><span>الرئيسية</span></a></li>
-                <li><a href="#projects" class="sidebar-link"><i class="fas fa-rocket"></i><span>المشاريع</span></a></li>
-                <li><a href="#skills-galaxy" class="sidebar-link"><i class="fas fa-meteor"></i><span>المهارات</span></a></li>
-                <li><a href="#contact" class="sidebar-link"><i class="fas fa-satellite-dish"></i><span>تواصل</span></a></li>
-            </ul>
-            <div class="sidebar-footer">
-                <div class="social-links-sidebar">
-                    <a href="#" target="_blank" aria-label="Github"><i class="fab fa-github"></i></a>
-                    <a href="#" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                    <a href="#" target="_blank" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
-                </div>
-                <p class="copyright-sidebar">© <span class="current-year-sidebar"></span> zelhoria. <br> إبداع بلا حدود.</p>
-            </div>
+<nav id="mobile-sidebar" class="mobile-sidebar" aria-hidden="true">
+    <div class="sidebar-glow sidebar-glow-top"></div>
+    <div class="sidebar-glow sidebar-glow-bottom"></div>
+    <div class="sidebar-content-wrapper">
+        <button id="close-sidebar-btn" class="close-btn-design" aria-label="إغلاق القائمة"><i class="fas fa-times"></i></button>
+        <div class="sidebar-header">
+            <a href="#hero" class="sidebar-logo">zelhoria</a>
         </div>
-    </nav>
+        <ul class="sidebar-nav-links">
+            <li><a href="#hero" class="sidebar-link"><i class="fas fa-home"></i><span>الرئيسية</span></a></li>
+            <li><a href="#texts-observatory" class="sidebar-link"><i class="fas fa-book-open"></i><span>النصوص</span></a></li>
+            <li><a href="#contact" class="sidebar-link"><i class="fas fa-satellite-dish"></i><span>تواصل</span></a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <div class="social-links-sidebar">
+                <a href="#" target="_blank" aria-label="Github"><i class="fab fa-github"></i></a>
+                <a href="#" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="#" target="_blank" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+            </div>
+            <p class="copyright-sidebar">© <span class="current-year-sidebar">2024</span> zelhoria. <br> إبداع بلا حدود.</p> <!-- Year can be dynamic with JS -->
+        </div>
+    </div>
+</nav>
+
     <div id="sidebar-overlay" class="sidebar-overlay"></div>
 
     <section id="hero">

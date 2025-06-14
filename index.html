@@ -56,6 +56,20 @@
             touch-action: manipulation;
         }
 
+        /* إزالة شريط التمرير للحواسيب */
+        @media (hover: hover) and (pointer: fine) {
+            body {
+                overflow-y: hidden;
+            }
+            ::-webkit-scrollbar {
+                display: none;
+            }
+            body {
+                -ms-overflow-style: none;  /* IE and Edge */
+                scrollbar-width: none;  /* Firefox */
+            }
+        }
+
         #space-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
         }
@@ -296,9 +310,12 @@
             box-shadow: 0 18px 40px rgba(0,0,0,0.45), 0 0 30px rgba(var(--primary-accent-rgb), 0.3);
         }
 
-        ::-webkit-scrollbar { width: 9px; }
-        ::-webkit-scrollbar-track { background: rgba(var(--bg-color-rgb), 0.6); }
-        ::-webkit-scrollbar-thumb { background: linear-gradient(var(--secondary-accent), var(--primary-accent)); border-radius: 9px; }
+        /* شريط التمرير للجوال فقط */
+        @media (hover: none) and (pointer: coarse) {
+            ::-webkit-scrollbar { width: 9px; }
+            ::-webkit-scrollbar-track { background: rgba(var(--bg-color-rgb), 0.6); }
+            ::-webkit-scrollbar-thumb { background: linear-gradient(var(--secondary-accent), var(--primary-accent)); border-radius: 9px; }
+        }
 
         @media (max-width: 900px) {
             .portal-gate { width: 92vw; }
@@ -311,6 +328,7 @@
                 align-items: flex-start;
                 padding: 15px 0;
                 min-height: auto;
+                overflow-y: auto; /* تمكين التمرير للجوال */
             }
             
             .preloader-name-decrypt {
@@ -648,7 +666,9 @@
 
         const canvas = document.getElementById('space-bg');
         const ctx = canvas.getContext('2d');
-        let width, height; let stars = []; const numStars = 160; 
+        let width, height; 
+        let stars = []; 
+        let numStars = 160; 
         let mouse = { x: null, y: null };
 
         if (!isTouchDevice) {
@@ -658,66 +678,125 @@
             });
         } else {
             // Reduce number of stars for mobile performance
-            stars = [];
             numStars = 100;
         }
 
         if (canvas) {
             function setCanvasSize() {
-                width = window.innerWidth; height = window.innerHeight;
-                canvas.width = width; canvas.height = height;
+                width = window.innerWidth; 
+                height = window.innerHeight;
+                canvas.width = width; 
+                canvas.height = height;
             }
+            
             class Star {
                 constructor() {
-                    this.x = Math.random() * width; this.y = Math.random() * height; this.z = Math.random() * width;
+                    this.x = Math.random() * width; 
+                    this.y = Math.random() * height; 
+                    this.z = Math.random() * width;
                     this.size = Math.random() * 2.3 + 0.45; 
-                    this.baseSpeedX = (Math.random() - 0.5) * 0.19; this.baseSpeedY = (Math.random() - 0.5) * 0.19 + 0.16;
-                    this.baseOpacity = Math.random() * 0.55 + 0.3; this.opacity = this.baseOpacity; 
-                    this.twinkleSpeed = Math.random() * 0.0075 + 0.0032; this.twinkleDirection = Math.random() < 0.5 ? 1 : -1;
+                    this.baseSpeedX = (Math.random() - 0.5) * 0.19; 
+                    this.baseSpeedY = (Math.random() - 0.5) * 0.19 + 0.16;
+                    this.baseOpacity = Math.random() * 0.55 + 0.3; 
+                    this.opacity = this.baseOpacity; 
+                    this.twinkleSpeed = Math.random() * 0.0075 + 0.0032; 
+                    this.twinkleDirection = Math.random() < 0.5 ? 1 : -1;
                     const roll = Math.random();
-                    if (roll < 0.07) this.colorBase = [175, 205, 255]; else if (roll < 0.14) this.colorBase = [255, 230, 185];
+                    if (roll < 0.07) this.colorBase = [175, 205, 255]; 
+                    else if (roll < 0.14) this.colorBase = [255, 230, 185];
                     else this.colorBase = [215, 215, 245];
                 }
+                
                 draw() {
-                    ctx.beginPath(); const currentSize = this.size * (this.z / width * 0.62 + 0.38);
+                    ctx.beginPath(); 
+                    const currentSize = this.size * (this.z / width * 0.62 + 0.38);
                     ctx.arc(this.x, this.y, Math.max(0.32, currentSize), 0, Math.PI * 2);
                     const depthOpacityFactor = (this.z / width * 0.68 + 0.32);
                     ctx.fillStyle = `rgba(${this.colorBase[0]}, ${this.colorBase[1]}, ${this.colorBase[2]}, ${this.opacity * depthOpacityFactor})`;
                     ctx.fill();
                 }
+                
                 update() {
-                    let speedX = this.baseSpeedX; let speedY = this.baseSpeedY;
+                    let speedX = this.baseSpeedX; 
+                    let speedY = this.baseSpeedY;
+                    
                     if (mouse.x && !isTouchDevice) {
                         const mouseFactorBase = 0.00018; 
                         const mouseFactor = mouseFactorBase * (width - this.z);
                         speedX += (mouse.x - width / 2) * mouseFactor; 
                         speedY += (mouse.y - height / 2) * mouseFactor; 
                     }
-                    this.x += speedX; this.y += speedY;
+                    
+                    this.x += speedX; 
+                    this.y += speedY;
                     this.opacity += this.twinkleSpeed * this.twinkleDirection;
+                    
                     if (this.opacity > this.baseOpacity + 0.32 || this.opacity < this.baseOpacity - 0.28) {
-                        this.twinkleDirection *= -1; this.opacity = Math.max(0.08, Math.min(1, this.opacity));
+                        this.twinkleDirection *= -1; 
+                        this.opacity = Math.max(0.08, Math.min(1, this.opacity));
                     }
+                    
                     const boundaryOffset = this.size * 2.2;
-                    if (this.y > height + boundaryOffset) { this.y = -boundaryOffset; this.x = Math.random() * width; this.z = Math.random() * width; this.baseOpacity = Math.random() * 0.55 + 0.3;}
-                    if (this.y < -boundaryOffset) { this.y = height + boundaryOffset; this.x = Math.random() * width; this.z = Math.random() * width; this.baseOpacity = Math.random() * 0.55 + 0.3;}
-                    if (this.x > width + boundaryOffset) { this.x = -boundaryOffset; this.y = Math.random() * height; this.z = Math.random() * width; this.baseOpacity = Math.random() * 0.55 + 0.3;}
-                    if (this.x < -boundaryOffset) { this.x = width + boundaryOffset; this.y = Math.random() * height; this.z = Math.random() * width; this.baseOpacity = Math.random() * 0.55 + 0.3;}
+                    if (this.y > height + boundaryOffset) { 
+                        this.y = -boundaryOffset; 
+                        this.x = Math.random() * width; 
+                        this.z = Math.random() * width; 
+                        this.baseOpacity = Math.random() * 0.55 + 0.3;
+                    }
+                    if (this.y < -boundaryOffset) { 
+                        this.y = height + boundaryOffset; 
+                        this.x = Math.random() * width; 
+                        this.z = Math.random() * width; 
+                        this.baseOpacity = Math.random() * 0.55 + 0.3;
+                    }
+                    if (this.x > width + boundaryOffset) { 
+                        this.x = -boundaryOffset; 
+                        this.y = Math.random() * height; 
+                        this.z = Math.random() * width; 
+                        this.baseOpacity = Math.random() * 0.55 + 0.3;
+                    }
+                    if (this.x < -boundaryOffset) { 
+                        this.x = width + boundaryOffset; 
+                        this.y = Math.random() * height; 
+                        this.z = Math.random() * width; 
+                        this.baseOpacity = Math.random() * 0.55 + 0.3;
+                    }
                 }
             }
-            function initStars() { stars = []; for (let i = 0; i < numStars; i++) stars.push(new Star()); }
-            let lastTimestamp = 0; const targetFps = 60; const frameInterval = 1000 / targetFps;
+            
+            function initStars() { 
+                stars = []; 
+                for (let i = 0; i < numStars; i++) stars.push(new Star()); 
+            }
+            
+            let lastTimestamp = 0; 
+            const targetFps = 60; 
+            const frameInterval = 1000 / targetFps;
+            
             function animateStars(timestamp) {
                 requestAnimationFrame(animateStars);
                 const elapsed = timestamp - lastTimestamp;
+                
                 if (elapsed > frameInterval) {
                     lastTimestamp = timestamp - (elapsed % frameInterval);
                     ctx.clearRect(0, 0, width, height);
-                    stars.forEach(star => { star.update(); star.draw(); });
+                    stars.forEach(star => { 
+                        star.update(); 
+                        star.draw(); 
+                    });
                 }
             }
-            setCanvasSize(); initStars(); requestAnimationFrame(animateStars);
-            window.addEventListener('resize', () => { if (canvas) { setCanvasSize(); initStars(); } });
+            
+            setCanvasSize(); 
+            initStars(); 
+            requestAnimationFrame(animateStars);
+            
+            window.addEventListener('resize', () => { 
+                if (canvas) { 
+                    setCanvasSize(); 
+                    initStars(); 
+                } 
+            });
         }
     </script>
 </body>
