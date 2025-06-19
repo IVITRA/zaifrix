@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تم فتح الرابط بنجاح!</title>
+    <!-- Assuming style.css from zelhoria-Dev.html is available -->
+    <link rel="stylesheet" href="coding-Dev/style.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+
+
+        body.link-unlocked-page {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+            background-color: var(--near-black-bg);
+            font-family: var(--font-primary);
+            color: var(--text-primary);
+        }
+
+        
+        .unlocked-gate-container {
+            background: var(--dark-element-bg);
+            border-radius: var(--border-radius-xl);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6),
+                        0 0 40px var(--glow-color-main),
+                        inset 0 0 0 2px var(--border-color-medium);
+            max-width: 620px;
+            width: 90%;
+            position: relative;
+            padding: 1px;
+            overflow: hidden;
+            opacity: 0;
+            transform: scale(0.8) rotateY(15deg) perspective(800px);
+            animation: gateOpenAnimation 0.9s cubic-bezier(0.165, 0.84, 0.44, 1) 0.3s forwards;
+            z-index: 1; 
+        }
+
+
+        .unlocked-gate-container::before {
+            content: "";
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: conic-gradient(
+                transparent,
+                transparent,
+                var(--accent-glow),
+                var(--royal-purple),
+                var(--accent-glow),
+                transparent,
+                transparent
+            );
+            animation: rotateBorder 8s linear infinite;
+            z-index: 1;
+        }
+
+        .unlocked-gate-container::after {
+            content: "";
+            position: absolute;
+            inset: 3px;
+            background: var(--dark-element-bg);
+            border-radius: var(--border-radius-xl);
+            z-index: 2;
+        }
+        
+        .gate-border {
+            position: absolute;
+            background-color: var(--accent-glow);
+            box-shadow: 0 0 10px var(--accent-glow), 0 0 20px var(--royal-purple);
+            z-index: 3;
+            opacity: 0;
+        }
+        .gate-border-top, .gate-border-bottom { height: 4px; width: 0; animation: expandWidth 0.8s 0.8s forwards cubic-bezier(0.23, 1, 0.32, 1); }
+        .gate-border-left, .gate-border-right { width: 4px; height: 0; animation: expandHeight 0.8s 1s forwards cubic-bezier(0.23, 1, 0.32, 1); }
+
+        .gate-border-top { top: 0; left: 50%; transform: translateX(-50%); }
+        .gate-border-bottom { bottom: 0; left: 50%; transform: translateX(-50%); }
+        .gate-border-left { left: 0; top: 50%; transform: translateY(-50%); }
+        .gate-border-right { right: 0; top: 50%; transform: translateY(-50%); }
+        .gate-glow-effect {
+            position: absolute; inset: 0; border-radius: var(--border-radius-xl);
+            background: radial-gradient(ellipse at center, rgba(var(--royal-purple-rgb), 0.18) 0%, transparent 70%);
+            animation: pulseGlow 3s infinite alternate ease-in-out 1.2s;
+            z-index: 3; opacity:0;
+        }
+         @keyframes pulseGlow {
+            from { opacity: 0.3; transform: scale(0.98); }
+            to { opacity: 0.7; transform: scale(1.02); }
+        }
+
+        .gate-scanline-effect {
+            position: absolute; inset: 0; border-radius: var(--border-radius-xl);
+            background: repeating-linear-gradient(0deg, rgba(var(--accent-glow-rgb), 0) 0px, rgba(var(--accent-glow-rgb), 0.04) 1px, rgba(var(--accent-glow-rgb), 0) 2px);
+            animation: scanLineMove 10s linear infinite 1.4s;
+            z-index: 3; opacity:0;
+        }
+        @keyframes scanLineMove {
+            from { background-position-y: 0; opacity: 0.5;}
+            to { background-position-y: 100px; opacity: 0.5;}
+        }
+
+        .unlocked-gate-content-wrapper {
+            position: relative;
+            z-index: 4;
+            padding: 50px 40px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: contentAppear 0.7s 1.5s forwards ease-out;
+        }
+        
+        .unlocked-gate-icon-container {
+            margin-bottom: 25px;
+        }
+        .unlocked-gate-main-icon {
+            font-size: 4.5rem;
+            color: var(--royal-purple);
+            text-shadow: 0 0 30px var(--glow-color-main), 0 0 15px var(--light-purple-highlight);
+            animation: iconFloat 3s infinite ease-in-out alternate 1.6s;
+        }
+
+        .unlocked-gate-title {
+            font-family: var(--font-secondary);
+            color: var(--light-purple-highlight);
+            font-size: clamp(2rem, 5.5vw, 2.8rem);
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px var(--glow-color-accent);
+        }
+
+        .unlocked-gate-message {
+            color: var(--text-secondary);
+            font-size: 1.15rem;
+            line-height: 1.9;
+            margin-bottom: 35px;
+            font-weight: 300;
+        }
+        
+        .unlocked-gate-action .btn {
+            padding: 14px 35px;
+            font-size: 1.05rem;
+        }
+        .unlocked-gate-action .btn i {
+            font-size: 1.1em;
+        }
+
+         .gate-spark-container {
+            position: absolute; width: 100%; height: 100%;
+            top: 0; left: 0; pointer-events: none;
+            overflow: visible; z-index: 5;
+        }
+    </style>
+</head>
+<body class="link-unlocked-page">
+
+    <div id="particles-js"></div>
+    <div id="cursor-glow"></div>
+    <div id="click-effect-container"></div>
+
+    <div class="unlocked-gate-container">
+        <div class="gate-border gate-border-top"></div>
+        <div class="gate-border gate-border-bottom"></div>
+        <div class="gate-border gate-border-left"></div>
+        <div class="gate-border gate-border-right"></div>
+        
+        <div class="gate-glow-effect"></div>
+        <div class="gate-scanline-effect"></div>
+
+        <div class="unlocked-gate-content-wrapper">
+            <div class="unlocked-gate-icon-container">
+                <i class="fas fa-gift unlocked-gate-main-icon"></i>
+            </div>
+            <h2 class="unlocked-gate-title">تهانينا! تم فك شيفرة الرابط!</h2>
+            <p class="unlocked-gate-message">
+                لقد نجحت في عبور التيار الرقمي. بوابتك إلى المحتوى جاهزة الآن.
+            </p>
+            <div class="unlocked-gate-action">
+                
+                <a href="#" class="btn btn-primary pulse">
+                    الانتقال إلى المحتوى <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+        </div>
+        
+        <div class="gate-spark-container" id="gate-spark-container-top"></div>
+        <div class="gate-spark-container" id="gate-spark-container-bottom"></div>
+        <div class="gate-spark-container" id="gate-spark-container-left"></div>
+        <div class="gate-spark-container" id="gate-spark-container-right"></div>
+    </div>
+
+    <script src="particles.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (document.getElementById('particles-js')) {
+                particlesJS("particles-js", {
+                    "particles": {
+                        "number": { "value": 70, "density": { "enable": true, "value_area": 800 } },
+                        "color": { "value": getComputedStyle(document.documentElement).getPropertyValue('--star-dust-color').trim() || "#ffffff" }, // Use CSS var
+                        "shape": { "type": "circle", "stroke": { "width": 0, "color": "#000000" }, "polygon": { "nb_sides": 5 } },
+                        "opacity": { "value": 0.6, "random": true, "anim": { "enable": true, "speed": 1, "opacity_min": 0.1, "sync": false } },
+                        "size": { "value": 2.5, "random": true, "anim": { "enable": true, "speed": 2, "size_min": 0.3, "sync": false } },
+                        "line_linked": { "enable": false },
+                        "move": { "enable": true, "speed": 1.2, "direction": "none", "random": true, "straight": false, "out_mode": "out", "bounce": false, "attract": { "enable": false, "rotateX": 600, "rotateY": 1200 } }
+                    },
+                    "interactivity": {
+                        "detect_on": "canvas",
+                        "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": false }, "resize": true },
+                        "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 0.3 } }, "bubble": {}, "repulse": {}, "push": {}, "remove": {} }
+                    },
+                    "retina_detect": true
+                });
+            }
+
+            const cursorGlow = document.getElementById('cursor-glow');
+            if (cursorGlow) {
+                document.addEventListener('mousemove', (e) => {
+                    cursorGlow.style.left = e.clientX + 'px';
+                    cursorGlow.style.top = e.clientY + 'px';
+                });
+            }
+
+            const clickEffectContainer = document.getElementById('click-effect-container');
+            if (clickEffectContainer) {
+                document.addEventListener('click', (e) => {
+                    for (let i = 0; i < 8; i++) { 
+                        const particle = document.createElement('div');
+                        particle.classList.add('click-particle');
+                        const size = Math.random() * 5 + 2;
+                        particle.style.width = `${size}px`;
+                        particle.style.height = `${size}px`;
+                        particle.style.left = `${e.clientX}px`;
+                        particle.style.top = `${e.clientY}px`;
+                        const angle = Math.random() * 360;
+                        const distance = Math.random() * 60 + 20;
+                        const translateX = Math.cos(angle * Math.PI / 180) * distance;
+                        const translateY = Math.sin(angle * Math.PI / 180) * distance;
+                        particle.style.setProperty('--tx', `${translateX}px`);
+                        particle.style.setProperty('--ty', `${translateY}px`);
+
+                        clickEffectContainer.appendChild(particle);
+                        particle.addEventListener('animationend', () => {
+                            particle.remove();
+                        });
+                    }
+                });
+            }
+            
+            function createSparks(containerId, numSparks, area) {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+
+                for (let i = 0; i < numSparks; i++) {
+                    const spark = document.createElement('div');
+                    spark.className = 'gate-spark';
+
+                    let x, y, tx, ty;
+                    const sparkSize = Math.random() * 2 + 1;
+                    spark.style.width = `${sparkSize}px`;
+                    spark.style.height = `${sparkSize * (Math.random() * 2 + 3)}px`;
+
+                    switch (area) {
+                        case 'top':
+                            x = Math.random() * 100 + '%';
+                            y = '0%';
+                            tx = (Math.random() - 0.5) * 60 + 'px';
+                            ty = Math.random() * 30 + 15 + 'px'; 
+                            break;
+                        case 'bottom':
+                            x = Math.random() * 100 + '%';
+                            y = '100%';
+                            tx = (Math.random() - 0.5) * 60 + 'px';
+                            ty = -(Math.random() * 30 + 15) + 'px';
+                            spark.style.transformOrigin = 'bottom center';
+                            break;
+                        case 'left':
+                            x = '0%';
+                            y = Math.random() * 100 + '%';
+                            tx = Math.random() * 30 + 15 + 'px'; 
+                            ty = (Math.random() - 0.5) * 60 + 'px'; 
+                            spark.style.transform = 'rotate(90deg)';
+                            spark.style.transformOrigin = 'left center';
+                            break;
+                        case 'right':
+                            x = '100%';
+                            y = Math.random() * 100 + '%';
+                            tx = -(Math.random() * 30 + 15) + 'px'; 
+                            ty = (Math.random() - 0.5) * 60 + 'px';
+                            spark.style.transform = 'rotate(-90deg)';
+                            spark.style.transformOrigin = 'right center';
+                            break;
+                    }
+
+                    spark.style.left = x;
+                    spark.style.top = y;
+                    spark.style.setProperty('--tx', tx);
+                    spark.style.setProperty('--ty', ty);
+                    spark.style.animationDelay = `${Math.random() * 0.5 + 1.8}s`;
+
+                    container.appendChild(spark);
+                    spark.addEventListener('animationend', () => spark.remove());
+                }
+            }
+
+            setTimeout(() => {
+                createSparks('gate-spark-container-top', 15, 'top');
+                createSparks('gate-spark-container-bottom', 15, 'bottom');
+                createSparks('gate-spark-container-left', 10, 'left');
+                createSparks('gate-spark-container-right', 10, 'right');
+            }, 500);
+        });
+    </script>
+</body>
+</html>

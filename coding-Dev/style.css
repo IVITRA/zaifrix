@@ -11,10 +11,9 @@
     --dark-purple-shadow: #311B92;
     --accent-glow: #9575CD;
     --accent-glow-rgb: 149, 117, 205;
-    --star-dust-color: rgba(209, 196, 233, 0.3); /* لون لغبار النجوم */
+    --star-dust-color: rgba(209, 196, 233, 0.3); 
 
 
-    /* RGB versions for rgba() */
     --royal-purple-rgb: 94, 53, 177;
     --deep-purple-accent-rgb: 126, 87, 194;
     --light-purple-highlight-rgb: 209, 196, 233;
@@ -31,8 +30,7 @@
     --text-primary: #ECEFF1;
     --text-secondary: #B0BEC5;
     --text-muted: #90A4AE;
-    /* --text-terminal-main from green theme is not directly mapped, purple uses specific text-terminal-green if needed */
-    /* --text-terminal-green: #4CAF50; /* Specific green for terminal, kept if used */
+
 
     --glow-color-main: rgba(94, 53, 177, 0.7);
     --glow-color-accent: rgba(126, 87, 194, 0.6);
@@ -3277,16 +3275,16 @@ html[dir="rtl"] #fullscreen-code-modal .close-fullscreen-code-button {
         font-size: clamp(1.2rem, 3vw, 1.5rem);
     }
     .crypto-item, .payment-id-item {
-        padding: 15px; /* Slightly less padding */
+        padding: 15px;
     }
     .crypto-info, .payment-id-info {
-        flex-direction: column; /* Stack icon/logo and name */
-        align-items: flex-start; /* Align to start for RTL */
+        flex-direction: column; 
+        align-items: flex-start;
         gap: 5px;
-        margin-bottom: 10px; /* Space before address/id input */
+        margin-bottom: 10px;
     }
     .crypto-icon, .crypto-icon-img, .payment-id-logo {
-        margin-bottom: 0; /* Reset margin if any was added previously */
+        margin-bottom: 0;
     }
     .crypto-name, .payment-id-name {
         font-size: 0.95rem;
@@ -3300,12 +3298,189 @@ html[dir="rtl"] #fullscreen-code-modal .close-fullscreen-code-button {
         padding: 8px 12px;
         font-size: 0.85rem;
     }
-    .copy-address-btn .copy-btn-text,
-    .copy-id-btn .copy-btn-text {
-        /* Potentially hide text on very small screens if space is an issue */
-        /* display: none; */
-    }
     .copy-address-btn i, .copy-id-btn i {
-        margin-right: 0; /* If text is hidden */
+        margin-right: 0; 
     }
+}
+.custom-message-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(var(--near-black-bg-rgb, 3, 0, 10), 0.75);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10005;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-out, visibility 0s linear 0.3s;
+}
+
+.custom-message-overlay.show {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease-out, visibility 0s linear 0s;
+}
+
+.custom-message-box {
+    background-color: var(--dark-element-bg, #0d051a);
+    padding: 30px 35px;
+    border-radius: var(--border-radius-large, 18px);
+    border: 2px solid var(--border-color-medium, rgba(94, 53, 177, 0.5));
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5), 0 0 30px var(--glow-color-accent, rgba(126, 87, 194, 0.3));
+    text-align: center;
+    max-width: 480px;
+    width: 90%;
+    transform: scale(0.8) rotateY(-20deg) translateY(20px);
+    opacity: 0;
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease-out;
+}
+
+.custom-message-overlay.show .custom-message-box {
+    transform: scale(1) rotateY(0deg) translateY(0);
+    opacity: 1;
+}
+
+#custom-message-text {
+    font-size: 1.15rem;
+    color: var(--text-primary, #ECEFF1);
+    margin-bottom: 25px;
+    line-height: 1.75;
+    white-space: pre-line;
+    position: relative;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.4s ease-out 0.2s, transform 0.4s ease-out 0.2s;
+}
+
+.custom-message-overlay.show #custom-message-text {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.custom-message-close-btn {
+    padding: 12px 35px;
+    background: var(--royal-purple, #5E35B1);
+    color: var(--text-primary, #ECEFF1);
+    border: none;
+    border-radius: var(--border-radius-main, 12px);
+    font-family: var(--font-primary, 'Cairo', sans-serif);
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.25s ease-out, transform 0.2s ease-out, box-shadow 0.25s ease-out;
+    box-shadow: 0 4px 10px rgba(var(--dark-purple-shadow-rgb, 49, 27, 146), 0.3);
+    opacity: 0;
+    transform: translateY(10px);
+    transition-delay: 0.3s;
+}
+.custom-message-overlay.show .custom-message-close-btn {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.custom-message-close-btn:hover {
+    background-color: var(--deep-purple-accent, #7E57C2);
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 0 6px 15px rgba(var(--accent-glow-rgb, 149, 117, 205), 0.4);
+}
+
+.custom-message-close-btn:focus {
+    outline: 2px solid var(--accent-glow, #9575CD);
+    outline-offset: 3px;
+}
+
+.custom-message-box.success {
+    border-color: var(--accent-glow, #9575CD);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5), 0 0 35px var(--accent-glow, #9575CD);
+}
+
+.custom-message-box.success #custom-message-text::before {
+    content: "\f058";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    color: var(--accent-glow, #9575CD);
+    font-size: 2.2rem;
+    display: block;
+    margin-bottom: 18px;
+    animation: iconPopIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s forwards;
+}
+
+.custom-message-box.success .custom-message-close-btn {
+    background: var(--royal-purple, #5E35B1);
+    color: var(--text-primary, #ECEFF1);
+    box-shadow: 0 4px 10px rgba(var(--dark-purple-shadow-rgb, 49, 27, 146), 0.4);
+}
+.custom-message-box.success .custom-message-close-btn:hover {
+    background: var(--deep-purple-accent, #7E57C2);
+    box-shadow: 0 6px 15px rgba(var(--accent-glow-rgb, 149, 117, 205), 0.5);
+}
+.custom-message-box.success .custom-message-close-btn:focus {
+     outline: 2px solid var(--light-purple-highlight, #D1C4E9);
+     outline-offset: 3px;
+}
+
+.custom-message-box.error {
+    border-color: #e74c3c;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5), 0 0 35px #e74c3c;
+}
+
+.custom-message-box.error #custom-message-text::before {
+    content: "\f06a";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    color: #e74c3c;
+    font-size: 2.2rem;
+    display: block;
+    margin-bottom: 18px;
+    animation: iconPopIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s forwards, iconShake 0.8s cubic-bezier(.36,.07,.19,.97) 0.5s both;
+}
+
+.custom-message-box.error .custom-message-close-btn {
+    background: #c0392b;
+    color: var(--text-primary, #ECEFF1);
+    box-shadow: 0 4px 10px rgba(192, 57, 43, 0.4);
+}
+.custom-message-box.error .custom-message-close-btn:hover {
+    background: #e74c3c;
+    box-shadow: 0 6px 15px rgba(231, 76, 60, 0.5);
+}
+.custom-message-box.error .custom-message-close-btn:focus {
+    outline: 2px solid #ff7675;
+    outline-offset: 3px;
+}
+
+.custom-message-box.info #custom-message-text::before {
+    content: "\f05a";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    color: var(--deep-purple-accent, #7E57C2);
+    font-size: 2.2rem;
+    display: block;
+    margin-bottom: 18px;
+    animation: iconPopIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s forwards;
+}
+
+@keyframes iconPopIn {
+    0% { transform: scale(0.5); opacity: 0; }
+    70% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes iconShake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+  30%, 50%, 70% {
+    transform: translate3d(-3px, 0, 0);
+  }
+  40%, 60% {
+    transform: translate3d(3px, 0, 0);
+  }
 }

@@ -1505,61 +1505,144 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
   
-        const contactForm = document.getElementById('contact-form');
-        if (contactForm) {
-            contactForm.querySelectorAll('input, textarea').forEach(input => {
-                const label = input.nextElementSibling;
-                if (label && label.tagName === 'LABEL' && label.classList.contains('form-label-terminal')) {
-                    input.addEventListener('focus', () => label.classList.add('active'));
-                    input.addEventListener('blur', () => {
-                        if (input.value === '' || input.value === input.placeholder) { 
-                            label.classList.remove('active');
-                        }
-                    });
-                    if (input.value !== '' && input.value !== input.placeholder) {
-                        label.classList.add('active');
-                    }
+              const customMessageOverlay = document.getElementById('custom-message-overlay');
+const customMessageBox = document.getElementById('custom-message-box');
+const customMessageText = document.getElementById('custom-message-text');
+const customMessageCloseBtn = document.getElementById('custom-message-close-btn');
+
+let customMessageCloseCallback = null;
+
+function showCustomMessage(message, type = 'info', onCloseCallback = null) {
+    if (!customMessageOverlay || !customMessageBox || !customMessageText) return;
+
+    customMessageText.textContent = message;
+    customMessageOverlay.style.display = 'flex';
+
+    // إزالة أي classes سابقة للـ type
+    customMessageBox.classList.remove('success', 'error', 'info');
+    if (type === 'success') {
+        customMessageBox.classList.add('success');
+    } else if (type === 'error') {
+        customMessageBox.classList.add('error');
+    } else {
+        customMessageBox.classList.add('info'); 
+    }
+
+
+    requestAnimationFrame(() => {
+        customMessageOverlay.classList.add('show');
+    });
+
+    customMessageCloseCallback = onCloseCallback; 
+}
+
+if (customMessageCloseBtn && customMessageOverlay) {
+    customMessageCloseBtn.addEventListener('click', () => {
+        customMessageOverlay.classList.remove('show');
+        setTimeout(() => {
+            customMessageOverlay.style.display = 'none';
+            if (typeof customMessageCloseCallback === 'function') {
+                customMessageCloseCallback(); 
+                customMessageCloseCallback = null; 
+            }
+        }, 300);
+    });
+}
+
+
+
+const contactForm = document.getElementById('contact-form');
+if (contactForm) {
+
+    contactForm.querySelectorAll('input, textarea').forEach(input => {
+        const label = input.nextElementSibling;
+        if (label && label.tagName === 'LABEL' && label.classList.contains('form-label-terminal')) {
+            input.addEventListener('focus', () => label.classList.add('active'));
+            input.addEventListener('blur', () => {
+                if (input.value.trim() === '' && (input.placeholder === ' ' || !input.placeholder)) {
+                    label.classList.remove('active');
                 }
             });
-  
-            contactForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const submitButton = contactForm.querySelector('button[type="submit"]');
-                const buttonText = submitButton.querySelector('.btn-text');
-                const buttonIcon = submitButton.querySelector('.btn-icon-transmit i');
-  
-                submitButton.disabled = true;
-                submitButton.classList.add('submitting');
-                if (buttonText) buttonText.textContent = 'جاري الإرسال...';
-                if (buttonIcon) buttonIcon.className = 'fas fa-spinner fa-spin';
-  
-                setTimeout(() => {
-                    alert('تم إرسال إشارتك بنجاح عبر الفضاء!'); 
-                    contactForm.reset();
-                    contactForm.querySelectorAll('.form-label-terminal.active').forEach(label => label.classList.remove('active'));
-                    contactForm.querySelectorAll('input, textarea').forEach(input => {
-                          const label = input.nextElementSibling;
-                          if (label && label.tagName === 'LABEL' && label.classList.contains('form-label-terminal')) {
-                               if (input.value === '' || input.value === input.placeholder) {
-                                  label.classList.remove('active');
-                              } else {
-                                  label.classList.add('active'); 
-                              }
-                          }
-                      });
-  
-  
-                    submitButton.disabled = false;
-                    submitButton.classList.remove('submitting');
-                    if (buttonText) {
-                        buttonText.innerHTML = 'إرسال الإشارة <span class="transmit-dots">...</span>';
-                    }
-                    if (buttonIcon) buttonIcon.className = 'fas fa-space-shuttle';
-                }, 2000);
-            });
+            if (input.value.trim() !== '' && (input.placeholder === ' ' || !input.placeholder)) {
+                label.classList.add('active');
+            }
         }
-        console.log("zelhoria Portfolio - Cosmic Genesis Initialized!");
-    }
+    });
+
+    contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const submitButton = contactForm.querySelector('button[type="submit"]');
+        const buttonTextSpan = submitButton.querySelector('.btn-text');
+        const buttonIcon = submitButton.querySelector('.btn-icon-transmit i');
+
+        const originalButtonTextHTML = buttonTextSpan ? buttonTextSpan.innerHTML : 'إرسال الإشارة <span class="transmit-dots">...</span>';
+        const originalIconClass = buttonIcon ? buttonIcon.className : 'fas fa-space-shuttle';
+
+        submitButton.disabled = true;
+        submitButton.classList.add('submitting');
+        if (buttonTextSpan) buttonTextSpan.textContent = 'جاري الإرسال...';
+        if (buttonIcon) buttonIcon.className = 'fas fa-spinner fa-spin';
+
+        const formData = new FormData(contactForm);
+        const formActionUrl = contactForm.action;
+
+        if (!formActionUrl || !formActionUrl.includes('formspree.io')) {
+            showCustomMessage('خطأ في تكوين النموذج: لم يتم تحديد وجهة الإرسال بشكل صحيح.', 'error');
+            submitButton.disabled = false;
+            submitButton.classList.remove('submitting');
+            if (buttonTextSpan) buttonTextSpan.innerHTML = originalButtonTextHTML;
+            if (buttonIcon) buttonIcon.className = originalIconClass;
+            return;
+        }
+
+        try {
+            const response = await fetch(formActionUrl, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const result = await response.json().catch(() => ({}));
+                showCustomMessage(result.message || 'تم إرسال إشارتك الرقمية بنجاح!', 'success', () => {
+                    // هذا الـ callback سيُنفذ بعد إغلاق رسالة النجاح
+                    contactForm.reset();
+                    contactForm.querySelectorAll('.form-label-terminal.active').forEach(label => {
+                        label.classList.remove('active');
+                    });
+                    contactForm.querySelectorAll('input[placeholder=" "], textarea[placeholder=" "]').forEach(input => {
+                         const label = input.nextElementSibling;
+                         if (label && label.tagName === 'LABEL' && label.classList.contains('form-label-terminal')) {
+                             label.classList.remove('active');
+                         }
+                    });
+                });
+            } else {
+                const errorData = await response.json().catch(() => ({}));
+                let errorMessage = 'حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى.';
+                if (errorData && errorData.errors && errorData.errors.length > 0) {
+                    errorMessage = errorData.errors.map(err => err.message || err.field).join('\n');
+                } else if (errorData && errorData.error) {
+                    errorMessage = errorData.error;
+                }
+                showCustomMessage(errorMessage, 'error');
+            }
+
+        } catch (error) {
+            console.error('Error submitting form to Formspree:', error);
+            showCustomMessage('حدث خطأ غير متوقع أثناء الاتصال بالخدمة. يرجى المحاولة مرة أخرى.', 'error');
+        } finally {
+            submitButton.disabled = false;
+            submitButton.classList.remove('submitting');
+            if (buttonTextSpan) buttonTextSpan.innerHTML = originalButtonTextHTML;
+            if (buttonIcon) buttonIcon.className = originalIconClass;
+        }
+    });
+}}
+
   
     function startHeroAnimations() {
         const heroTitle = document.querySelector('.hero-title-animated');
